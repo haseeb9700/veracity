@@ -24,3 +24,6 @@ python-dotenv>=1.0.0
 
 # Validation
 pydantic[email]>=2.0.0
+
+# HTTP (for Jira/Zendesk connectors)
+requests>=2.31.0

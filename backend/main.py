@@ -23,6 +23,7 @@ from app.db.models import AnalysisRun, User
 from app.auth import get_current_user, get_db
 from app.routers.auth_router import router as auth_router
 from app.routers.chat_router import router as chat_router
+from app.routers.connectors_router import router as connectors_router
 
 # ── DB init ──────────────────────────────────────────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -46,6 +47,7 @@ app.add_middleware(
 # ── Routers ───────────────────────────────────────────────────────────────────
 app.include_router(auth_router)
 app.include_router(chat_router)
+app.include_router(connectors_router)
 
 
 # ── Startup ───────────────────────────────────────────────────────────────────
