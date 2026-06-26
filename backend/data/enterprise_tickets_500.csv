@@ -1,0 +1,511 @@
+ticket_id,created_date,department,issue,issue_category,priority,status,channel,customer_type,resolution_time
+1,2026-01-07 23:17:00,,Customer requesting refund for duplicate charge,Refund Request,Low,Resolved,Chatbot,Internal Employee,16.29
+2,2026-05-20 13:14:00,Finance,Vendor invoice approval is delayed please help asap,Invoice Approval,High,Resolved,Slack,Internal Employee,45.85
+3,2026-03-30 19:16:00,HR,BACKGROUND VERIFICATION DELAY BLOCKING START DATE,Onboarding Delay,Medium,Open,Email,External Customer,
+4,2026-01-21 07:55:00,Operations,ITEM QUANTITY INCORRECT IN INVENTORY PLATFORM,Inventory Mismatch,Medium,Resolved,Portal,External Customer,10.83
+5,2026-04-08 08:59:00,IT,Password expired and reset link is not working,Password / Login,Medium,Resolved,Portal,Partner,3.56
+6,2026-05-08 12:56:00,IT,REMOTE ACCESS KEEPS DISCONNECTING,VPN / Access,High,Resolved,Portal,Vendor,11.23
+7,2026-01-13 03:09:00,IT,I forgot my password and cannot log in,Password / Login,Low,Open,Email,Partner,
+8,2026-03-29 03:18:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,Medium,Resolved,Portal,Internal Employee,20.17
+9,2026-05-06 00:07:00,Finance,Payment request pending manager approval!!!,Invoice Approval,Medium,In Progress,Chatbot,External Customer,75.6
+10,2026-05-02 17:10:00,IT,Need password reset for my company account,Password / Login,Medium,In Progress,Chatbot,Vendor,
+11,2026-02-27 02:21:00,IT,Login not working for employee portal please help asap,Password / Login,Medium,Resolved,Portal,Partner,1.08
+12,2026-02-24 17:08:00,Customer Support,Refund request pending for customer order!!!,Refund Request,Medium,In Progress,Email,Internal Employee,
+13,2026-03-28 03:15:00,IT,Need password reset for my company account,Password / Login,Low,Resolved,Chatbot,Internal Employee,1.77
+14,2026-03-02 05:26:00,Sales,Sales report missing latest pipeline data please help asap,Salesforce / CRM,Medium,Resolved,Chatbot,Vendor,13.71
+15,2026-03-17 06:03:00,IT,Password expired and reset link is not working please help asap,Password / Login,Low,Resolved,Email,External Customer,3.32
+16,2026-01-18 21:55:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Portal,Partner,1.94
+17,2026-04-12 04:42:00,IT,VPN ACCESS IS NOT WORKING FROM HOME!!!,VPN / Access,High,Resolved,Phone,Internal Employee,8.81
+18,2026-04-05 09:10:00,Compliance,Risk review pending for new supplier!!!,Compliance Review,Critical,Resolved,Email,External Customer,66.07
+19,2026-01-28 23:35:00,IT,Unable to connect to secure network,VPN / Access,Medium,Resolved,Slack,Partner,4.4
+20,2026-03-27 04:40:00,IT,Unable to access the system due to password issue!!!,Password / Login,Low,Resolved,Phone,External Customer,4.92
+21,2026-01-11 09:23:00,HR,Employee cannot select health insurance option,Benefits / Payroll,High,Open,Portal,External Customer,65.94
+22,2026-02-15 13:01:00,Compliance,Data retention policy exception needs approval,Compliance Review,High,In Progress,Email,Vendor,41.22
+23,2026-04-28 11:19:00,IT,Unable to connect to secure network,VPN / Access,High,In Progress,Chatbot,Partner,
+24,2026-01-30 08:11:00,Sales,SALESFORCE OPPORTUNITY RECORD NOT UPDATING,Salesforce / CRM,High,Escalated,Chatbot,External Customer,15.61
+25,2026-04-22 00:33:00,IT,Unable to connect to secure network please help asap,VPN / Access,Medium,Resolved,Phone,Partner,11.33
+26,2026-03-25 12:44:00,Customer Support,Customer says payment was charged twice,Refund Request,Medium,Resolved,Email,Partner,18.42
+27,2026-04-21 18:38:00,IT,Need VPN permission for client project,VPN / Access,Medium,Resolved,Chatbot,Partner,8.89
+28,2026-03-02 21:19:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN,Password / Login,Low,Resolved,Slack,Vendor,1.9
+29,2026-02-07 20:44:00,HR,New employee onboarding is delayed,Onboarding Delay,Medium,Open,Email,Vendor,24.4
+30,2026-04-29 21:33:00,IT,Unable to access the system due to password issue,Password / Login,Low,Resolved,Slack,Vendor,4.95
+31,2026-03-05 20:17:00,IT,Unable to connect to secure network please help asap,VPN / Access,Medium,Resolved,Portal,Vendor,9.89
+32,2026-02-24 02:26:00,Customer Support,CUSTOMER SAYS PAYMENT WAS CHARGED TWICE,Refund Request,Low,Resolved,Chatbot,Vendor,23.12
+33,2026-04-01 09:48:00,HR,Salary information missing in HR system,Benefits / Payroll,High,In Progress,Slack,Partner,35.4
+34,2026-04-14 23:10:00,Customer Support,REFUND NOT PROCESSED AFTER CANCELLATION!!!,Refund Request,Low,In Progress,Portal,Internal Employee,41.3
+35,2026-03-25 06:29:00,IT,Need VPN permission for client project please help asap,VPN / Access,High,Open,Email,Internal Employee,
+36,2026-03-05 06:53:00,Operations,Warehouse stock mismatch found during audit please help asap,Inventory Mismatch,High,Resolved,Chatbot,Internal Employee,8.57
+37,2026-02-11 09:06:00,Operations,Missing stock after shipment reconciliation,Inventory Mismatch,Medium,In Progress,Phone,Internal Employee,
+38,2026-05-25 01:22:00,Operations,Inventory count does not match system records,Inventory Mismatch,High,Resolved,Slack,External Customer,22.92
+39,2026-05-14 20:17:00,HR,Need correction in benefits portal,Benefits / Payroll,Medium,In Progress,Slack,External Customer,48.95
+40,2026-05-26 19:42:00,Operations,ITEM QUANTITY INCORRECT IN INVENTORY PLATFORM,Inventory Mismatch,High,Resolved,Chatbot,External Customer,18.61
+41,2026-04-15 15:35:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Chatbot,Partner,4.03
+42,2026-05-16 11:27:00,HR,Employee cannot select health insurance option,Benefits / Payroll,Medium,Resolved,Portal,External Customer,71.8
+43,2026-05-04 08:46:00,IT,VPN access is not working from home,VPN / Access,Medium,Open,Email,Partner,
+44,2026-02-02 20:55:00,Customer Support,Customer requesting refund for duplicate charge,Refund Request,Medium,Resolved,Email,Vendor,37.62
+45,2026-05-28 20:43:00,Finance,Purchase order mismatch delaying invoice please help asap,Invoice Approval,Critical,Resolved,Portal,Vendor,21.32
+46,2026-04-24 09:55:00,HR,Salary information missing in HR system,Benefits / Payroll,Medium,Resolved,Email,External Customer,47.31
+47,2026-05-22 02:10:00,IT,Cannot access internal tools outside office please help asap,VPN / Access,Medium,Resolved,Phone,External Customer,3.02
+48,2026-05-20 07:41:00,HR,PAYROLL DEDUCTION LOOKS INCORRECT please help asap,Benefits / Payroll,High,Resolved,Slack,Partner,20.94
+49,2026-03-11 16:34:00,Customer Support,Customer requesting refund for duplicate charge!!!,Refund Request,High,Resolved,Chatbot,Internal Employee,26.74
+50,2026-03-10 18:02:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Medium,Resolved,Slack,Partner,19.26
+51,2026-03-24 21:06:00,HR,Need correction in benefits portal,Benefits / Payroll,High,Resolved,Email,Vendor,63.46
+52,2026-01-01 21:55:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,Resolved,Phone,Vendor,76.09
+53,2026-05-05 03:01:00,Compliance,Audit evidence missing for policy review,Compliance Review,High,Resolved,Email,External Customer,117.42
+54,2026-03-16 16:45:00,Finance,Invoice stuck in approval workflow please help asap,Invoice Approval,Medium,In Progress,Phone,Vendor,34.95
+55,2026-05-10 08:52:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Open,Phone,External Customer,24.18
+56,2026-03-03 18:24:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,Low,Open,Email,External Customer,
+57,2026-03-26 03:55:00,Finance,FINANCE APPROVAL NEEDED FOR OVERDUE INVOICE please help asap,Invoice Approval,High,Resolved,Slack,Internal Employee,70.39
+58,2026-05-17 12:20:00,Compliance,COMPLIANCE CHECKLIST INCOMPLETE FOR PROCESS please help asap,Compliance Review,High,In Progress,Email,Internal Employee,
+59,2026-03-18 00:02:00,HR,Employee cannot select health insurance option please help asap,Benefits / Payroll,Medium,Resolved,Chatbot,Vendor,31.46
+60,2026-03-03 15:58:00,Customer Support,Need refund approval for billing complaint,Refund Request,High,Resolved,Slack,Partner,30.49
+61,2026-03-18 20:27:00,Sales,LEAD ASSIGNMENT RULE FAILED,Salesforce / CRM,High,Resolved,Phone,Internal Employee,17.81
+62,2026-04-12 08:00:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Low,Resolved,Phone,External Customer,15.32
+63,2026-03-06 21:48:00,Customer Support,Refund request pending for customer order,Refund Request,High,Resolved,Portal,Internal Employee,36.28
+64,2026-03-25 23:26:00,Compliance,Compliance checklist incomplete for process,Compliance Review,Critical,Resolved,Phone,Partner,40.86
+65,2026-04-30 02:09:00,,Missing stock after shipment reconciliation,Inventory Mismatch,Medium,Resolved,Phone,Vendor,29.12
+66,2026-04-06 03:43:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,High,Resolved,Email,External Customer,14.55
+67,2026-01-10 09:31:00,IT,LOGIN NOT WORKING FOR EMPLOYEE PORTAL,Password / Login,Medium,Resolved,Portal,Vendor,1.46
+68,2026-05-06 19:26:00,Customer Support,Need refund approval for billing complaint,Refund Request,Medium,Resolved,Phone,Internal Employee,45.44
+69,2026-02-18 03:54:00,HR,Laptop and access not ready for new hire,Onboarding Delay,Medium,Resolved,Portal,Internal Employee,83.34
+70,2026-05-22 06:37:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,In Progress,Email,Internal Employee,
+71,2026-04-02 07:37:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN!!!,Password / Login,Medium,Resolved,Email,Vendor,2.3
+72,2026-01-12 23:50:00,Finance,Payment request pending manager apprval,Invoice Approval,Critical,Resolved,Slack,Internal Employee,74.34
+73,2026-03-24 19:09:00,Compliance,Compliance checklist incomplete for process,Compliance Review,Critical,Resolved,Email,External Customer,30.31
+74,2026-02-28 13:21:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,High,Resolved,Email,Internal Employee,61.65
+75,2026-04-06 04:35:00,HR,Salary information missing in HR system please help asap,Benefits / Payroll,Medium,Escalated,Chatbot,Partner,15.6
+76,2026-05-28 16:13:00,HR,New employee onboarding is delayed,Onboarding Delay,High,Resolved,Chatbot,Internal Employee,35.14
+77,2026-03-10 00:11:00,Finance,PAYMENT REQUEST PENDING MANAGER APPROVAL,Invoice Approval,Critical,Open,Email,External Customer,34.94
+78,2026-04-27 10:10:00,HR,Employee onboarding approval pending,Onboarding Delay,Medium,Open,Slack,Vendor,50.64
+79,2026-04-17 08:13:00,Finance,FINANCE APPROVAL NEEDED FOR OVERDUE INVOICE,Invoice Approval,Medium,Resolved,Chatbot,Internal Employee,64.81
+80,2026-03-19 06:49:00,IT,ACCOUNT LOCKED AFTER MULTIPLE LOGIN ATTEMPTS,Password / Login,Low,Resolved,Phone,Internal Employee,1.55
+81,2026-01-11 13:01:00,HR,Onboarding checklist is incomplete,Onboarding Delay,Medium,Resolved,Portal,Vendor,57.1
+82,2026-04-03 02:27:00,Operations,Inventory discrepancy requires investigation please help asap,Inventory Mismatch,Medium,Resolved,Email,External Customer,31.65
+83,2026-03-31 11:46:00,Compliance,Audit evidence missing for policy review please help asap,Compliance Review,High,Resolved,Slack,Vendor,115.99
+84,2026-05-29 14:43:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,High,Resolved,Chatbot,Internal Employee,33.88
+85,2026-01-19 09:29:00,HR,ONBOARDING CHECKLIST IS INCOMPLETE,Onboarding Delay,High,Resolved,Email,Vendor,56.54
+86,2026-05-27 20:12:00,Compliance,Audit evidence missing for policy review,Compliance Review,High,Resolved,Portal,Internal Employee,54.87
+87,2026-04-23 14:33:00,IT,Remote access keeps disconnecting,VPN / Access,High,Resolved,Email,Vendor,7.7
+88,2026-02-08 10:05:00,IT,Remote access keeps disconnecting,VPN / Access,Medium,Resolved,Slack,Partner,8.24
+89,2026-05-15 02:41:00,Operations,Inventory count does not match system records,Inventory Mismatch,Medium,Resolved,Portal,Internal Employee,26.77
+90,2026-01-26 16:49:00,IT,Remote access keeps disconnecting,VPN / Access,Medium,Open,Email,Vendor,
+91,2026-03-02 14:39:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Open,Phone,Vendor,
+92,2026-04-18 05:52:00,Finance,PAYMENT REQUEST PENDING MANAGER APPROVAL,Invoice Approval,Critical,Resolved,Phone,Internal Employee,30.38
+93,2026-03-11 14:57:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,In Progress,Email,Partner,
+94,2026-03-23 03:53:00,IT,UNABLE TO CONNECT TO SECURE NETWORK,VPN / Access,High,Resolved,Email,Internal Employee,9.43
+95,2026-02-25 04:35:00,IT,UNABLE TO ACCESS THE SYSTEM DUE TO PASSWORD ISSUE!!!,Password / Login,Medium,Resolved,Slack,Internal Employee,4.76
+96,2026-05-28 07:45:00,Customer Support,Refund not processed after cancellation,Refund Request,Medium,Resolved,Chatbot,Internal Employee,12.03
+97,2026-05-01 01:40:00,HR,New employee onboarding is delayed please help asap,Onboarding Delay,High,Resolved,Phone,Partner,51.86
+98,2026-02-14 21:29:00,Operations,Warehouse stock mismatch found during audit please help asap,Inventory Mismatch,Medium,Resolved,Email,Partner,35.46
+99,2026-05-12 12:52:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,Medium,Resolved,Slack,Vendor,14.86
+100,2026-04-09 10:11:00,Compliance,Compliance checklist incomplete for process please help asap,Compliance Review,High,Resolved,Phone,Internal Employee,71.64
+101,2026-03-17 09:28:00,IT,Password expired and reset link is not working,Password / Login,Medium,Resolved,Email,Internal Employee,3.41
+102,2026-04-14 11:32:00,Customer Support,CUSTOMER REQUESTING REFUND FOR DUPLICATE CHARGE!!!,Refund Request,High,Resolved,Slack,Internal Employee,39.65
+103,2026-04-26 11:23:00,Finance,Invoice stuck in approval workflow,Invoice Approval,Critical,Resolved,Chatbot,Vendor,45.52
+104,2026-01-31 08:49:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Medium,Resolved,Slack,Internal Employee,9.21
+105,2026-03-23 21:22:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,High,Resolved,Email,External Customer,27.87
+106,2026-03-02 15:01:00,Operations,Missing stock after shipment reconciliation!!!,Inventory Mismatch,High,Resolved,Slack,Internal Employee,18.11
+107,2026-03-23 20:04:00,IT,ACCOUNT LOCKED AFTER MULTIPLE LOGIN ATTEMPTS,Password / Login,Low,Resolved,Email,Internal Employee,2.8
+108,2026-03-19 05:10:00,Finance,Payment request pending manager approval!!!,Invoice Approval,Critical,Resolved,Phone,Internal Employee,38.0
+109,2026-02-13 18:37:00,Finance,Purchase order mismatch delaying invoice,Invoice Approval,Critical,Resolved,Phone,External Customer,27.56
+110,2026-04-17 19:40:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,Medium,In Progress,Slack,Vendor,
+111,2026-03-29 19:09:00,HR,Employee cannot select health insurance option please help asap,Benefits / Payroll,High,Resolved,Slack,External Customer,30.75
+112,2026-01-13 09:24:00,IT,Need password reset for my company account,Password / Login,Medium,Resolved,Phone,Vendor,4.46
+113,2026-04-11 16:29:00,IT,ACCOUNT LOCKED AFTER MULTIPLE LOGIN ATTEMPTS,Password / Login,Medium,Resolved,Email,Vendor,4.87
+114,2026-03-09 23:23:00,IT,UNABLE TO ACCESS THE SYSTEM DUE TO PASSWORD ISSUE,Password / Login,Medium,Resolved,Phone,Internal Employee,4.06
+115,2026-01-25 12:23:00,IT,Account locked after multiple login attempts,Password / Login,Low,Resolved,Slack,Vendor,4.18
+116,2026-05-12 04:20:00,IT,Unable to access the system due to password issue,Password / Login,Medium,Resolved,Phone,Vendor,4.73
+117,2026-04-05 10:43:00,Operations,Item quantity incorrect in inventory platform!!!,Inventory Mismatch,Medium,Resolved,Chatbot,Vendor,11.07
+118,2026-04-08 04:52:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING please help asap,Password / Login,Medium,Resolved,Chatbot,Vendor,3.72
+119,2026-01-16 22:08:00,Compliance,Data retention policy exception needs approval,Compliance Review,Critical,Resolved,Phone,Vendor,73.79
+120,2026-03-05 08:35:00,IT,Remote access keeps disconnecting,VPN / Access,High,In Progress,Chatbot,Vendor,5.69
+121,2026-04-12 11:49:00,Compliance,Risk review pending for new supplier please help asap,Compliance Review,High,Resolved,Chatbot,Partner,101.24
+122,2026-03-11 04:06:00,Sales,CRM ACCOUNT OWNERSHIP IS INCORRECT,Salesforce / CRM,Medium,Resolved,Email,External Customer,16.31
+123,2026-05-21 05:26:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING,Password / Login,Low,In Progress,Portal,Internal Employee,
+124,2026-02-14 13:56:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,,In Progress,Chatbot,Internal Employee,
+125,2026-03-27 09:29:00,Sales,Sales report missing latest pipeline data please help asap,Salesforce / CRM,Medium,Resolved,Slack,Partner,23.78
+126,2026-01-04 23:21:00,Customer Support,REFUND REQUEST PENDING FOR CUSTOMER ORDER,Refund Request,Low,Resolved,Email,External Customer,39.21
+127,2026-05-03 10:59:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,Medium,Resolved,Portal,Internal Employee,8.96
+128,2026-04-30 09:10:00,Customer Support,Need refund approval for billing complaint,Refund Request,Low,Resolved,Slack,Partner,23.03
+129,2026-05-21 15:48:00,HR,Payroll deduction looks incorrect,Benefits / Payroll,High,Resolved,Chatbot,Internal Employee,44.25
+130,2026-05-21 16:12:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Slack,External Customer,3.29
+131,2026-04-27 18:03:00,Finance,Payment request pending manager approval,Invoice Approval,Medium,Resolved,Email,Internal Employee,52.65
+132,2026-01-18 15:02:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,Medium,Resolved,Slack,Vendor,9.74
+133,2026-05-19 04:41:00,IT,Login not working for employee portal please help asap,Password / Login,Medium,Resolved,Chatbot,Vendor,4.44
+134,2026-02-28 07:29:00,Finance,VENDOR INVOICE APPROVAL IS DELAYED,Invoice Approval,Medium,Resolved,Email,Internal Employee,39.46
+135,2026-01-13 07:47:00,HR,Salary information missing in HR system,Benefits / Payroll,High,Resolved,Phone,External Customer,14.65
+136,2026-02-06 21:33:00,HR,New employee onboarding is delayed,Onboarding Delay,High,Resolved,Phone,Vendor,39.92
+137,2026-03-23 22:26:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,Resolved,Chatbot,Vendor,19.43
+138,2026-05-23 16:08:00,Sales,Lead assignment rule failed!!!,Salesforce / CRM,Low,Resolved,Slack,Internal Employee,11.77
+139,2026-02-18 18:46:00,Compliance,Audit evidence missing for policy review!!!,Compliance Review,High,Resolved,Slack,External Customer,88.46
+140,2026-02-22 12:58:00,Customer Support,Need refund approval for billing complaint,Refund Request,Medium,Resolved,Slack,Partner,16.05
+141,2026-04-05 10:26:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Medium,In Progress,Chatbot,External Customer,4.91
+142,2026-03-28 08:48:00,Finance,Finance approval needed for overdue invoice,Invoice Approval,Medium,Escalated,Chatbot,Internal Employee,68.94
+143,2026-01-20 21:03:00,Finance,INVOICE STUCK IN APPROVAL WORKFLOW please help asap,Invoice Approval,Critical,Resolved,Chatbot,Vendor,65.39
+144,2026-01-05 00:34:00,Customer Support,Refund not processed after cancellation,Refund Request,Medium,Resolved,Portal,Internal Employee,29.17
+145,2026-05-15 04:15:00,Sales,Lead assignment rule failed,Salesforce / CRM,High,Resolved,Email,Internal Employee,7.84
+146,2026-04-08 12:35:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING,Password / Login,Low,Resolved,Email,External Customer,2.9
+147,2026-05-26 15:17:00,IT,Remote access keeps disconnecting,VPN / Access,Medium,Resolved,Slack,Internal Employee,3.42
+148,2026-05-25 07:36:00,IT,Cannot access internal tools outside office,VPN / Access,High,Resolved,Slack,External Customer,10.51
+149,2026-03-29 19:49:00,Operations,ITEM QUANTITY INCORRECT IN INVENTORY PLATFORM,Inventory Mismatch,High,Resolved,Chatbot,Vendor,25.19
+150,2026-03-17 07:45:00,IT,Unable to access the system due to password issue,Password / Login,Low,Resolved,Slack,Partner,1.29
+151,2026-01-27 04:05:00,Operations,Inventory discrepancy requires investigation please help asap,Inventory Mismatch,High,Resolved,Email,Partner,13.25
+152,2026-01-22 23:57:00,HR,Payroll deduction looks incorrect please help asap,Benefits / Payroll,High,Escalated,Portal,Vendor,45.57
+153,2026-03-18 15:50:00,IT,Unable to connect to secure network,VPN / Access,Medium,Resolved,Phone,Vendor,3.69
+154,2026-03-26 14:21:00,Operations,INVENTORY DISCREPANCY REQUIRES INVESTIGATION,Inventory Mismatch,High,In Progress,Phone,Vendor,20.06
+155,2026-03-04 10:24:00,,CANNOT EDIT CUSTOMER ACCOUNT IN CRM,Salesforce / CRM,High,Open,Portal,Vendor,
+156,2026-01-18 13:43:00,Operations,Warehouse stock mismatch found during audit please help asap,Inventory Mismatch,High,Resolved,Chatbot,Vendor,21.98
+157,2026-04-03 22:57:00,Finance,VENDOR INVOICE APPROVAL IS DELAYED,Invoice Approval,Critical,Resolved,Slack,Partner,68.36
+158,2026-04-21 03:00:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,High,Resolved,Chatbot,External Customer,5.97
+159,2026-01-07 15:06:00,HR,Laptop and access not ready for new hire,Onboarding Delay,Medium,In Progress,Slack,Partner,
+160,2026-01-12 22:07:00,IT,I forgot my password and cannot log in please help asap,Password / Login,Low,Resolved,Slack,Vendor,1.09
+161,2026-04-14 20:11:00,IT,NEED VPN PERMISSION FOR CLIENT PROJECT,VPN / Access,Medium,Resolved,Email,Internal Employee,4.68
+162,2026-05-18 05:23:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,High,Resolved,Phone,Partner,17.13
+163,2026-02-14 21:45:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,In Progress,Portal,Vendor,
+164,2026-05-05 20:34:00,HR,Payroll deduction looks incorrect,Benefits / Payroll,Medium,Resolved,Email,Vendor,53.61
+165,2026-04-09 17:32:00,IT,Unable to access the system due to password issue!!!,Password / Login,Low,Resolved,Phone,External Customer,3.61
+166,2026-02-13 14:36:00,Finance,Vendor invoice approval is delayed,Invoice Approval,Medium,Open,Slack,External Customer,
+167,2026-01-27 23:53:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Low,Resolved,Chatbot,Partner,17.07
+168,2026-04-20 05:39:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,Resolved,Phone,Internal Employee,37.37
+169,2026-04-16 01:17:00,IT,Need password reset for my company account,Password / Login,Medium,Resolved,Phone,Vendor,4.47
+170,2026-01-20 20:50:00,HR,Employee onboarding approval pending,Onboarding Delay,Medium,Resolved,Email,Vendor,87.37
+171,2026-04-02 02:50:00,Customer Support,Customer says payment was charged twice,Refund Request,Low,Resolved,Slack,Partner,28.45
+172,2026-01-13 01:06:00,Compliance,Audit evidence missing for policy review please help asap,Compliance Review,High,In Progress,Phone,External Customer,
+173,2026-03-12 02:41:00,Compliance,AUDIT EVIDENCE MISSING FOR POLICY REVIEW,Compliance Review,High,Resolved,Email,External Customer,58.6
+174,2026-02-03 18:14:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,Medium,Resolved,Email,Internal Employee,43.17
+175,2026-04-05 09:08:00,IT,Password expired and reset link is not working please help asap!!!,Password / Login,Medium,Open,Portal,External Customer,2.53
+176,2026-04-24 06:05:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Medium,Resolved,Portal,Partner,21.93
+177,2026-01-07 21:56:00,Operations,INVENTORY DISCREPANCY REQUIRES INVESTIGATION,Inventory Mismatch,Medium,Resolved,Email,External Customer,16.45
+178,2026-01-19 16:56:00,Finance,PAYMENT REQUEST PENDING MANAGER APPROVAL,Invoice Approval,High,Escalated,Email,Internal Employee,78.62
+179,2026-01-04 08:13:00,Finance,Finance approval needed for overdue invoice,Invoice Approval,Medium,Resolved,Chatbot,External Customer,20.47
+180,2026-03-21 02:32:00,IT,Unable to connect to secure network,VPN / Access,Medium,Escalated,Slack,External Customer,11.29
+181,2026-01-23 13:07:00,IT,Account locked after multiple login attempts!!!,Password / Login,Low,Resolved,Phone,Partner,2.81
+182,2026-02-02 23:49:00,IT,I forgot my password and cannot log in,Password / Login,Low,Open,Chatbot,Partner,
+183,2026-05-26 05:23:00,IT,Password expired and reset link is not working!!!,Password / Login,Low,Open,Phone,Vendor,1.63
+184,2026-02-15 01:35:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,High,Resolved,Chatbot,Internal Employee,20.06
+185,2026-05-13 01:25:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Phone,External Customer,1.28
+186,2026-05-07 06:46:00,HR,Benefits enrollment issue needs review please help asap,Benefits / Payroll,Medium,Open,Email,Vendor,
+187,2026-03-20 03:13:00,Compliance,Data retention policy exception needs approval,Compliance Review,High,Resolved,Chatbot,Vendor,74.86
+188,2026-04-06 14:47:00,Customer Support,Refund request pending for customer order!!!,Refund Request,Low,Resolved,Phone,Partner,9.57
+189,2026-04-11 22:53:00,Sales,Lead assignment rule failed,Salesforce / CRM,Low,Resolved,Slack,Partner,18.71
+190,2026-05-18 11:49:00,HR,Employee cannot select health insurance option please help asap,Benefits / Payroll,Medium,Resolved,Phone,External Customer,24.46
+191,2026-03-05 11:25:00,IT,Account locked after multiple login attempts please help asap,Password / Login,Low,Resolved,Email,External Customer,3.05
+192,2026-01-16 07:08:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Portal,Vendor,1.79
+193,2026-01-24 10:07:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,Resolved,Portal,External Customer,9.2
+194,2026-04-25 04:02:00,IT,Remote access keeps disconnecting!!!,VPN / Access,High,Resolved,Chatbot,External Customer,8.53
+195,2026-05-20 00:24:00,Customer Support,Refund not processed after cancellation,Refund Request,Low,Resolved,Portal,Internal Employee,38.84
+196,2026-03-13 01:51:00,Compliance,Compliance checklist incomplete for process,Compliance Review,High,Resolved,Portal,Vendor,119.19
+197,2026-02-14 05:15:00,HR,EMPLOYEE ONBOARDING APPROVAL PENDING,Onboarding Delay,Medium,Open,Slack,Partner,66.66
+198,2026-01-10 02:03:00,IT,Login not working for employee portal,Password / Login,Low,Resolved,Phone,Internal Employee,1.93
+199,2026-05-31 22:58:00,IT,Login not working for employee portal,Password / Login,Low,Resolved,Phone,External Customer,1.57
+200,2026-04-22 20:31:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Low,Resolved,Phone,External Customer,16.98
+201,2026-01-01 22:36:00,IT,LOGIN NOT WORKING FOR EMPLOYEE PORTAL,Password / Login,Low,Escalated,Portal,Partner,2.57
+202,2026-03-02 11:20:00,Customer Support,Need refund approval for billing complaint!!!,Refund Request,Low,In Progress,Email,Vendor,
+203,2026-04-18 05:56:00,HR,NEED CORRECTION IN BENEFITS PORTAL,Benefits / Payroll,Medium,In Progress,Email,Partner,
+204,2026-03-08 03:04:00,IT,I forgot my password and cannot log in,Password / Login,Medium,In Progress,Slack,External Customer,
+205,2026-04-22 05:03:00,Finance,Invoice stuck in approval workflow,Invoice Approval,High,Resolved,Email,Vendor,24.28
+206,2026-05-06 04:03:00,Finance,Payment request pending manager approval!!!,Invoice Approval,Critical,Resolved,Email,Vendor,40.37
+207,2026-03-20 12:30:00,Compliance,Compliance approval needed for vendor document,Compliance Review,High,Resolved,Slack,Partner,70.95
+208,2026-03-10 18:03:00,IT,VPN ACCESS IS NOT WORKING FROM HOME,VPN / Access,Medium,Resolved,Chatbot,Vendor,4.36
+209,2026-05-02 18:56:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,High,Resolved,Portal,Internal Employee,8.71
+210,2026-04-25 05:10:00,Sales,SALES REPORT MISSING LATEST PIPELINE DATA,Salesforce / CRM,High,Open,Email,Internal Employee,
+211,2026-04-12 17:20:00,HR,New employee onboarding is delayed,Onboarding Delay,Medium,Resolved,Chatbot,Internal Employee,85.68
+212,2026-05-25 03:50:00,Sales,Lead assignment rule failed,Salesforce / CRM,Low,Resolved,Portal,Vendor,9.72
+213,2026-03-26 22:15:00,IT,Account locked after multiple login attempts please help asap,Password / Login,Medium,Resolved,Email,External Customer,1.2
+214,2026-04-24 10:17:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN,Password / Login,Medium,Resolved,Chatbot,External Customer,3.92
+215,2026-05-10 12:08:00,IT,LOGIN NOT WORKING FOR EMPLOYEE PORTAL,Password / Login,Medium,Resolved,Phone,External Customer,4.12
+216,2026-04-29 16:25:00,IT,VPN access is not working from home,VPN / Access,High,Resolved,Phone,Internal Employee,8.72
+217,2026-04-09 01:10:00,,Unable to connect to secure network,VPN / Access,Medium,Open,Portal,External Customer,
+218,2026-01-03 07:16:00,Finance,Payment request pending manager approval,Invoice Approval,Critical,In Progress,Chatbot,Vendor,55.72
+219,2026-01-02 16:42:00,Finance,Purchase order mismatch delaying invoice!!!,Invoice Approval,Critical,In Progress,Phone,Partner,
+220,2026-03-18 06:09:00,Customer Support,Customer requesting refund for duplicate charge,Refund Request,High,Resolved,Slack,Partner,27.73
+221,2026-04-18 12:24:00,IT,Cannot access internal tools outside office,VPN / Access,High,Resolved,Phone,Partner,9.63
+222,2026-05-23 05:18:00,Compliance,Risk review pending for new supplier,Compliance Review,High,Resolved,Portal,Partner,33.37
+223,2026-03-26 11:16:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,Medium,Resolved,Slack,Partner,47.13
+224,2026-02-08 04:12:00,HR,NEED CORRECTION IN BENEFITS PORTAL!!!,Benefits / Payroll,Medium,Escalated,Email,Internal Employee,32.56
+225,2026-02-23 05:36:00,HR,BENEFITS ENROLLMENT ISSUE NEEDS REVIEW,Benefits / Payroll,Medium,Resolved,Portal,Partner,57.87
+226,2026-03-24 16:12:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,Medium,Resolved,Email,Partner,4.36
+227,2026-04-27 23:33:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,,Resolved,Portal,External Customer,15.93
+228,2026-01-06 18:32:00,IT,VPN access is not working from home,VPN / Access,Medium,Resolved,Email,Internal Employee,4.52
+229,2026-04-17 14:24:00,Customer Support,Refund request pending for customer order,Refund Request,High,Resolved,Chatbot,External Customer,11.19
+230,2026-01-27 16:46:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,High,Resolved,Phone,External Customer,49.06
+231,2026-05-08 06:44:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN please help asap,Password / Login,Low,Resolved,Email,Internal Employee,4.73
+232,2026-03-01 14:18:00,Compliance,Audit evidence missing for policy review,Compliance Review,High,Resolved,Email,Internal Employee,49.36
+233,2026-02-13 10:22:00,Compliance,Risk review pending for new supplier please help asap,Compliance Review,Critical,Escalated,Slack,Vendor,109.87
+234,2026-02-12 03:08:00,Operations,WAREHOUSE STOCK MISMATCH FOUND DURING AUDIT,Inventory Mismatch,High,Resolved,Chatbot,Internal Employee,27.49
+235,2026-02-03 15:58:00,Compliance,Compliance approval needed for vendor document,Compliance Review,High,In Progress,Phone,Internal Employee,
+236,2026-03-05 15:22:00,HR,Payroll deduction looks incorrect!!!,Benefits / Payroll,Medium,Resolved,Slack,Vendor,51.82
+237,2026-01-20 15:20:00,Compliance,Compliance approval needed for vendor document,Compliance Review,Critical,Escalated,Slack,Internal Employee,47.13
+238,2026-04-25 10:07:00,Compliance,Data retention policy exception needs apprval!!!,Compliance Review,Critical,Open,Chatbot,External Customer,
+239,2026-04-27 10:23:00,Customer Support,Need refund approval for billing complaint,Refund Request,Low,Open,Portal,Internal Employee,40.66
+240,2026-03-16 17:33:00,HR,Laptop and access not ready for new hire,Onboarding Delay,Medium,Resolved,Slack,External Customer,50.92
+241,2026-02-18 22:21:00,HR,SALARY INFORMATION MISSING IN HR SYSTEM,Benefits / Payroll,,Resolved,Email,Vendor,18.47
+242,2026-05-04 16:49:00,Operations,INVENTORY DISCREPANCY REQUIRES INVESTIGATION,Inventory Mismatch,High,Resolved,Slack,Vendor,33.79
+243,2026-03-05 08:25:00,Sales,Sales report missing latest pipeline data please help asap,Salesforce / CRM,High,Escalated,Phone,External Customer,23.27
+244,2026-03-16 21:22:00,IT,Unable to connect to secure network,VPN / Access,High,Resolved,Slack,Partner,11.29
+245,2026-04-19 00:33:00,Compliance,Compliance approval needed for vendor document,Compliance Review,Critical,Resolved,Email,Partner,34.22
+246,2026-05-19 01:22:00,IT,Cannot access internal tools outside office,VPN / Access,High,Resolved,Email,Vendor,10.33
+247,2026-03-22 17:03:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Resolved,Chatbot,External Customer,24.93
+248,2026-02-19 09:28:00,Operations,Warehouse stock mismatch found during audit!!!,Inventory Mismatch,High,Resolved,Chatbot,Partner,12.97
+249,2026-04-30 22:59:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Phone,External Customer,1.62
+250,2026-05-14 02:50:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Medium,Resolved,Chatbot,Vendor,14.1
+251,2026-01-03 03:42:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Low,Resolved,Chatbot,Partner,10.92
+252,2026-05-13 11:32:00,IT,I forgot my password and cannot log in!!!,Password / Login,Low,Resolved,Portal,External Customer,4.21
+253,2026-04-19 03:13:00,Compliance,Data retention policy exception needs approval,Compliance Review,Critical,Resolved,Email,Internal Employee,75.62
+254,2026-03-06 17:04:00,IT,Account locked after multiple login attempts,Password / Login,Low,Resolved,Chatbot,Internal Employee,3.3
+255,2026-05-30 01:44:00,Operations,INVENTORY DISCREPANCY REQUIRES INVESTIGATION!!!,Inventory Mismatch,High,Resolved,Email,Vendor,31.75
+256,2026-02-26 04:47:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING,Password / Login,Medium,Open,Email,External Customer,
+257,2026-01-02 18:38:00,IT,I forgot my password and cannot log in,Password / Login,Low,Resolved,Portal,Partner,2.58
+258,2026-02-16 21:51:00,IT,Cannot access internal tools outside office!!!,VPN / Access,High,Resolved,Phone,External Customer,8.11
+259,2026-03-02 03:18:00,Customer Support,Customer says payment was charged twice,Refund Request,Medium,In Progress,Portal,Internal Employee,
+260,2026-02-26 22:47:00,HR,ONBOARDING CHECKLIST IS INCOMPLETE,Onboarding Delay,High,Resolved,Email,External Customer,70.14
+261,2026-01-21 08:54:00,Customer Support,Customer requesting refund for duplicate charge,Refund Request,High,In Progress,Chatbot,External Customer,
+262,2026-05-22 08:34:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,Resolved,Email,Vendor,109.82
+263,2026-01-03 21:15:00,HR,Laptop and access not ready for new hire please help asap,Onboarding Delay,Medium,Open,Slack,Partner,
+264,2026-05-05 07:04:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Phone,Internal Employee,2.06
+265,2026-05-14 20:53:00,Customer Support,REFUND NOT PROCESSED AFTER CANCELLATION,Refund Request,High,Open,Portal,Vendor,
+266,2026-03-30 15:50:00,HR,Employee onboarding approval pending,Onboarding Delay,Medium,Resolved,Phone,Internal Employee,58.71
+267,2026-04-17 10:46:00,Customer Support,Customer says payment was charged twice please help asap!!!,Refund Request,High,Resolved,Portal,Internal Employee,10.76
+268,2026-02-07 01:10:00,Compliance,Data retention policy exception needs apprval,Compliance Review,Critical,Resolved,Portal,Vendor,48.79
+269,2026-05-01 15:10:00,Finance,Invoice stuck in approval workflow,Invoice Approval,Critical,Resolved,Slack,Internal Employee,31.6
+270,2026-04-09 04:06:00,IT,Cannot access internal tools outside office,VPN / Access,Medium,Resolved,Chatbot,Internal Employee,3.15
+271,2026-02-03 19:34:00,IT,Password expired and reset link is not working,Password / Login,Medium,In Progress,Slack,Partner,4.31
+272,2026-05-28 03:27:00,Finance,Invoice stuck in approval workflow please help asap,Invoice Approval,Medium,Resolved,Email,Internal Employee,26.3
+273,2026-04-07 20:13:00,Finance,PAYMENT REQUEST PENDING MANAGER APPROVAL,Invoice Approval,Critical,Resolved,Phone,Vendor,60.64
+274,2026-04-16 17:50:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,Medium,Resolved,Email,External Customer,23.61
+275,2026-02-11 03:13:00,,Salary information missing in HR system,Benefits / Payroll,Medium,Open,Slack,Vendor,42.5
+276,2026-03-09 07:23:00,IT,Unable to access the system due to password issue,Password / Login,Low,Resolved,Portal,Vendor,1.32
+277,2026-02-21 21:59:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,High,Resolved,Email,External Customer,60.23
+278,2026-03-12 12:22:00,IT,Need password reset for my company account!!!,Password / Login,Medium,Resolved,Phone,External Customer,3.68
+279,2026-02-19 14:59:00,Finance,Invoice stuck in apprval workflow please help asap,Invoice Approval,Critical,Resolved,Chatbot,Partner,43.05
+280,2026-04-07 18:30:00,Customer Support,Customer says payment was charged twice,Refund Request,Medium,Open,Portal,External Customer,38.34
+281,2026-04-16 11:33:00,Operations,Item quantity incorrect in inventory platform please help asap,Inventory Mismatch,Medium,Resolved,Phone,External Customer,23.0
+282,2026-03-10 05:47:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,In Progress,Email,Internal Employee,
+283,2026-05-07 19:00:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,High,Resolved,Slack,External Customer,19.28
+284,2026-05-11 08:25:00,Sales,Salesforce opportunity record not updating!!!,Salesforce / CRM,High,Resolved,Slack,Internal Employee,8.44
+285,2026-04-28 10:44:00,Customer Support,Customer says payment was charged twice,Refund Request,Low,Resolved,Chatbot,Partner,6.35
+286,2026-05-08 13:13:00,HR,Background verification delay blocking start date please help asap,Onboarding Delay,Medium,Open,Portal,Vendor,
+287,2026-02-20 04:51:00,Compliance,COMPLIANCE APPROVAL NEEDED FOR VENDOR DOCUMENT,Compliance Review,Critical,Resolved,Phone,Partner,116.08
+288,2026-05-26 01:25:00,Finance,Invoice stuck in approval workflow,Invoice Approval,High,Resolved,Chatbot,Partner,24.14
+289,2026-04-16 03:22:00,HR,Laptop and access not ready for new hire,Onboarding Delay,High,Escalated,Slack,Vendor,86.45
+290,2026-04-08 19:18:00,Compliance,Audit evidence missing for policy review,Compliance Review,High,Escalated,Phone,External Customer,68.52
+291,2026-03-16 22:17:00,HR,Background verification delay blocking start date,Onboarding Delay,Medium,Resolved,Email,External Customer,67.59
+292,2026-03-06 23:44:00,,CUSTOMER SAYS PAYMENT WAS CHARGED TWICE please help asap,Refund Request,Medium,Resolved,Email,Internal Employee,37.49
+293,2026-02-09 02:41:00,IT,Unable to connect to secure network,VPN / Access,Medium,Resolved,Phone,Partner,11.38
+294,2026-04-30 17:59:00,Compliance,COMPLIANCE CHECKLIST INCOMPLETE FOR PROCESS,Compliance Review,Critical,Resolved,Slack,External Customer,50.15
+295,2026-04-24 09:23:00,Operations,INVENTORY COUNT DOES NOT MATCH SYSTEM RECORDS,Inventory Mismatch,Medium,Resolved,Slack,Vendor,19.54
+296,2026-04-21 09:38:00,IT,REMOTE ACCESS KEEPS DISCONNECTING,VPN / Access,High,Resolved,Portal,Partner,5.08
+297,2026-03-03 16:48:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Phone,Internal Employee,4.2
+298,2026-04-26 08:44:00,Customer Support,CUSTOMER REQUESTING REFUND FOR DUPLICATE CHARGE,Refund Request,Low,Resolved,Email,External Customer,32.16
+299,2026-01-04 15:13:00,IT,Unable to access the system due to password issue,Password / Login,Low,Resolved,Slack,Internal Employee,2.37
+300,2026-02-16 06:57:00,Finance,Vendor invoice approval is delayed,Invoice Approval,Medium,Open,Email,External Customer,70.18
+301,2026-03-21 10:10:00,HR,Salary information missing in HR system,Benefits / Payroll,Medium,Resolved,Portal,Vendor,49.75
+302,2026-02-12 08:37:00,HR,New employee onboarding is delayed,Onboarding Delay,Medium,Open,Email,Partner,
+303,2026-01-16 01:22:00,Sales,SALESFORCE OPPORTUNITY RECORD NOT UPDATING,Salesforce / CRM,Medium,Resolved,Email,Vendor,16.89
+304,2026-02-04 08:57:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Resolved,Chatbot,External Customer,26.84
+305,2026-02-09 14:18:00,,UNABLE TO ACCESS THE SYSTEM DUE TO PASSWORD ISSUE,Password / Login,Medium,Resolved,Portal,Partner,4.28
+306,2026-05-18 12:12:00,Customer Support,REFUND NOT PROCESSED AFTER CANCELLATION,Refund Request,High,Resolved,Portal,External Customer,28.01
+307,2026-02-21 03:31:00,Compliance,Data retention policy exception needs approval,Compliance Review,,Resolved,Portal,Vendor,42.4
+308,2026-01-21 14:51:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,High,Resolved,Phone,Internal Employee,16.78
+309,2026-05-13 03:06:00,Sales,CRM ACCOUNT OWNERSHIP IS INCORRECT,Salesforce / CRM,High,Resolved,Email,Partner,18.5
+310,2026-04-20 03:10:00,Customer Support,Refund not processed after cancellation please help asap,Refund Request,Medium,Resolved,Phone,Partner,39.28
+311,2026-04-21 23:20:00,HR,Payroll deduction looks incorrect,Benefits / Payroll,,Resolved,Email,Partner,48.5
+312,2026-05-13 04:56:00,Finance,Invoice stuck in approval workflow,Invoice Approval,Critical,Resolved,Chatbot,External Customer,36.71
+313,2026-04-28 11:09:00,IT,Login not working for employee portal,Password / Login,Low,Resolved,Phone,Vendor,1.55
+314,2026-05-28 03:38:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Email,External Customer,3.57
+315,2026-01-03 20:49:00,Customer Support,REFUND NOT PROCESSED AFTER CANCELLATION,Refund Request,Low,Resolved,Slack,Vendor,32.55
+316,2026-05-28 16:05:00,Operations,MISSING STOCK AFTER SHIPMENT RECONCILIATION,Inventory Mismatch,High,Resolved,Chatbot,Vendor,14.22
+317,2026-02-03 04:30:00,Operations,INVENTORY DISCREPANCY REQUIRES INVESTIGATION,Inventory Mismatch,High,Resolved,Chatbot,Internal Employee,23.66
+318,2026-04-16 13:23:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Slack,Internal Employee,2.39
+319,2026-03-01 06:43:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,,Open,Email,Partner,11.48
+320,2026-01-06 10:13:00,HR,Salary information missing in HR system,Benefits / Payroll,Medium,Resolved,Chatbot,Internal Employee,56.4
+321,2026-01-16 09:12:00,IT,VPN access is not working from home,VPN / Access,High,Resolved,Email,Partner,10.1
+322,2026-04-09 07:24:00,Compliance,Risk review pending for new supplier,Compliance Review,High,Resolved,Chatbot,Partner,72.82
+323,2026-04-11 23:10:00,HR,Onboarding checklist is incomplete,Onboarding Delay,High,Resolved,Email,Partner,25.32
+324,2026-03-29 12:42:00,IT,Cannot access internal tools outside office,VPN / Access,High,Open,Phone,Vendor,
+325,2026-02-22 20:08:00,Finance,Invoice stuck in approval workflow,Invoice Approval,Medium,Resolved,Chatbot,External Customer,54.02
+326,2026-05-23 17:46:00,HR,Laptop and access not ready for new hire,Onboarding Delay,High,Resolved,Phone,External Customer,32.52
+327,2026-01-28 04:11:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,High,Escalated,Slack,External Customer,8.73
+328,2026-05-01 22:41:00,Finance,INVOICE STUCK IN APPROVAL WORKFLOW,Invoice Approval,High,In Progress,Portal,External Customer,
+329,2026-04-23 19:31:00,IT,Unable to access the system due to password issue please help asap,Password / Login,Low,In Progress,Slack,Vendor,3.75
+330,2026-01-11 07:33:00,Operations,Inventory count does not match system records!!!,Inventory Mismatch,High,Escalated,Phone,Vendor,23.06
+331,2026-03-17 19:58:00,IT,Need password reset for my company account,Password / Login,Low,Resolved,Phone,Vendor,1.22
+332,2026-04-27 18:57:00,IT,UNABLE TO ACCESS THE SYSTEM DUE TO PASSWORD ISSUE,Password / Login,Low,Resolved,Slack,Partner,3.85
+333,2026-04-09 23:50:00,IT,Need password reset for my company account,Password / Login,Low,Resolved,Portal,External Customer,4.9
+334,2026-01-14 13:19:00,Operations,WAREHOUSE STOCK MISMATCH FOUND DURING AUDIT please help asap,Inventory Mismatch,High,Open,Slack,Internal Employee,
+335,2026-05-07 07:13:00,Finance,Finance apprval needed for overdue invoice,Invoice Approval,Critical,Resolved,Portal,Internal Employee,54.51
+336,2026-01-15 20:22:00,IT,Cannot access internal tools outside office,VPN / Access,High,In Progress,Chatbot,External Customer,3.33
+337,2026-05-29 11:59:00,Sales,Sales report missing latest pipeline data!!!,Salesforce / CRM,Low,Open,Phone,Partner,
+338,2026-05-15 06:44:00,Finance,Purchase order mismatch delaying invoice,Invoice Approval,Critical,Resolved,Chatbot,Partner,30.96
+339,2026-05-28 19:22:00,IT,Need VPN permission for client project,VPN / Access,High,Resolved,Email,Internal Employee,11.34
+340,2026-01-31 23:54:00,,Unable to access the system due to password issue,Password / Login,Low,Resolved,Phone,Internal Employee,1.83
+341,2026-05-10 17:20:00,HR,Onboarding checklist is incomplete!!!,Onboarding Delay,High,Resolved,Slack,Vendor,79.23
+342,2026-02-04 15:09:00,Operations,Item quantity incorrect in inventory platform!!!,Inventory Mismatch,High,In Progress,Email,External Customer,
+343,2026-03-26 11:04:00,Finance,Vendor invoice approval is delayed,Invoice Approval,Medium,Resolved,Phone,Partner,78.12
+344,2026-03-11 13:05:00,Customer Support,Customer says payment was charged twice,Refund Request,Low,Resolved,Email,Vendor,26.88
+345,2026-05-04 16:09:00,Finance,Purchase order mismatch delaying invoice!!!,Invoice Approval,Critical,In Progress,Portal,External Customer,29.79
+346,2026-04-28 12:45:00,Customer Support,Need refund approval for billing complaint!!!,Refund Request,Low,Resolved,Phone,Internal Employee,42.32
+347,2026-03-21 20:57:00,Finance,Payment request pending manager approval,Invoice Approval,High,Resolved,Chatbot,Internal Employee,31.01
+348,2026-03-31 17:20:00,IT,Cannot access internal tools outside office please help asap,VPN / Access,Medium,In Progress,Email,Internal Employee,5.44
+349,2026-01-23 13:25:00,HR,Employee onboarding approval pending,Onboarding Delay,Medium,Resolved,Chatbot,Internal Employee,36.89
+350,2026-04-30 18:08:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Low,Open,Chatbot,Partner,5.86
+351,2026-04-11 05:44:00,Sales,Lead assignment rule failed please help asap,Salesforce / CRM,Low,Resolved,Phone,External Customer,22.35
+352,2026-04-14 22:50:00,Finance,Vendor invoice approval is delayed,Invoice Approval,Critical,Resolved,Slack,Vendor,24.63
+353,2026-02-23 22:37:00,IT,Login not working for employee portal,Password / Login,Medium,Escalated,Chatbot,Vendor,2.72
+354,2026-01-25 14:11:00,HR,EMPLOYEE ONBOARDING APPROVAL PENDING,Onboarding Delay,Medium,Resolved,Portal,Internal Employee,46.18
+355,2026-02-08 14:34:00,Operations,MISSING STOCK AFTER SHIPMENT RECONCILIATION,Inventory Mismatch,High,Resolved,Slack,Partner,16.16
+356,2026-05-30 00:39:00,,CRM account ownership is incorrect please help asap,Salesforce / CRM,High,Resolved,Phone,Internal Employee,23.73
+357,2026-01-08 07:27:00,Compliance,Risk review pending for new supplier,Compliance Review,High,Resolved,Slack,Partner,91.41
+358,2026-02-09 09:55:00,Operations,Inventory count does not match system records please help asap,Inventory Mismatch,Medium,Resolved,Slack,Vendor,26.76
+359,2026-04-19 19:11:00,Compliance,Data retention policy exception needs approval!!!,Compliance Review,High,Resolved,Phone,Vendor,67.62
+360,2026-05-28 11:02:00,Sales,LEAD ASSIGNMENT RULE FAILED,Salesforce / CRM,Medium,Resolved,Email,Internal Employee,23.56
+361,2026-01-20 21:40:00,IT,CANNOT ACCESS INTERNAL TOOLS OUTSIDE OFFICE,VPN / Access,High,Resolved,Phone,Vendor,7.85
+362,2026-03-17 09:10:00,HR,Employee onboarding approval pending,Onboarding Delay,High,In Progress,Chatbot,Internal Employee,26.54
+363,2026-01-22 04:32:00,IT,Cannot access internal tools outside office,VPN / Access,Medium,Open,Phone,External Customer,
+364,2026-03-02 15:11:00,IT,VPN access is not working from home,VPN / Access,High,In Progress,Portal,Vendor,
+365,2026-02-12 06:36:00,Customer Support,Need refund approval for billing complaint please help asap,Refund Request,High,Resolved,Chatbot,External Customer,36.84
+366,2026-04-10 15:16:00,HR,Background verification delay blocking start date,Onboarding Delay,High,In Progress,Slack,Partner,
+367,2026-03-10 03:16:00,HR,Laptop and access not ready for new hire,Onboarding Delay,Medium,Resolved,Email,Internal Employee,71.11
+368,2026-01-04 13:06:00,Operations,Item quantity incorrect in inventory platform!!!,Inventory Mismatch,Medium,Resolved,Email,Internal Employee,22.71
+369,2026-02-03 12:42:00,IT,Need password reset for my company account,Password / Login,Medium,Resolved,Phone,Vendor,4.06
+370,2026-03-24 08:10:00,Customer Support,Customer requesting refund for duplicate charge,Refund Request,Medium,Resolved,Portal,Vendor,38.79
+371,2026-05-06 03:09:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Email,Vendor,3.16
+372,2026-01-01 01:42:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Email,External Customer,2.56
+373,2026-05-04 03:36:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Escalated,Slack,Partner,3.14
+374,2026-02-15 17:02:00,Customer Support,Need refund approval for billing complaint,Refund Request,High,Resolved,Portal,External Customer,46.64
+375,2026-01-07 23:37:00,IT,Login not working for employee portal,Password / Login,Low,Resolved,Email,Partner,1.95
+376,2026-01-11 12:07:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,Medium,Resolved,Portal,Vendor,13.93
+377,2026-05-01 19:02:00,Customer Support,CUSTOMER REQUESTING REFUND FOR DUPLICATE CHARGE please help asap,Refund Request,Low,Resolved,Email,Internal Employee,16.19
+378,2026-02-26 02:51:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Chatbot,External Customer,1.81
+379,2026-01-31 08:09:00,HR,Onboarding checklist is incomplete!!!,Onboarding Delay,High,Resolved,Email,Vendor,78.54
+380,2026-01-02 05:59:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Slack,External Customer,1.36
+381,2026-01-10 19:11:00,Sales,Salesforce opportunity record not updating!!!,Salesforce / CRM,Low,Resolved,Email,Partner,18.34
+382,2026-05-19 16:14:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,Resolved,Portal,Internal Employee,68.56
+383,2026-04-04 09:13:00,IT,UNABLE TO ACCESS THE SYSTEM DUE TO PASSWORD ISSUE,Password / Login,Medium,Resolved,Email,External Customer,2.74
+384,2026-05-29 10:26:00,Customer Support,Need refund approval for billing complaint please help asap,Refund Request,Low,Resolved,Portal,Internal Employee,14.35
+385,2026-05-05 01:56:00,HR,Salary information missing in HR system,Benefits / Payroll,High,Resolved,Portal,Internal Employee,38.15
+386,2026-01-16 08:08:00,Customer Support,CUSTOMER SAYS PAYMENT WAS CHARGED TWICE,Refund Request,High,Resolved,Portal,External Customer,10.67
+387,2026-05-14 15:55:00,IT,Unable to access the system due to password issue,Password / Login,Low,Resolved,Chatbot,External Customer,4.98
+388,2026-01-02 13:02:00,Sales,CANNOT EDIT CUSTOMER ACCOUNT IN CRM,Salesforce / CRM,Medium,Resolved,Email,Internal Employee,4.8
+389,2026-04-15 06:08:00,Customer Support,CUSTOMER REQUESTING REFUND FOR DUPLICATE CHARGE,Refund Request,High,Resolved,Slack,Vendor,21.05
+390,2026-04-14 05:50:00,Operations,Inventory count does not match system records please help asap,Inventory Mismatch,High,Resolved,Chatbot,External Customer,32.4
+391,2026-01-21 19:56:00,Operations,Item quantity incorrect in inventory platform please help asap,Inventory Mismatch,Medium,In Progress,Email,External Customer,
+392,2026-03-27 07:34:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Slack,Partner,1.45
+393,2026-04-06 11:28:00,IT,I forgot my password and cannot log in,Password / Login,Medium,Resolved,Email,External Customer,2.94
+394,2026-04-28 02:05:00,Compliance,COMPLIANCE APPROVAL NEEDED FOR VENDOR DOCUMENT,Compliance Review,High,Resolved,Chatbot,External Customer,61.51
+395,2026-04-18 14:47:00,HR,BENEFITS ENROLLMENT ISSUE NEEDS REVIEW,Benefits / Payroll,High,Resolved,Phone,Vendor,50.68
+396,2026-05-16 17:28:00,Finance,PAYMENT REQUEST PENDING MANAGER APPROVAL,Invoice Approval,Medium,Resolved,Phone,Vendor,46.4
+397,2026-02-11 22:34:00,Sales,CRM ACCOUNT OWNERSHIP IS INCORRECT please help asap,Salesforce / CRM,Medium,Escalated,Chatbot,Internal Employee,9.7
+398,2026-03-30 04:23:00,Customer Support,Refund not processed after cancellation,Refund Request,Medium,Escalated,Portal,Internal Employee,24.83
+399,2026-05-20 16:21:00,Sales,Lead assignment rule failed,Salesforce / CRM,High,Resolved,Slack,Partner,16.94
+400,2026-05-03 01:08:00,Customer Support,Customer requesting refund for duplicate charge!!!,Refund Request,High,Resolved,Chatbot,External Customer,34.48
+401,2026-03-13 06:01:00,Operations,Inventory count does not match system records,Inventory Mismatch,Medium,In Progress,Phone,Vendor,10.34
+402,2026-04-20 11:24:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Phone,External Customer,2.49
+403,2026-04-19 23:57:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,In Progress,Slack,Partner,
+404,2026-05-23 14:45:00,HR,Need correction in benefits portal,Benefits / Payroll,High,In Progress,Slack,External Customer,
+405,2026-01-01 04:16:00,IT,Password expired and reset link is not working,Password / Login,Low,Resolved,Phone,Vendor,2.2
+406,2026-01-18 19:47:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,High,Resolved,Email,Partner,11.24
+407,2026-01-15 04:20:00,IT,ACCOUNT LOCKED AFTER MULTIPLE LOGIN ATTEMPTS,Password / Login,Medium,Resolved,Email,External Customer,2.84
+408,2026-02-16 03:38:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,Medium,Resolved,Phone,External Customer,29.07
+409,2026-05-13 09:23:00,IT,NEED PASSWORD RESET FOR MY COMPANY ACCOUNT please help asap,Password / Login,Low,Resolved,Email,Internal Employee,4.12
+410,2026-01-05 15:22:00,Operations,Missing stock after shipment reconciliation,Inventory Mismatch,Medium,Resolved,Email,External Customer,16.72
+411,2026-02-06 22:14:00,IT,I forgot my password and cannot log in!!!,Password / Login,Medium,Resolved,Email,Internal Employee,2.23
+412,2026-05-12 18:03:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,Medium,In Progress,Phone,Internal Employee,
+413,2026-03-13 18:22:00,,Login not working for employee portal,Password / Login,Low,In Progress,Phone,External Customer,2.41
+414,2026-05-18 00:46:00,Compliance,Compliance checklist incomplete for process,Compliance Review,High,Resolved,Phone,Vendor,33.47
+415,2026-05-12 07:26:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,Medium,Escalated,Slack,Internal Employee,18.77
+416,2026-04-27 19:47:00,HR,Background verification delay blocking start date,Onboarding Delay,High,Escalated,Phone,External Customer,46.46
+417,2026-05-06 21:06:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING please help asap,Password / Login,Low,Resolved,Portal,Partner,2.59
+418,2026-04-14 03:14:00,IT,Cannot access internal tools outside office,VPN / Access,High,Open,Chatbot,Partner,
+419,2026-04-27 03:07:00,IT,Password expired and reset link is not working please help asap,Password / Login,Low,Resolved,Slack,Partner,2.0
+420,2026-01-25 02:42:00,IT,Need password reset for my company account,Password / Login,Low,Open,Email,Vendor,4.01
+421,2026-01-31 12:28:00,Compliance,DATA RETENTION POLICY EXCEPTION NEEDS APPROVAL please help asap,Compliance Review,High,Resolved,Portal,Partner,54.2
+422,2026-05-05 03:36:00,Customer Support,Refund not processed after cancellation,Refund Request,Medium,Resolved,Slack,Partner,34.35
+423,2026-03-14 10:03:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,Medium,Resolved,Phone,Vendor,8.79
+424,2026-03-04 07:15:00,HR,New employee onboarding is delayed please help asap,Onboarding Delay,High,Resolved,Slack,Partner,70.66
+425,2026-05-01 18:01:00,IT,Unable to access the system due to password issue please help asap,Password / Login,Medium,Resolved,Phone,External Customer,4.94
+426,2026-04-04 13:12:00,Customer Support,Refund not processed after cancellation,Refund Request,High,In Progress,Email,Internal Employee,26.87
+427,2026-03-11 02:36:00,Finance,Invoice stuck in approval workflow please help asap,Invoice Approval,Critical,Resolved,Portal,Vendor,67.67
+428,2026-05-12 14:42:00,HR,Benefits enrollment issue needs review,Benefits / Payroll,High,Resolved,Chatbot,Vendor,57.81
+429,2026-01-16 16:12:00,Sales,CRM account ownership is incorrect,Salesforce / CRM,Low,Resolved,Slack,Partner,11.29
+430,2026-02-11 08:43:00,Operations,INVENTORY COUNT DOES NOT MATCH SYSTEM RECORDS please help asap,Inventory Mismatch,High,Resolved,Email,External Customer,24.83
+431,2026-02-04 00:16:00,,LOGIN NOT WORKING FOR EMPLOYEE PORTAL,Password / Login,Low,Resolved,Phone,Internal Employee,4.16
+432,2026-04-15 11:42:00,Compliance,Audit evidence missing for policy review,Compliance Review,Critical,Resolved,Email,External Customer,87.11
+433,2026-03-22 10:53:00,Finance,Invoice stuck in apprval workflow,Invoice Approval,High,Resolved,Chatbot,Internal Employee,54.23
+434,2026-04-06 22:07:00,Finance,Invoice stuck in approval workflow,Invoice Approval,High,Resolved,Chatbot,Internal Employee,37.62
+435,2026-01-14 22:58:00,Compliance,Compliance checklist incomplete for process,Compliance Review,High,Resolved,Slack,Internal Employee,99.73
+436,2026-04-11 08:19:00,Compliance,Audit evidence missing for policy review please help asap,Compliance Review,Critical,In Progress,Phone,Internal Employee,
+437,2026-05-06 15:47:00,Operations,Inventory count does not match system records,Inventory Mismatch,High,In Progress,Email,Internal Employee,19.56
+438,2026-02-17 20:28:00,Customer Support,Customer says payment was charged twice,Refund Request,High,Resolved,Portal,Vendor,39.22
+439,2026-03-23 14:30:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,Medium,Resolved,Slack,External Customer,32.46
+440,2026-01-06 17:41:00,IT,I forgot my password and cannot log in,Password / Login,Medium,Resolved,Portal,Internal Employee,3.45
+441,2026-02-13 18:07:00,Sales,Sales report missing latest pipeline data,Salesforce / CRM,Medium,Resolved,Slack,Vendor,4.28
+442,2026-02-22 19:13:00,IT,PASSWORD EXPIRED AND RESET LINK IS NOT WORKING!!!,Password / Login,Low,Resolved,Portal,Partner,4.98
+443,2026-04-28 02:00:00,Finance,Finance approval needed for overdue invoice,Invoice Approval,Medium,In Progress,Email,Partner,47.07
+444,2026-05-01 11:38:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Medium,Escalated,Portal,Internal Employee,22.79
+445,2026-03-08 05:32:00,Finance,FINANCE APPROVAL NEEDED FOR OVERDUE INVOICE,Invoice Approval,Medium,Resolved,Slack,Partner,48.56
+446,2026-04-21 09:57:00,Customer Support,Need refund approval for billing complaint,Refund Request,Low,Resolved,Slack,Internal Employee,42.83
+447,2026-01-14 07:11:00,IT,Need VPN permission for client project!!!,VPN / Access,High,Resolved,Email,External Customer,3.32
+448,2026-01-24 06:55:00,,Account locked after multiple login attempts,Password / Login,Low,In Progress,Email,External Customer,2.14
+449,2026-01-25 10:01:00,Operations,Inventory count does not match system records,Inventory Mismatch,Medium,Escalated,Slack,Vendor,15.96
+450,2026-03-10 19:42:00,Customer Support,Refund not processed after cancellation,Refund Request,High,Escalated,Email,Partner,6.24
+451,2026-01-15 23:04:00,HR,New employee onboarding is delayed please help asap,Onboarding Delay,Medium,Resolved,Slack,Partner,63.4
+452,2026-02-09 03:19:00,Customer Support,Need refund approval for billing complaint!!!,Refund Request,Low,Resolved,Slack,Vendor,26.62
+453,2026-04-19 02:48:00,IT,Unable to connect to secure network,VPN / Access,Medium,Resolved,Portal,Vendor,6.8
+454,2026-05-15 02:18:00,Finance,Finance approval needed for overdue invoice,Invoice Approval,High,Resolved,Email,Internal Employee,47.03
+455,2026-05-12 03:32:00,,Cannot edit customer account in CRM,Salesforce / CRM,High,Resolved,Portal,External Customer,12.5
+456,2026-01-12 02:26:00,Compliance,Compliance checklist incomplete for process,Compliance Review,High,Resolved,Email,Partner,108.17
+457,2026-01-28 13:34:00,Compliance,COMPLIANCE APPROVAL NEEDED FOR VENDOR DOCUMENT,Compliance Review,Critical,Resolved,Chatbot,Partner,25.72
+458,2026-04-12 09:05:00,Customer Support,Customer requesting refund for duplicate charge!!!,Refund Request,Low,Resolved,Slack,External Customer,11.25
+459,2026-04-29 04:30:00,IT,Need password reset for my company account!!!,Password / Login,Low,Resolved,Chatbot,Vendor,2.69
+460,2026-01-03 03:40:00,IT,Unable to access the system due to password issue,Password / Login,Medium,Resolved,Chatbot,Vendor,4.39
+461,2026-01-16 16:01:00,IT,VPN access is not working from home,VPN / Access,High,Resolved,Slack,Internal Employee,6.8
+462,2026-02-19 15:22:00,IT,Login not working for employee portal,Password / Login,Low,Resolved,Slack,Vendor,2.75
+463,2026-04-03 15:51:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,High,Resolved,Slack,Vendor,35.19
+464,2026-02-23 17:03:00,HR,Onboarding checklist is incomplete please help asap,Onboarding Delay,Medium,Resolved,Email,External Customer,95.95
+465,2026-02-27 15:16:00,IT,Login not working for employee portal please help asap,Password / Login,Low,Open,Slack,Vendor,4.97
+466,2026-01-29 03:50:00,Sales,CANNOT EDIT CUSTOMER ACCOUNT IN CRM please help asap,Salesforce / CRM,Low,Open,Slack,Vendor,16.21
+467,2026-01-26 04:41:00,Customer Support,Refund request pending for customer order,Refund Request,Medium,Open,Portal,Internal Employee,
+468,2026-04-17 11:40:00,IT,Cannot access internal tools outside office,VPN / Access,High,Resolved,Chatbot,Partner,8.98
+469,2026-04-24 04:49:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Low,Open,Portal,Internal Employee,4.2
+470,2026-05-14 09:26:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,High,Resolved,Portal,Vendor,12.04
+471,2026-02-22 17:39:00,HR,Employee cannot select health insurance option,Benefits / Payroll,Medium,Resolved,Slack,External Customer,59.3
+472,2026-05-19 09:13:00,Finance,Purchase order mismatch delaying invoice,Invoice Approval,High,Resolved,Phone,Vendor,23.75
+473,2026-01-29 23:03:00,Sales,Cannot edit customer account in CRM please help asap,Salesforce / CRM,,Resolved,Phone,External Customer,20.83
+474,2026-05-29 18:45:00,Operations,Inventory discrepancy requires investigation,Inventory Mismatch,Medium,Resolved,Chatbot,External Customer,33.04
+475,2026-05-13 18:12:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN!!!,Password / Login,Low,Resolved,Slack,Internal Employee,4.29
+476,2026-05-15 12:37:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Open,Portal,External Customer,64.25
+477,2026-04-28 04:45:00,Finance,Invoice stuck in approval workflow please help asap,Invoice Approval,Medium,Resolved,Slack,Internal Employee,49.82
+478,2026-05-27 09:02:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Phone,Partner,3.09
+479,2026-05-06 00:07:00,IT,VPN access is not working from home,VPN / Access,High,Resolved,Chatbot,External Customer,7.93
+480,2026-05-10 20:29:00,Operations,Warehouse stock mismatch found during audit,Inventory Mismatch,Medium,Resolved,Phone,Internal Employee,29.33
+481,2026-04-24 23:17:00,Sales,Cannot edit customer account in CRM,Salesforce / CRM,Low,In Progress,Chatbot,Internal Employee,16.92
+482,2026-05-14 06:48:00,Sales,CANNOT EDIT CUSTOMER ACCOUNT IN CRM please help asap,Salesforce / CRM,High,In Progress,Chatbot,Partner,
+483,2026-01-12 15:55:00,HR,Payroll deduction looks incorrect,Benefits / Payroll,Medium,Resolved,Phone,External Customer,68.03
+484,2026-01-23 04:19:00,IT,VPN access is not working from home!!!,VPN / Access,High,Resolved,Phone,Partner,11.57
+485,2026-01-31 01:12:00,HR,Laptop and access not ready for new hire,Onboarding Delay,High,Resolved,Email,Vendor,41.25
+486,2026-03-01 00:17:00,IT,I forgot my password and cannot log in,Password / Login,Low,Resolved,Chatbot,External Customer,3.22
+487,2026-02-06 11:34:00,Operations,Missing stock after shipment reconciliation,Inventory Mismatch,High,Open,Portal,Internal Employee,
+488,2026-05-04 08:38:00,IT,Account locked after multiple login attempts,Password / Login,Low,Resolved,Slack,Internal Employee,2.0
+489,2026-05-23 08:56:00,Operations,Item quantity incorrect in inventory platform,Inventory Mismatch,High,Resolved,Phone,Partner,20.09
+490,2026-03-26 00:58:00,IT,VPN access is not working from home please help asap,VPN / Access,High,Resolved,Chatbot,Internal Employee,9.23
+491,2026-01-20 17:01:00,Operations,Inventory count does not match system records,Inventory Mismatch,Medium,Open,Phone,External Customer,
+492,2026-02-26 23:01:00,HR,EMPLOYEE CANNOT SELECT HEALTH INSURANCE OPTION,Benefits / Payroll,High,Resolved,Email,Partner,57.51
+493,2026-02-23 00:12:00,Finance,Vendor invoice approval is delayed,Invoice Approval,Critical,Resolved,Chatbot,External Customer,79.02
+494,2026-02-02 23:04:00,IT,Login not working for employee portal!!!,Password / Login,Medium,In Progress,Slack,Internal Employee,1.51
+495,2026-01-14 10:27:00,Sales,Salesforce opportunity record not updating,Salesforce / CRM,Low,Resolved,Slack,Vendor,20.89
+496,2026-04-11 06:21:00,HR,New employee onboarding is delayed,Onboarding Delay,Medium,Resolved,Phone,Internal Employee,29.89
+497,2026-01-25 00:30:00,Customer Support,Need refund approval for billing complaint,Refund Request,Medium,Resolved,Portal,Internal Employee,24.14
+498,2026-04-23 03:40:00,Operations,Inventory count does not match system records,Inventory Mismatch,Medium,Resolved,Slack,Internal Employee,20.5
+499,2026-04-21 02:06:00,HR,Onboarding checklist is incomplete,Onboarding Delay,Medium,Resolved,Slack,Vendor,72.78
+500,2026-01-26 10:41:00,Compliance,Risk review pending for new supplier please help asap,Compliance Review,High,Open,Portal,Partner,
+182,2026-02-02 23:49:00,IT,I forgot my password and cannot log in,Password / Login,Low,Open,Chatbot,Partner,
+216,2026-04-29 16:25:00,IT,VPN access is not working from home,VPN / Access,High,Resolved,Phone,Internal Employee,8.72
+247,2026-03-22 17:03:00,HR,Employee onboarding approval pending,Onboarding Delay,High,Resolved,Chatbot,External Customer,24.93
+372,2026-01-01 01:42:00,IT,Account locked after multiple login attempts,Password / Login,Medium,Resolved,Email,External Customer,2.56
+318,2026-04-16 13:23:00,IT,Login not working for employee portal,Password / Login,Medium,Resolved,Slack,Internal Employee,2.39
+228,2026-01-06 18:32:00,IT,VPN access is not working from home,VPN / Access,Medium,Resolved,Email,Internal Employee,4.52
+96,2026-05-28 07:45:00,Customer Support,Refund not processed after cancellation,Refund Request,Medium,Resolved,Chatbot,Internal Employee,12.03
+125,2026-03-27 09:29:00,Sales,Sales report missing latest pipeline data please help asap,Salesforce / CRM,Medium,Resolved,Slack,Partner,23.78
+71,2026-04-02 07:37:00,IT,I FORGOT MY PASSWORD AND CANNOT LOG IN!!!,Password / Login,Medium,Resolved,Email,Vendor,2.3
+409,2026-05-13 09:23:00,IT,NEED PASSWORD RESET FOR MY COMPANY ACCOUNT please help asap,Password / Login,Low,Resolved,Email,Internal Employee,4.12

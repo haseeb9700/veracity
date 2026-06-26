@@ -1,0 +1,16 @@
+ticket_id,department,issue,resolution_time
+1,IT,password reset,2
+2,IT,password reset,1.5
+3,IT,password reset,2.2
+4,HR,onboarding delay,48
+5,HR,onboarding delay,72
+6,Finance,invoice approval delay,24
+7,Finance,invoice approval delay,30
+8,Operations,inventory mismatch,12
+9,IT,vpn access issue,5
+10,IT,vpn access issue,6
+11,Customer Support,refund request,18
+12,Customer Support,refund request,20
+13,Customer Support,refund request,22
+14,HR,benefits enrollment issue,36
+15,Operations,inventory mismatch,14
