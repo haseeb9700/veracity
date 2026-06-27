@@ -12,6 +12,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=True)
+    is_admin = Column(Integer, default=0)  # 1 = admin
     created_at = Column(DateTime, default=datetime.utcnow)
 
     runs = relationship("AnalysisRun", back_populates="user")

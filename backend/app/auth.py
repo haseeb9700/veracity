@@ -78,6 +78,13 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
+def get_admin_user(current_user: User = Depends(get_current_user)) -> User:
+    """Raises 403 if user is not an admin."""
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return current_user
+
+
 def get_optional_user(token: Optional[str] = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Optional[User]:
     """Like get_current_user but returns None instead of raising (for optional auth)."""
     if not token:

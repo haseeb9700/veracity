@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Required for Vercel deployment
+  output: "standalone",
 };
 
 export default nextConfig;

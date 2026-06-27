@@ -50,7 +50,9 @@ def _embed(texts: list[str]) -> list[list[float]]:
 def _chat(messages: list[dict], max_tokens: int = 600, temperature: float = 0.2) -> str:
     model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     resp = _openai().chat.completions.create(
-        model=model, messages=messages, max_tokens=max_tokens, temperature=temperature,
+        model=model,
+        messages=messages,
+        temperature=temperature,
     )
     return resp.choices[0].message.content.strip()
 

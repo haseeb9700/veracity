@@ -27,3 +27,6 @@ pydantic[email]>=2.0.0
 
 # HTTP (for Jira/Zendesk connectors)
 requests>=2.31.0
+
+# PostgreSQL (production database on Railway)
+psycopg2-binary>=2.9.0
