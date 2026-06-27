@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Railway provides DATABASE_URL automatically when you add a PostgreSQL plugin.
 # Falls back to SQLite for local development.
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./veracity.db")
+DATABASE_URL = os.getenv("DATABASE_URL") or "sqlite:///./veracity.db"
 
 # Railway PostgreSQL URLs start with "postgres://" but SQLAlchemy needs "postgresql://"
 if DATABASE_URL.startswith("postgres://"):
