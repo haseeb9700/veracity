@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { login, register, storeUser, getStoredUser } from "../lib/auth";
+
+const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<"login" | "register">("register");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +19,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (getStoredUser()) router.replace("/");
-  }, [router]);
+    const err = searchParams.get("error");
+    if (err) setError(`OAuth failed: ${err.replace(/_/g, " ")}. Please try again.`);
+  }, [router, searchParams]);
 
   const passwordChecks = [
     { label: "At least 8 characters", pass: password.length >= 8 },
@@ -195,14 +200,14 @@ export default function LoginPage() {
           {/* Social buttons */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
             {[
-              { label: "Google", icon: <GoogleIcon /> },
-              { label: "GitHub", icon: <GitHubIcon /> },
-              { label: "Office 365", icon: <MicrosoftIcon /> },
+              { label: "Google", icon: <GoogleIcon />, href: `${API}/auth/google/login` },
+              { label: "GitHub", icon: <GitHubIcon />, href: `${API}/auth/github/login` },
+              { label: "Office 365", icon: <MicrosoftIcon />, href: `${API}/auth/microsoft/login` },
             ].map((s) => (
               <button
                 key={s.label}
                 type="button"
-                onClick={() => setError("Social login coming soon!")}
+                onClick={() => window.location.href = s.href}
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
                   background: "#fff", border: "1.5px solid #E2E8F0",
