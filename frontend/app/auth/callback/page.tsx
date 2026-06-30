@@ -3,37 +3,38 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { storeUser } from "../../lib/auth";
+
+function storeUserFromParams() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+  const user_id = params.get("user_id");
+  const email = params.get("email");
+  const full_name = params.get("full_name");
+  const error = params.get("error");
+
+  if (error) {
+    window.location.href = "/login?error=" + error;
+    return;
+  }
+
+  if (token && user_id && email) {
+    const user = {
+      access_token: token,
+      user_id: parseInt(user_id),
+      email,
+      full_name: full_name || "",
+    };
+    localStorage.setItem("veracity_user", JSON.stringify(user));
+    window.location.href = "/";
+  } else {
+    window.location.href = "/login?error=oauth_failed";
+  }
+}
 
 export default function AuthCallback() {
-  const router = useRouter();
-
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-    const user_id = params.get("user_id");
-    const email = params.get("email");
-    const full_name = params.get("full_name");
-    const error = params.get("error");
-
-    if (error) {
-      router.replace(`/login?error=${error}`);
-      return;
-    }
-
-    if (token && user_id && email) {
-      storeUser({
-        access_token: token,
-        user_id: parseInt(user_id),
-        email,
-        full_name: full_name || "",
-      });
-      router.replace("/");
-    } else {
-      router.replace("/login?error=oauth_failed");
-    }
-  }, [router]);
+    storeUserFromParams();
+  }, []);
 
   return (
     <div style={{
