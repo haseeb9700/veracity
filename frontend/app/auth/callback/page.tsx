@@ -2,15 +2,15 @@
 
 export const dynamic = "force-dynamic";
 
-import { Suspense, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { storeUser } from "../../lib/auth";
 
-function CallbackHandler() {
+export default function AuthCallback() {
   const router = useRouter();
-  const params = useSearchParams();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     const user_id = params.get("user_id");
     const email = params.get("email");
@@ -33,12 +33,8 @@ function CallbackHandler() {
     } else {
       router.replace("/login?error=oauth_failed");
     }
-  }, [params, router]);
+  }, [router]);
 
-  return null;
-}
-
-export default function AuthCallback() {
   return (
     <div style={{
       minHeight: "100vh",
@@ -68,9 +64,6 @@ export default function AuthCallback() {
         </div>
         <p style={{ fontSize: 16, fontWeight: 700, color: "#1A202C", marginBottom: 6 }}>Signing you in…</p>
         <p style={{ fontSize: 13, color: "#718096" }}>Please wait a moment</p>
-        <Suspense fallback={null}>
-          <CallbackHandler />
-        </Suspense>
       </div>
     </div>
   );
