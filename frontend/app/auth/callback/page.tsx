@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+export const dynamic = "force-dynamic";
+
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { storeUser } from "../../lib/auth";
 
-export default function AuthCallback() {
+function CallbackHandler() {
   const router = useRouter();
   const params = useSearchParams();
 
@@ -24,7 +26,7 @@ export default function AuthCallback() {
       storeUser({
         access_token: token,
         user_id: parseInt(user_id),
-        email: email,
+        email,
         full_name: full_name || "",
       });
       router.replace("/");
@@ -33,6 +35,10 @@ export default function AuthCallback() {
     }
   }, [params, router]);
 
+  return null;
+}
+
+export default function AuthCallback() {
   return (
     <div style={{
       minHeight: "100vh",
@@ -62,6 +68,9 @@ export default function AuthCallback() {
         </div>
         <p style={{ fontSize: 16, fontWeight: 700, color: "#1A202C", marginBottom: 6 }}>Signing you in…</p>
         <p style={{ fontSize: 13, color: "#718096" }}>Please wait a moment</p>
+        <Suspense fallback={null}>
+          <CallbackHandler />
+        </Suspense>
       </div>
     </div>
   );
