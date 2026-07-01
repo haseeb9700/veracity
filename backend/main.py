@@ -17,6 +17,7 @@ from app.clustering_engine import cluster_ticket_issues
 from app.schema_validator import validate_ticket_schema
 from app.ai_advisor import generate_ai_advisor_report
 from app.rag_engine import embed_run_data, embed_csv_sample, seed_knowledge_base
+from app.data_store import save_dataframe
 
 from app.db.database import Base, engine, SessionLocal
 from app.db.models import AnalysisRun, User
@@ -127,6 +128,11 @@ async def upload_file(
     try:
         csv_sample = df.head(50).to_csv(index=False)
         embed_csv_sample(run.id, file.filename, csv_sample)
+    except Exception:
+        pass
+
+    try:
+        save_dataframe(run.id, df)
     except Exception:
         pass
 

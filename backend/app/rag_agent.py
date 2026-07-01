@@ -1,18 +1,18 @@
 """
-Veracity RAG Agent — LangGraph Edition.
+Veracity RAG Agent — LangGraph Edition with Router + Pandas Agent.
 
 Graph flow:
   START
-    → rewrite_query      (rewrite query for better retrieval)
-    → retrieve           (hybrid vector + BM25 + RRF search)
-    → grade_documents    (filter irrelevant chunks)
-    → [decision] enough_docs?
-        YES → generate   (generate grounded answer)
-              → grade_answer
-              → [decision] answer_useful?
-                  YES → END
-                  NO  → transform_query → retrieve (retry loop)
-        NO  → transform_query → retrieve (retry loop, up to max_retries)
+    → router             (decides: "rag" | "pandas")
+    → [if pandas] pandas_agent → END
+    → [if rag]
+        → rewrite_query
+        → retrieve
+        → grade_documents
+        → [decision] enough_docs?
+            YES → generate → grade_answer
+                  → [decision] answer_useful? YES → END | NO → transform_query → retrieve
+            NO  → transform_query → retrieve (retry loop, up to max_retries)
 
 After max_retries, returns best available answer.
 """
@@ -30,6 +30,7 @@ class RAGState(TypedDict):
     rewritten_query: str
     run_id: Optional[int]
     n_results: int
+    route: str                 # "rag" | "pandas"
     chunks: List[dict]
     relevant_chunks: List[dict]
     answer: str
@@ -47,6 +48,46 @@ def _get_helpers():
         _query_collection, _runs_col, _csv_col, _kb_col,
     )
     return _chat, _embed, _rewrite_query, _bm25_search, _rrf, _rerank, _query_collection, _runs_col, _csv_col, _kb_col
+
+
+# ── Node: router ─────────────────────────────────────────────────────────────
+def router_node(state: RAGState) -> dict:
+    """
+    Classifies the query as 'pandas' (requires live computation) or 'rag' (retrieval).
+    Pandas queries: count, average, sum, filter, compare, trend, top N, how many, etc.
+    RAG queries: what is, explain, summarise, recommend, why, best practice, etc.
+    """
+    _chat, *_ = _get_helpers()
+    query = state["query"]
+
+    try:
+        decision = _chat([
+            {"role": "system", "content": (
+                "You are a query router for a data analytics tool. "
+                "Classify the query as 'pandas' if it requires computing something from raw data "
+                "(counts, averages, sums, filtering, top-N, trends, comparisons of specific values). "
+                "Classify as 'rag' if it asks for explanations, summaries, recommendations, "
+                "best practices, or general insights. "
+                "Reply with ONLY the word 'pandas' or 'rag'."
+            )},
+            {"role": "user", "content": query},
+        ], temperature=0).strip().lower()
+        route = "pandas" if "pandas" in decision else "rag"
+    except Exception:
+        route = "rag"
+
+    print(f"[Agent] Router → {route}")
+    return {"route": route}
+
+
+# ── Node: pandas_agent ────────────────────────────────────────────────────────
+def pandas_agent_node(state: RAGState) -> dict:
+    from app.pandas_agent import run_pandas_agent
+    result = run_pandas_agent(query=state["query"], run_id=state["run_id"])
+    return {
+        "answer": result["answer"],
+        "sources": result["sources"],
+    }
 
 
 # ── Node: rewrite_query ───────────────────────────────────────────────────────
@@ -241,9 +282,16 @@ def should_retry_after_answer(state: RAGState) -> str:
 
 
 # ── Build graph ───────────────────────────────────────────────────────────────
+def route_decision(state: RAGState) -> str:
+    return state.get("route", "rag")
+
+
 def build_rag_graph():
     graph = StateGraph(RAGState)
 
+    # Nodes
+    graph.add_node("router", router_node)
+    graph.add_node("pandas_agent", pandas_agent_node)
     graph.add_node("rewrite_query", rewrite_query_node)
     graph.add_node("retrieve", retrieve_node)
     graph.add_node("grade_documents", grade_documents_node)
@@ -251,7 +299,18 @@ def build_rag_graph():
     graph.add_node("grade_answer", grade_answer_node)
     graph.add_node("transform_query", transform_query_node)
 
-    graph.add_edge(START, "rewrite_query")
+    # Router at the start
+    graph.add_edge(START, "router")
+    graph.add_conditional_edges(
+        "router",
+        route_decision,
+        {"pandas": "pandas_agent", "rag": "rewrite_query"},
+    )
+
+    # Pandas path → END
+    graph.add_edge("pandas_agent", END)
+
+    # RAG path
     graph.add_edge("rewrite_query", "retrieve")
     graph.add_edge("retrieve", "grade_documents")
     graph.add_conditional_edges(
@@ -284,6 +343,7 @@ def run_rag_agent(query: str, run_id: Optional[int] = None, n_results: int = 6) 
         "rewritten_query": query,
         "run_id": run_id,
         "n_results": n_results,
+        "route": "",
         "chunks": [],
         "relevant_chunks": [],
         "answer": "",
