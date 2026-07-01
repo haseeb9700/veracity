@@ -39,3 +39,7 @@ httpx>=0.27.0
 # LangGraph agent
 langgraph>=0.2.0
 langchain-core>=0.2.0
+
+# CSV repair
+chardet>=5.2.0
+clevercsv>=0.8.2

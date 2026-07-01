@@ -18,6 +18,7 @@ from app.schema_validator import validate_ticket_schema
 from app.ai_advisor import generate_ai_advisor_report
 from app.rag_engine import embed_run_data, embed_csv_sample, seed_knowledge_base
 from app.data_store import save_dataframe
+from app.csv_repairer import repair_and_load
 
 
 def _generate_quality_alert(prev_score: int, new_score: int, prev_filename: str, quality: dict) -> str:
@@ -97,7 +98,8 @@ async def upload_file(
     if not file.filename or not file.filename.endswith(".csv"):
         raise HTTPException(status_code=400, detail="Only CSV files are supported right now")
 
-    df = pd.read_csv(file.file)
+    raw_bytes = await file.read()
+    df, repair_log = repair_and_load(raw_bytes, filename=file.filename)
 
     profile = profile_dataframe(df)
     quality = calculate_quality_score(df)
@@ -195,6 +197,7 @@ async def upload_file(
         "schema_validation": schema_validation,
         "ai_advisor_report": ai_advisor_report,
         "quality_alert": quality_alert,
+        "repair_log": repair_log,
     }
 
 
