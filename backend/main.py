@@ -19,6 +19,25 @@ from app.ai_advisor import generate_ai_advisor_report
 from app.rag_engine import embed_run_data, embed_csv_sample, seed_knowledge_base
 from app.data_store import save_dataframe
 
+
+def _generate_quality_alert(prev_score: int, new_score: int, prev_filename: str, quality: dict) -> str:
+    """Ask GPT for a one-sentence explanation of why quality dropped."""
+    try:
+        from app.rag_engine import _chat
+        issues = quality.get("issues", [])
+        missing = quality.get("missing_percentage", 0)
+        dupes = quality.get("duplicate_rows", 0)
+        prompt = (
+            f"A data quality score dropped from {prev_score} to {new_score} compared to the previous file '{prev_filename}'. "
+            f"Current issues: {', '.join(issues) if issues else 'none listed'}. "
+            f"Missing data: {missing}%. Duplicate rows: {dupes}. "
+            f"Write ONE short sentence explaining the most likely cause of the drop. Be specific, no fluff."
+        )
+        return _chat([{"role": "user", "content": prompt}], temperature=0.1, max_tokens=80)
+    except Exception:
+        delta = prev_score - new_score
+        return f"Quality dropped {delta} points — check for increased missing data or duplicate rows."
+
 from app.db.database import Base, engine, SessionLocal
 from app.db.models import AnalysisRun, User
 from app.auth import get_current_user, get_db
@@ -136,6 +155,32 @@ async def upload_file(
     except Exception:
         pass
 
+    # ── Proactive quality alert ───────────────────────────────────────────────
+    quality_alert = None
+    try:
+        prev_run = (
+            db.query(AnalysisRun)
+            .filter(AnalysisRun.user_id == current_user.id, AnalysisRun.id != run.id)
+            .order_by(AnalysisRun.created_at.desc())
+            .first()
+        )
+        if prev_run and prev_run.quality_score is not None:
+            delta = run.quality_score - prev_run.quality_score
+            if delta <= -5:
+                reason = _generate_quality_alert(
+                    prev_run.quality_score, run.quality_score,
+                    prev_run.filename, quality
+                )
+                quality_alert = {
+                    "prev_score": prev_run.quality_score,
+                    "new_score": run.quality_score,
+                    "delta": delta,
+                    "prev_filename": prev_run.filename,
+                    "reason": reason,
+                }
+    except Exception:
+        pass
+
     return {
         "run_id": run.id,
         "filename": file.filename,
@@ -149,6 +194,7 @@ async def upload_file(
         "ticket_clusters": ticket_clusters,
         "schema_validation": schema_validation,
         "ai_advisor_report": ai_advisor_report,
+        "quality_alert": quality_alert,
     }
 
 

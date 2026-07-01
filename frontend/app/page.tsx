@@ -48,6 +48,7 @@ export default function Home() {
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [showChatBubble, setShowChatBubble] = useState(false);
+  const [qualityAlert, setQualityAlert] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Modals
@@ -84,6 +85,13 @@ export default function Home() {
     return () => { clearTimeout(show); clearTimeout(hide); };
   }, []);
 
+  // Auto-dismiss quality alert after 10s
+  useEffect(() => {
+    if (!qualityAlert) return;
+    const t = setTimeout(() => setQualityAlert(null), 10000);
+    return () => clearTimeout(t);
+  }, [qualityAlert]);
+
   async function fetchRuns(token: string) {
     try {
       const res = await fetch(`${API}/runs`, { headers: { Authorization: `Bearer ${token}` } });
@@ -118,6 +126,7 @@ export default function Home() {
       }
       const data = await res.json();
       setResult(data); setMessages([]);
+      if (data.quality_alert) setQualityAlert(data.quality_alert);
       fetchRuns(user!.access_token);
     } catch (err: any) { setError(err.message || "Something went wrong."); }
     finally { setLoading(false); }
@@ -477,6 +486,24 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <span>📊 Analysing: <strong>{result.filename}</strong></span>
                   <span className="pill">{result.profile?.rows?.toLocaleString()} rows</span>
                 </div>
+
+                {/* ── QUALITY ALERT BANNER ── */}
+                {qualityAlert && (
+                  <div className="qualityAlertBanner">
+                    <div className="alertIconWrap">⚠</div>
+                    <div className="alertBody">
+                      <div className="alertTitle">
+                        Quality dropped {Math.abs(qualityAlert.delta)} pts vs <em>{qualityAlert.prev_filename}</em>
+                        <span className="alertScores">{qualityAlert.prev_score} → {qualityAlert.new_score}</span>
+                      </div>
+                      <div className="alertReason">{qualityAlert.reason}</div>
+                      <button className="alertAskBtn" onClick={() => sendChat(`Why did my data quality drop from ${qualityAlert.prev_score} to ${qualityAlert.new_score}? What should I fix?`)}>
+                        Ask AI to explain ↗
+                      </button>
+                    </div>
+                    <button className="alertClose" onClick={() => setQualityAlert(null)}>✕</button>
+                  </div>
+                )}
 
                 {/* ── KPI GRID — improvement 1: trend badges + ring watermark ── */}
                 <div className="kpiGrid">
@@ -934,6 +961,20 @@ const styles = `
 
   /* SOURCE BANNER */
   .sourceBanner { display: flex; align-items: center; justify-content: space-between; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 10px; padding: 10px 16px; font-size: 13px; color: #4A5568; }
+
+  /* QUALITY ALERT BANNER */
+  .qualityAlertBanner { display: flex; align-items: flex-start; gap: 14px; background: #FFFBEB; border: 1.5px solid #FCD34D; border-radius: 12px; padding: 14px 16px; animation: alertSlide 0.35s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes alertSlide { from { opacity: 0; transform: translateY(-10px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .alertIconWrap { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alertBody { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .alertTitle { font-size: 13.5px; font-weight: 700; color: #92400E; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .alertTitle em { font-style: normal; font-weight: 600; }
+  .alertScores { font-size: 12px; font-weight: 600; background: #FEF3C7; color: #B45309; padding: 2px 8px; border-radius: 20px; }
+  .alertReason { font-size: 12.5px; color: #78350F; line-height: 1.5; }
+  .alertAskBtn { align-self: flex-start; margin-top: 4px; background: #F59E0B; color: #fff; border: none; border-radius: 7px; padding: 5px 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+  .alertAskBtn:hover { opacity: 0.88; }
+  .alertClose { background: none; border: none; cursor: pointer; color: #B45309; font-size: 16px; padding: 2px; flex-shrink: 0; border-radius: 5px; }
+  .alertClose:hover { background: #FEF3C7; }
 
   /* EMPTY STATE */
   .emptyState { background: #fff; border-radius: 16px; border: 1.5px dashed #CBD5E0; padding: 60px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
