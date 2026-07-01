@@ -47,6 +47,7 @@ export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
+  const [showChatBubble, setShowChatBubble] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Modals
@@ -75,6 +76,13 @@ export default function Home() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, chatLoading]);
+
+  useEffect(() => {
+    // Show greeting bubble 1.5s after load, hide after 5s
+    const show = setTimeout(() => setShowChatBubble(true), 1500);
+    const hide = setTimeout(() => setShowChatBubble(false), 6500);
+    return () => { clearTimeout(show); clearTimeout(hide); };
+  }, []);
 
   async function fetchRuns(token: string) {
     try {
@@ -621,16 +629,24 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
           </main>
         </div>
 
-        {/* ── FLOATING CHAT BUTTON — improvement (replaces nav button) ── */}
+        {/* ── FLOATING CHAT BUTTON + GREETING BUBBLE ── */}
         {!chatOpen && (
-          <button className="chatFab" onClick={() => setChatOpen(true)} aria-label="Open AI chat">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M10 2C5.58 2 2 5.13 2 9c0 2.07 1 3.93 2.6 5.23L3.5 17l3.4-1.36C7.84 15.87 8.9 16 10 16c4.42 0 8-3.13 8-7s-3.58-7-8-7z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
-            </svg>
-            {messages.length > 0 && (
-              <span className="chatFabBadge">{messages.filter(m => m.role === "ai").length}</span>
+          <div className="chatFabWrap">
+            {showChatBubble && (
+              <div className="chatGreetBubble" onClick={() => { setShowChatBubble(false); setChatOpen(true); }}>
+                <span>👋 Hey! Got questions about your data?</span>
+                <div className="chatGreetTail" />
+              </div>
             )}
-          </button>
+            <button className="chatFab" onClick={() => { setShowChatBubble(false); setChatOpen(true); }} aria-label="Open AI chat">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2C5.58 2 2 5.13 2 9c0 2.07 1 3.93 2.6 5.23L3.5 17l3.4-1.36C7.84 15.87 8.9 16 10 16c4.42 0 8-3.13 8-7s-3.58-7-8-7z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+              </svg>
+              {messages.length > 0 && (
+                <span className="chatFabBadge">{messages.filter(m => m.role === "ai").length}</span>
+              )}
+            </button>
+          </div>
         )}
 
         {/* ── CHAT PANEL ── */}
@@ -1031,10 +1047,14 @@ const styles = `
   .onboardingDesc { font-size: 13px; color: #718096; line-height: 1.5; }
   .onboardingNav { display: flex; gap: 10px; justify-content: flex-end; }
 
-  /* FLOATING CHAT BUTTON */
-  .chatFab { position: fixed; bottom: 28px; right: 28px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(79,70,229,0.4); z-index: 150; transition: transform 0.15s, box-shadow 0.15s; }
+  /* FLOATING CHAT BUTTON + GREETING BUBBLE */
+  .chatFabWrap { position: fixed; bottom: 28px; right: 28px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; z-index: 150; }
+  .chatFab { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(79,70,229,0.4); transition: transform 0.15s, box-shadow 0.15s; position: relative; }
   .chatFab:hover { transform: scale(1.06); box-shadow: 0 6px 22px rgba(79,70,229,0.5); }
   .chatFabBadge { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; background: #EF4444; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-weight: 700; }
+  .chatGreetBubble { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; border-bottom-right-radius: 4px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: #2D3748; box-shadow: 0 4px 16px rgba(0,0,0,0.12); cursor: pointer; white-space: nowrap; position: relative; animation: bubblePop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  .chatGreetBubble:hover { background: #F7FAFC; }
+  @keyframes bubblePop { from { opacity: 0; transform: scale(0.7) translateY(8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
   /* CHAT PANEL */
   .chatOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 200; display: flex; justify-content: flex-end; }
