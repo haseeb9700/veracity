@@ -105,13 +105,24 @@ export default function Home() {
   async function deleteRun(run_id: number) {
     if (!user) return;
     try {
-      await fetch(`${API}/runs/${run_id}`, {
+      const res = await fetch(`${API}/runs/${run_id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${user.access_token}` },
       });
+      if (!res.ok) {
+        // Server rejected the delete — don't touch UI, let user try again
+        setDeleteTarget(null);
+        setError(`Delete failed (${res.status}). Please try again.`);
+        return;
+      }
+      // Only update UI once server confirms deletion
       setRuns(prev => prev.filter(r => r.run_id !== run_id));
       if (result?.run_id === run_id) setResult(null);
-    } catch {}
+    } catch (e) {
+      setDeleteTarget(null);
+      setError("Delete failed — check your connection.");
+      return;
+    }
     setDeleteTarget(null);
   }
 
