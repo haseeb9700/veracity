@@ -39,7 +39,7 @@ export default function Home() {
 
   // Sidebar
   const [runs, setRuns] = useState<RunSummary[]>([]);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dragging, setDragging] = useState(false);
 
   // Chat
