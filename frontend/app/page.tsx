@@ -488,19 +488,97 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
           {/* ── MAIN CONTENT ── */}
           <main className="main">
             {!result && (
-              <div className="emptyState">
-                <div className="emptyIcon">
-                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
-                    <rect x="4" y="4" width="22" height="22" rx="4" stroke="#4F46E5" strokeWidth="1.8"/>
-                    <path d="M9 15h12M9 10h7M9 20h5" stroke="#4F46E5" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <h2>No data loaded yet</h2>
-                <p>Connect Jira or Zendesk directly, or upload a CSV export. Veracity will analyse quality, bottlenecks, automation savings, and generate a 90-day plan.</p>
-                <div className="emptySteps">
-                  <div className="emptyStep"><span className="stepNum">1</span>Connect a source or upload CSV</div>
-                  <div className="emptyStep"><span className="stepNum">2</span>Click Analyse</div>
-                  <div className="emptyStep"><span className="stepNum">3</span>Chat with your data</div>
+              <div
+                className={`emptyState ${dragging ? "emptyDragging" : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {/* Animated background orbs */}
+                <div className="emptyOrb emptyOrb1" />
+                <div className="emptyOrb emptyOrb2" />
+                <div className="emptyOrb emptyOrb3" />
+
+                <div className="emptyContent">
+                  {/* Hero heading */}
+                  <div className="emptyHero">
+                    <div className="emptyBadge">✦ AI Process Intelligence</div>
+                    <h2 className="emptyHeading">Turn messy support data<br/>into a 90-day action plan</h2>
+                    <p className="emptySubheading">Get quality scores, bottleneck maps, automation ROI,<br/>and a live AI assistant — in under 30 seconds.</p>
+                  </div>
+
+                  {/* Drop zone */}
+                  <label className={`emptyDropZone ${dragging ? "emptyDropActive" : ""} ${file ? "emptyDropHasFile" : ""}`}>
+                    <input
+                      type="file" accept=".csv" style={{ display: "none" }}
+                      onChange={(e) => { setFile(e.target.files?.[0] || null); setError(""); }}
+                    />
+                    <div className="emptyDropIconWrap">
+                      {file ? (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                      ) : dragging ? (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 2L12 16M12 2L8 6M12 2L16 6"/>
+                          <rect x="3" y="18" width="18" height="4" rx="2"/>
+                        </svg>
+                      ) : (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                          <polyline points="17 8 12 3 7 8"/>
+                          <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                      )}
+                    </div>
+                    <div className="emptyDropTitle">
+                      {file ? file.name : dragging ? "Drop it!" : "Drag & drop your CSV"}
+                    </div>
+                    <div className="emptyDropSub">
+                      {file ? `${(file.size / 1024).toFixed(1)} KB — ready to analyse` : "or click to browse files"}
+                    </div>
+                    {file && (
+                      <button
+                        className="emptyAnalyseBtn"
+                        onClick={(e) => { e.preventDefault(); handleUpload(); }}
+                        disabled={loading}
+                      >
+                        {loading
+                          ? <><span className="emptyBtnSpinner" />Analysing…</>
+                          : "Analyse now →"
+                        }
+                      </button>
+                    )}
+                  </label>
+
+                  {/* Connector row */}
+                  <div className="emptyConnRow">
+                    <span className="emptyConnLabel">or connect directly</span>
+                    <button className="emptyConnCard" onClick={() => { setShowConnector("jira"); setConnectorError(""); setConnectorTested(false); }}>
+                      <span className="emptyConnCardIcon">🔗</span>
+                      <span className="emptyConnCardName">Jira</span>
+                    </button>
+                    <button className="emptyConnCard" onClick={() => { setShowConnector("zendesk"); setConnectorError(""); setConnectorTested(false); }}>
+                      <span className="emptyConnCardIcon">🎫</span>
+                      <span className="emptyConnCardName">Zendesk</span>
+                    </button>
+                  </div>
+
+                  {/* Feature preview strip */}
+                  <div className="emptyFeatures">
+                    {[
+                      { icon: "📊", title: "Quality Score", desc: "A/B/C grade + detailed breakdown" },
+                      { icon: "⚡", title: "Bottleneck Detection", desc: "Slowest teams & ticket types" },
+                      { icon: "💰", title: "Automation ROI", desc: "Cost savings estimate in $" },
+                      { icon: "💬", title: "AI Chat", desc: "Ask anything about your data" },
+                    ].map((f) => (
+                      <div key={f.title} className="emptyFeatureCard">
+                        <div className="emptyFeatureCardIcon">{f.icon}</div>
+                        <div className="emptyFeatureCardTitle">{f.title}</div>
+                        <div className="emptyFeatureCardDesc">{f.desc}</div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -1038,12 +1116,57 @@ const styles = `
   .deleteBtnYes:hover { background: #C53030; }
 
   /* EMPTY STATE */
-  .emptyState { background: #fff; border-radius: 16px; border: 1.5px dashed #CBD5E0; padding: 60px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
-  .emptyIcon { width: 60px; height: 60px; background: #EEF2FF; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
-  .emptyState h2 { font-size: 20px; font-weight: 700; color: #2D3748; }
-  .emptyState p { font-size: 14px; color: #718096; max-width: 420px; line-height: 1.6; }
-  .emptySteps { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-  .emptyStep { display: flex; align-items: center; gap: 8px; background: #F7FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 8px 14px; font-size: 12px; color: #4A5568; font-weight: 500; }
+  /* ── EMPTY STATE — rich redesign ── */
+  .emptyState { position: relative; overflow: hidden; flex: 1; border-radius: 20px; background: linear-gradient(145deg, #fafbff 0%, #f0f2ff 50%, #faf5ff 100%); border: 1.5px solid #E8EAFF; display: flex; align-items: center; justify-content: center; min-height: 500px; }
+  .emptyState.emptyDragging { border-color: #4F46E5; border-style: dashed; background: linear-gradient(145deg, #EEF2FF, #F5F3FF); }
+
+  /* Floating orbs */
+  .emptyOrb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; animation: orbFloat 8s ease-in-out infinite; }
+  .emptyOrb1 { width: 320px; height: 320px; background: rgba(79,70,229,0.10); top: -80px; right: -60px; animation-delay: 0s; }
+  .emptyOrb2 { width: 240px; height: 240px; background: rgba(124,58,237,0.08); bottom: -40px; left: -40px; animation-delay: -3s; }
+  .emptyOrb3 { width: 180px; height: 180px; background: rgba(59,130,246,0.07); bottom: 40px; right: 120px; animation-delay: -5s; }
+  @keyframes orbFloat { 0%,100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-20px) scale(1.04); } }
+
+  /* Content wrapper */
+  .emptyContent { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 48px 32px; width: 100%; max-width: 680px; animation: emptyFadeUp 0.5s ease both; }
+  @keyframes emptyFadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Hero text */
+  .emptyHero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .emptyBadge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF); border: 1px solid #C7D2FE; color: #4F46E5; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.3px; }
+  .emptyHeading { font-size: 26px; font-weight: 800; color: #1A202C; line-height: 1.25; margin: 0; }
+  .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; }
+
+  /* Drop zone */
+  .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 440px; background: #fff; border: 2px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+  .emptyDropZone:hover { border-color: #4F46E5; background: #FAFBFF; box-shadow: 0 0 0 4px rgba(79,70,229,0.06); }
+  .emptyDropZone.emptyDropActive { border-color: #4F46E5; border-style: solid; background: #EEF2FF; box-shadow: 0 0 0 6px rgba(79,70,229,0.10); transform: scale(1.01); }
+  .emptyDropZone.emptyDropHasFile { border-color: #059669; border-style: solid; background: #F0FDF4; }
+  .emptyDropIconWrap { width: 56px; height: 56px; border-radius: 14px; background: #EEF2FF; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+  .emptyDropZone.emptyDropHasFile .emptyDropIconWrap { background: #DCFCE7; }
+  .emptyDropZone.emptyDropActive .emptyDropIconWrap { background: #E0E7FF; }
+  .emptyDropTitle { font-size: 15px; font-weight: 700; color: #2D3748; }
+  .emptyDropSub { font-size: 12.5px; color: #A0AEC0; }
+  .emptyAnalyseBtn { margin-top: 6px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: #fff; border: none; border-radius: 10px; padding: 11px 28px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.15s; display: flex; align-items: center; gap: 8px; }
+  .emptyAnalyseBtn:hover { opacity: 0.9; transform: scale(1.02); }
+  .emptyAnalyseBtn:disabled { opacity: 0.65; }
+  .emptyBtnSpinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+
+  /* Connector row */
+  .emptyConnRow { display: flex; align-items: center; gap: 12px; }
+  .emptyConnLabel { font-size: 12px; color: #A0AEC0; white-space: nowrap; }
+  .emptyConnCard { display: flex; align-items: center; gap: 8px; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 12px; padding: 10px 18px; cursor: pointer; font-size: 13px; font-weight: 600; color: #4A5568; transition: all 0.18s; }
+  .emptyConnCard:hover { border-color: #4F46E5; color: #4F46E5; background: #F7F8FF; transform: translateY(-2px); box-shadow: 0 4px 14px rgba(79,70,229,0.1); }
+  .emptyConnCardIcon { font-size: 16px; }
+  .emptyConnCardName { font-size: 13px; }
+
+  /* Feature preview */
+  .emptyFeatures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
+  .emptyFeatureCard { background: #fff; border: 1.5px solid #EDF2F7; border-radius: 12px; padding: 16px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.18s; }
+  .emptyFeatureCard:hover { border-color: #C7D2FE; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(79,70,229,0.08); }
+  .emptyFeatureCardIcon { font-size: 22px; }
+  .emptyFeatureCardTitle { font-size: 12px; font-weight: 700; color: #2D3748; }
+  .emptyFeatureCardDesc { font-size: 11px; color: #A0AEC0; line-height: 1.4; }
   .stepNum { width: 20px; height: 20px; border-radius: 50%; background: #4F46E5; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
   /* KPI — improvement 1 */
