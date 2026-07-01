@@ -12,7 +12,10 @@ type AnalysisResult = {
   schema_validation: any; ticket_analysis: any; opportunities: any;
   bottlenecks: any; impact_analysis: any; ticket_clusters: any; ai_advisor_report: any;
 };
-type RunSummary = { run_id: number; filename: string; rows: number; quality_score: number; grade: string; created_at: string; };
+type RunSummary = {
+  run_id: number; filename: string; rows: number;
+  quality_score: number; grade: string; created_at: string;
+};
 type ChatMessage = { role: "user" | "ai"; text: string; sources?: string[]; };
 
 const SUGGESTIONS = [
@@ -37,6 +40,7 @@ export default function Home() {
   // Sidebar
   const [runs, setRuns] = useState<RunSummary[]>([]);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [dragging, setDragging] = useState(false);
 
   // Chat
   const [chatOpen, setChatOpen] = useState(false);
@@ -63,14 +67,14 @@ export default function Home() {
     setUser(stored);
     setAuthChecked(true);
     fetchRuns(stored.access_token);
-
-    // Show onboarding for first-time users
     if (!localStorage.getItem("veracity_onboarded")) {
       setTimeout(() => setShowOnboarding(true), 600);
     }
   }, [router]);
 
-  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, chatLoading]);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, chatLoading]);
 
   async function fetchRuns(token: string) {
     try {
@@ -81,7 +85,9 @@ export default function Home() {
 
   async function loadRun(run_id: number) {
     try {
-      const res = await fetch(`${API}/runs/${run_id}`, { headers: { Authorization: `Bearer ${user?.access_token}` } });
+      const res = await fetch(`${API}/runs/${run_id}`, {
+        headers: { Authorization: `Bearer ${user?.access_token}` },
+      });
       if (res.ok) { setResult(await res.json()); setMessages([]); }
     } catch {}
   }
@@ -94,11 +100,16 @@ export default function Home() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const res = await fetch(`${API}/upload`, { method: "POST", body: formData, headers: { Authorization: `Bearer ${user?.access_token}` } });
-      if (!res.ok) { if (res.status === 401) { handleLogout(); return; } throw new Error("Upload failed."); }
+      const res = await fetch(`${API}/upload`, {
+        method: "POST", body: formData,
+        headers: { Authorization: `Bearer ${user?.access_token}` },
+      });
+      if (!res.ok) {
+        if (res.status === 401) { handleLogout(); return; }
+        throw new Error("Upload failed.");
+      }
       const data = await res.json();
-      setResult(data);
-      setMessages([]);
+      setResult(data); setMessages([]);
       fetchRuns(user!.access_token);
     } catch (err: any) { setError(err.message || "Something went wrong."); }
     finally { setLoading(false); }
@@ -113,7 +124,10 @@ export default function Home() {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${user?.access_token}` },
         body: JSON.stringify({ ...body, max_issues: 500, max_tickets: 500 }),
       });
-      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.detail || "Fetch failed"); }
+      if (!res.ok) {
+        const e = await res.json().catch(() => ({}));
+        throw new Error(e.detail || "Fetch failed");
+      }
       const data = await res.json();
       setResult(data); setMessages([]);
       setShowConnector(null); setConnectorTested(false);
@@ -140,18 +154,21 @@ export default function Home() {
 
   async function sendChat(text: string) {
     if (!text.trim() || chatLoading) return;
-    setMessages((m) => [...m, { role: "user", text: text.trim() }]);
+    const trimmed = text.trim();
+    setChatOpen(true);
+    setMessages((m) => [...m, { role: "user", text: trimmed }]);
     setChatInput(""); setChatLoading(true);
     try {
       const res = await fetch(`${API}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${user?.access_token}` },
-        body: JSON.stringify({ query: text.trim(), run_id: result?.run_id ?? null }),
+        body: JSON.stringify({ query: trimmed, run_id: result?.run_id ?? null }),
       });
       const data = await res.json();
       setMessages((m) => [...m, { role: "ai", text: data.answer, sources: data.sources }]);
-    } catch { setMessages((m) => [...m, { role: "ai", text: "Sorry, something went wrong." }]); }
-    finally { setChatLoading(false); }
+    } catch {
+      setMessages((m) => [...m, { role: "ai", text: "Sorry, something went wrong." }]);
+    } finally { setChatLoading(false); }
   }
 
   function exportPDF() {
@@ -214,17 +231,38 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
     setShowOnboarding(false);
   }
 
+  // ── Drag-and-drop handlers ──────────────────────────────────────────────────
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault(); setDragging(true);
+  }
+  function handleDragLeave(e: React.DragEvent) {
+    e.preventDefault(); setDragging(false);
+  }
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault(); setDragging(false);
+    const dropped = e.dataTransfer.files[0];
+    if (dropped && dropped.name.endsWith(".csv")) {
+      setFile(dropped); setError("");
+    } else {
+      setError("Only CSV files are supported.");
+    }
+  }
+
   if (!authChecked) return null;
 
-  const qualityScore = result?.quality?.quality_score ?? 0;
-  const savings = result?.impact_analysis?.total_estimated_cost_savings ?? 0;
-  const rows = result?.profile?.rows ?? 0;
-  const duplicates = result?.profile?.duplicate_rows ?? 0;
+  const qualityScore   = result?.quality?.quality_score ?? 0;
+  const savings        = result?.impact_analysis?.total_estimated_cost_savings ?? 0;
+  const rows           = result?.profile?.rows ?? 0;
+  const duplicates     = result?.profile?.duplicate_rows ?? 0;
   const missingPercent = result?.quality?.missing_percentage ?? 0;
-  const slowestDepartments = result?.bottlenecks?.bottlenecks?.slowest_departments ?? {};
-  const topOpportunities = result?.opportunities?.opportunities ?? [];
-  const clusters = result?.ticket_clusters?.clusters ?? [];
-  const aiReport = result?.ai_advisor_report;
+  const slowestDepts   = result?.bottlenecks?.bottlenecks?.slowest_departments ?? {};
+  const topOpps        = result?.opportunities?.opportunities ?? [];
+  const clusters       = result?.ticket_clusters?.clusters ?? [];
+  const aiReport       = result?.ai_advisor_report;
+
+  // Score trend vs previous run
+  const prevRun = runs.length > 1 ? runs.find(r => r.run_id !== result?.run_id) : null;
+  const scoreDelta = prevRun && result ? qualityScore - prevRun.quality_score : null;
 
   return (
     <>
@@ -248,13 +286,9 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               </div>
               <div className="onboardingNav">
                 {onboardingStep < ONBOARDING_STEPS.length - 1 ? (
-                  <button className="btn btnPrimary" onClick={() => setOnboardingStep(s => s + 1)}>
-                    Next →
-                  </button>
+                  <button className="btn btnPrimary" onClick={() => setOnboardingStep(s => s + 1)}>Next →</button>
                 ) : (
-                  <button className="btn btnPrimary" onClick={completeOnboarding}>
-                    Get Started
-                  </button>
+                  <button className="btn btnPrimary" onClick={completeOnboarding}>Get Started</button>
                 )}
                 <button className="btn btnGhost" onClick={completeOnboarding}>Skip</button>
               </div>
@@ -272,28 +306,25 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 </div>
                 <button className="chatClose" onClick={() => { setShowConnector(null); setConnectorError(""); setConnectorTested(false); }}>✕</button>
               </div>
-
               {showConnector === "jira" ? (
                 <div className="formGrid">
-                  <FormField label="Jira URL" placeholder="https://yourcompany.atlassian.net" value={jiraForm.jira_url} onChange={v => setJiraForm(f => ({ ...f, jira_url: v }))} />
-                  <FormField label="Email" placeholder="you@company.com" value={jiraForm.email} onChange={v => setJiraForm(f => ({ ...f, email: v }))} />
-                  <FormField label="API Token" placeholder="Your Jira API token" value={jiraForm.api_token} onChange={v => setJiraForm(f => ({ ...f, api_token: v }))} type="password" />
-                  <FormField label="Project Key (optional)" placeholder="e.g. IT, SUPPORT" value={jiraForm.project_key} onChange={v => setJiraForm(f => ({ ...f, project_key: v }))} />
+                  <FormField label="Jira URL" placeholder="https://yourcompany.atlassian.net" value={jiraForm.jira_url} onChange={(v: string) => setJiraForm(f => ({ ...f, jira_url: v }))} />
+                  <FormField label="Email" placeholder="you@company.com" value={jiraForm.email} onChange={(v: string) => setJiraForm(f => ({ ...f, email: v }))} />
+                  <FormField label="API Token" placeholder="Your Jira API token" value={jiraForm.api_token} onChange={(v: string) => setJiraForm(f => ({ ...f, api_token: v }))} type="password" />
+                  <FormField label="Project Key (optional)" placeholder="e.g. IT, SUPPORT" value={jiraForm.project_key} onChange={(v: string) => setJiraForm(f => ({ ...f, project_key: v }))} />
                   <p className="modalHint">Get your API token at: <strong>id.atlassian.com → Security → API tokens</strong></p>
                 </div>
               ) : (
                 <div className="formGrid">
-                  <FormField label="Subdomain" placeholder="yourcompany (from yourcompany.zendesk.com)" value={zendeskForm.subdomain} onChange={v => setZendeskForm(f => ({ ...f, subdomain: v }))} />
-                  <FormField label="Email" placeholder="you@company.com" value={zendeskForm.email} onChange={v => setZendeskForm(f => ({ ...f, email: v }))} />
-                  <FormField label="API Token" placeholder="Your Zendesk API token" value={zendeskForm.api_token} onChange={v => setZendeskForm(f => ({ ...f, api_token: v }))} type="password" />
+                  <FormField label="Subdomain" placeholder="yourcompany (from yourcompany.zendesk.com)" value={zendeskForm.subdomain} onChange={(v: string) => setZendeskForm(f => ({ ...f, subdomain: v }))} />
+                  <FormField label="Email" placeholder="you@company.com" value={zendeskForm.email} onChange={(v: string) => setZendeskForm(f => ({ ...f, email: v }))} />
+                  <FormField label="API Token" placeholder="Your Zendesk API token" value={zendeskForm.api_token} onChange={(v: string) => setZendeskForm(f => ({ ...f, api_token: v }))} type="password" />
                   <p className="modalHint">Get your API token at: <strong>Zendesk Admin → Apps → Zendesk API</strong></p>
                 </div>
               )}
-
               {connectorError && (
                 <div className={`connectorMsg ${connectorTested ? "success" : "error"}`}>{connectorError}</div>
               )}
-
               <div className="modalFooter">
                 <button className="btn btnOutline" disabled={connectorLoading} onClick={() => testConnector(showConnector)}>
                   {connectorLoading ? "Testing…" : "Test Connection"}
@@ -321,12 +352,6 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
             </div>
           </div>
           <div className="navRight">
-            <button className="chatToggle" onClick={() => setChatOpen(true)}>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H4L1 13V3a1 1 0 011-1z" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Ask AI
-            </button>
             {result && (
               <button className="btn btnOutline" onClick={exportPDF} style={{ fontSize: 12 }}>
                 ↓ Export Report
@@ -355,20 +380,34 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               </button>
             </div>
 
-            {/* Upload */}
+            {/* Upload — drag-and-drop zone */}
             <div className="sidebarSection">
               <div className="sidebarSectionLabel">Upload CSV</div>
-              <label className="sidebarFileBox">
-                <input type="file" accept=".csv" onChange={(e) => setFile(e.target.files?.[0] || null)} style={{ display: "none" }} />
-                <span>{file ? file.name : "Choose file…"}</span>
+              <label
+                className={`dropZone ${dragging ? "dragOver" : ""} ${file ? "hasFile" : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <input
+                  type="file" accept=".csv"
+                  onChange={(e) => { setFile(e.target.files?.[0] || null); setError(""); }}
+                  style={{ display: "none" }}
+                />
+                <div className="dropZoneIcon">{file ? "📄" : "⬆"}</div>
+                <span className="dropZoneText">{file ? file.name : "Drop CSV or click to browse"}</span>
+                {!file && <span className="dropZoneSub">Supports .csv up to 50 MB</span>}
               </label>
               <button className="sidebarUploadBtn" onClick={handleUpload} disabled={loading || !file}>
-                {loading ? "Analyzing…" : "Analyze"}
+                {loading
+                  ? <span className="uploadingRow"><span className="spinnerDots"><span/><span/><span/></span>Analysing…</span>
+                  : "Analyse"
+                }
               </button>
               {error && <p className="sidebarError">{error}</p>}
             </div>
 
-            {/* Run history */}
+            {/* Run history with score bars */}
             <div className="sidebarSection" style={{ flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div className="sidebarSectionLabel">History ({runs.length})</div>
               <div className="runList">
@@ -379,9 +418,21 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                     className={`runItem ${result?.run_id === r.run_id ? "active" : ""}`}
                     onClick={() => loadRun(r.run_id)}
                   >
-                    <div className="runItemName">{r.filename}</div>
-                    <div className="runItemMeta">
+                    <div className="runItemTop">
+                      <div className="runItemName">{r.filename}</div>
                       <span className={`runGrade grade${r.grade}`}>{r.grade}</span>
+                    </div>
+                    <div className="runScoreBarTrack">
+                      <div
+                        className="runScoreBarFill"
+                        style={{
+                          width: `${r.quality_score}%`,
+                          background: r.quality_score >= 80 ? "#059669" : r.quality_score >= 60 ? "#4F46E5" : "#D97706",
+                        }}
+                      />
+                    </div>
+                    <div className="runItemMeta">
+                      <span>{r.quality_score}/100</span>
                       <span>{r.rows?.toLocaleString()} rows</span>
                       <span>{new Date(r.created_at).toLocaleDateString()}</span>
                     </div>
@@ -405,7 +456,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 <p>Connect Jira or Zendesk directly, or upload a CSV export. Veracity will analyse quality, bottlenecks, automation savings, and generate a 90-day plan.</p>
                 <div className="emptySteps">
                   <div className="emptyStep"><span className="stepNum">1</span>Connect a source or upload CSV</div>
-                  <div className="emptyStep"><span className="stepNum">2</span>Click Analyze</div>
+                  <div className="emptyStep"><span className="stepNum">2</span>Click Analyse</div>
                   <div className="emptyStep"><span className="stepNum">3</span>Chat with your data</div>
                 </div>
               </div>
@@ -419,15 +470,39 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <span className="pill">{result.profile?.rows?.toLocaleString()} rows</span>
                 </div>
 
-                {/* KPI GRID */}
+                {/* ── KPI GRID — improvement 1: trend badges + ring watermark ── */}
                 <div className="kpiGrid">
-                  <MetricCard icon="✓" color="#4F46E5" title="Quality Score" value={`${qualityScore}`} label={`Grade ${result.quality?.grade}`} />
-                  <MetricCard icon="$" color="#059669" title="Est. Savings" value={`$${Number(savings).toLocaleString()}`} label="Automation value" />
-                  <MetricCard icon="⊞" color="#0284C7" title="Rows Analyzed" value={rows.toLocaleString()} label={`${result.profile?.columns} columns`} />
-                  <MetricCard icon="!" color="#D97706" title="Data Issues" value={`${duplicates} dupes`} label={`${missingPercent}% missing`} />
+                  <MetricCard
+                    icon="✓" color="#4F46E5"
+                    title="Quality Score" value={`${qualityScore}`}
+                    label={`Grade ${result.quality?.grade}`}
+                    trend={scoreDelta !== null
+                      ? { label: scoreDelta >= 0 ? `+${scoreDelta} pts` : `${scoreDelta} pts`, positive: scoreDelta >= 0 }
+                      : null}
+                  />
+                  <MetricCard
+                    icon="$" color="#059669"
+                    title="Est. Savings" value={`$${Number(savings).toLocaleString()}`}
+                    label="Automation value"
+                    trend={{ label: "annualised", positive: true }}
+                  />
+                  <MetricCard
+                    icon="⊞" color="#0284C7"
+                    title="Rows Analyzed" value={rows.toLocaleString()}
+                    label={`${result.profile?.columns} columns`}
+                    trend={null}
+                  />
+                  <MetricCard
+                    icon="!" color="#D97706"
+                    title="Data Issues" value={`${duplicates} dupes`}
+                    label={`${missingPercent}% missing`}
+                    trend={duplicates > 0
+                      ? { label: "needs fix", positive: false }
+                      : { label: "clean", positive: true }}
+                  />
                 </div>
 
-                {/* AI REPORT + READINESS */}
+                {/* ── AI REPORT + QUALITY RING — improvement 2 ── */}
                 <div className="gridTwo">
                   <div className="card">
                     <div className="sectionHeader">
@@ -445,10 +520,12 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                         {result.schema_validation?.is_valid_ticket_schema ? "Valid Schema" : "Needs Review"}
                       </span>
                     </div>
-                    <div className="readinessBar"><div style={{ width: `${qualityScore}%` }} /></div>
-                    <ul className="cleanList">
-                      {result.quality?.issues?.map((issue: string, i: number) => <li key={i}>{issue}</li>)}
-                    </ul>
+                    {/* improvement 2: donut ring replaces plain progress bar */}
+                    <QualityScoreRing
+                      score={qualityScore}
+                      quality={result.quality}
+                      profile={result.profile}
+                    />
                   </div>
                 </div>
 
@@ -457,10 +534,12 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <div className="card">
                     <h2>Slowest Departments</h2>
                     <div className="barList">
-                      {Object.entries(slowestDepartments).map(([dept, value]: any) => (
+                      {Object.entries(slowestDepts).map(([dept, value]: any) => (
                         <div className="barRow" key={dept}>
                           <div className="barLabel"><span>{dept}</span><strong>{value} hrs</strong></div>
-                          <div className="barTrack"><div style={{ width: `${Math.min((Number(value) / 80) * 100, 100)}%` }} /></div>
+                          <div className="barTrack">
+                            <div style={{ width: `${Math.min((Number(value) / 80) * 100, 100)}%` }} />
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -481,7 +560,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   </div>
                 </div>
 
-                {/* OPPORTUNITIES TABLE */}
+                {/* ── OPPORTUNITIES TABLE — improvement 3: impact badges + Ask AI row action ── */}
                 <div className="card">
                   <div className="sectionHeader">
                     <h2>Automation Opportunities</h2>
@@ -489,13 +568,25 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   </div>
                   <div className="tableWrap">
                     <table>
-                      <thead><tr><th>Issue</th><th>Department</th><th>Tickets</th><th>Avg Time</th><th>Impact</th></tr></thead>
+                      <thead>
+                        <tr><th>Issue</th><th>Department</th><th>Tickets</th><th>Avg Time</th><th>Impact</th><th></th></tr>
+                      </thead>
                       <tbody>
-                        {topOpportunities.slice(0, 10).map((opp: any, i: number) => (
-                          <tr key={i}>
-                            <td>{opp.issue}</td><td>{opp.main_department}</td><td>{opp.ticket_count}</td>
+                        {topOpps.slice(0, 10).map((opp: any, i: number) => (
+                          <tr key={i} className="oppRow">
+                            <td style={{ fontWeight: 600, color: "#2D3748" }}>{opp.issue}</td>
+                            <td>{opp.main_department}</td>
+                            <td>{opp.ticket_count}</td>
                             <td>{opp.average_resolution_time} hrs</td>
-                            <td style={{ color: opp.impact_level === "High" ? "#059669" : opp.impact_level === "Medium" ? "#D97706" : "#718096", fontWeight: 600, fontSize: 11, textTransform: "uppercase" as const }}>{opp.impact_level}</td>
+                            <td><ImpactBadge level={opp.impact_level} /></td>
+                            <td>
+                              <button
+                                className="askAiBtn"
+                                onClick={() => sendChat(`Tell me more about this opportunity: ${opp.issue} in ${opp.main_department} (${opp.ticket_count} tickets, ${opp.impact_level} impact)`)}
+                              >
+                                Ask AI ↗
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -503,19 +594,44 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   </div>
                 </div>
 
-                {/* ROADMAP */}
+                {/* ── ROADMAP — improvement 6: timeline style ── */}
                 <div className="card">
-                  <div className="sectionHeader"><h2>AI Automation Roadmap</h2><span className="pill">90-day plan</span></div>
-                  <div className="roadmap">
-                    <RoadmapCard title="30 Days" text={aiReport?.suggested_30_60_90_day_plan?.day_30} color="#4F46E5" />
-                    <RoadmapCard title="60 Days" text={aiReport?.suggested_30_60_90_day_plan?.day_60} color="#7C3AED" />
-                    <RoadmapCard title="90 Days" text={aiReport?.suggested_30_60_90_day_plan?.day_90} color="#059669" />
+                  <div className="sectionHeader">
+                    <h2>AI Automation Roadmap</h2>
+                    <span className="pill">90-day plan</span>
+                  </div>
+                  <div className="timeline">
+                    <div className="timelineTrack" />
+                    <TimelineCard
+                      phase="30 Days" color="#4F46E5" borderColor="#C7D2FE"
+                      text={aiReport?.suggested_30_60_90_day_plan?.day_30}
+                    />
+                    <TimelineCard
+                      phase="60 Days" color="#7C3AED" borderColor="#DDD6FE"
+                      text={aiReport?.suggested_30_60_90_day_plan?.day_60}
+                    />
+                    <TimelineCard
+                      phase="90 Days" color="#059669" borderColor="#A7F3D0"
+                      text={aiReport?.suggested_30_60_90_day_plan?.day_90}
+                    />
                   </div>
                 </div>
               </>
             )}
           </main>
         </div>
+
+        {/* ── FLOATING CHAT BUTTON — improvement (replaces nav button) ── */}
+        {!chatOpen && (
+          <button className="chatFab" onClick={() => setChatOpen(true)} aria-label="Open AI chat">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2C5.58 2 2 5.13 2 9c0 2.07 1 3.93 2.6 5.23L3.5 17l3.4-1.36C7.84 15.87 8.9 16 10 16c4.42 0 8-3.13 8-7s-3.58-7-8-7z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
+            </svg>
+            {messages.length > 0 && (
+              <span className="chatFabBadge">{messages.filter(m => m.role === "ai").length}</span>
+            )}
+          </button>
+        )}
 
         {/* ── CHAT PANEL ── */}
         {chatOpen && (
@@ -539,7 +655,10 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 {messages.length === 0 && (
                   <div className="chatWelcome">
                     <h3>Hello{user?.full_name ? `, ${user.full_name.split(" ")[0]}` : ""}!</h3>
-                    <p>{result ? `I've indexed "${result.filename}". Ask me anything.` : "Upload data or connect Jira/Zendesk first, then ask me questions."}</p>
+                    <p>{result
+                      ? `I've indexed "${result.filename}". Ask me anything.`
+                      : "Upload data or connect Jira/Zendesk first, then ask me questions."
+                    }</p>
                   </div>
                 )}
                 {messages.map((msg, i) => (
@@ -550,20 +669,31 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                     )}
                   </div>
                 ))}
-                {chatLoading && <div className="chatTyping"><div className="dot"/><div className="dot"/><div className="dot"/></div>}
+                {chatLoading && (
+                  <div className="chatTyping">
+                    <div className="dot"/><div className="dot"/><div className="dot"/>
+                  </div>
+                )}
                 <div ref={messagesEndRef} />
               </div>
               {messages.length === 0 && (
                 <div className="chatSuggestions">
-                  {SUGGESTIONS.map((s) => <button key={s} className="chatSuggestion" onClick={() => sendChat(s)}>{s}</button>)}
+                  {SUGGESTIONS.map((s) => (
+                    <button key={s} className="chatSuggestion" onClick={() => sendChat(s)}>{s}</button>
+                  ))}
                 </div>
               )}
               <div className="chatInputRow">
-                <textarea className="chatInput" placeholder="Ask about your data…" value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)} rows={1}
+                <textarea
+                  className="chatInput" placeholder="Ask about your data…"
+                  value={chatInput} onChange={(e) => setChatInput(e.target.value)} rows={1}
                   onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendChat(chatInput); } }}
                 />
-                <button className="chatSend" disabled={!chatInput.trim() || chatLoading} onClick={() => sendChat(chatInput)}>
+                <button
+                  className="chatSend"
+                  disabled={!chatInput.trim() || chatLoading}
+                  onClick={() => sendChat(chatInput)}
+                >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M14 8L2 14l2.5-6L2 2l12 6z" stroke="white" strokeWidth="1.5" strokeLinejoin="round"/>
                   </svg>
@@ -578,22 +708,115 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
-function MetricCard({ icon, color, title, value, label }: any) {
+
+// Improvement 1: KPI card with trend badge + ring watermark
+function MetricCard({ icon, color, title, value, label, trend }: any) {
   return (
     <div className="metricCard" style={{ borderTop: `3px solid ${color}` }}>
-      <div className="metricIcon" style={{ background: `${color}18`, color }}>{icon}</div>
+      <div className="metricCardTop">
+        <div className="metricIcon" style={{ background: `${color}18`, color }}>{icon}</div>
+        {trend && (
+          <span className="metricTrend" style={{
+            background: trend.positive ? "#ECFDF5" : "#FFF5F5",
+            color: trend.positive ? "#059669" : "#E53E3E",
+          }}>
+            {trend.label}
+          </span>
+        )}
+      </div>
       <p className="metricTitle">{title}</p>
       <p className="metricValue">{value}</p>
       <span className="metricLabel">{label}</span>
+      {/* Subtle ring watermark in bottom-right */}
+      <svg className="metricRing" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="24" fill="none" stroke={color} strokeWidth="8"/>
+      </svg>
     </div>
   );
 }
 
-function RoadmapCard({ title, text, color }: any) {
+// Improvement 2: Donut ring with breakdown sub-metrics
+function QualityScoreRing({ score, quality, profile }: any) {
+  const r = 38;
+  const circ = 2 * Math.PI * r;
+  const offset = circ - (Math.min(score, 100) / 100) * circ;
+  const ringColor = score >= 80 ? "#059669" : score >= 60 ? "#4F46E5" : "#D97706";
+
+  const missingPct = quality?.missing_percentage ?? 0;
+  const dupePct = profile?.rows ? ((profile.duplicate_rows ?? 0) / profile.rows) * 100 : 0;
+  const issueCount = quality?.issues?.length ?? 0;
+
+  const breakdown = [
+    { label: "Completeness", color: "#4F46E5", pct: Math.max(0, 100 - missingPct) },
+    { label: "No duplicates", color: "#059669", pct: Math.max(0, 100 - dupePct) },
+    { label: "Schema health", color: issueCount === 0 ? "#059669" : "#D97706", pct: issueCount === 0 ? 100 : Math.max(20, 100 - issueCount * 15) },
+  ];
+
   return (
-    <div className="roadmapCard" style={{ borderLeft: `4px solid ${color}` }}>
-      <h3 style={{ color }}>{title}</h3>
-      <p>{text || "Not available yet."}</p>
+    <div className="qualityRingWrap">
+      <svg width="110" height="110" viewBox="0 0 110 110" style={{ flexShrink: 0 }}>
+        <circle cx="55" cy="55" r={r} fill="none" stroke="#EDF2F7" strokeWidth="10"/>
+        <circle
+          cx="55" cy="55" r={r} fill="none" stroke={ringColor} strokeWidth="10"
+          strokeDasharray={circ} strokeDashoffset={offset}
+          strokeLinecap="round" transform="rotate(-90 55 55)"
+          style={{ transition: "stroke-dashoffset 1s ease" }}
+        />
+        <text x="55" y="51" textAnchor="middle" fontSize="24" fontWeight="800" fill="#1A202C">{score}</text>
+        <text x="55" y="66" textAnchor="middle" fontSize="11" fill="#A0AEC0">Grade {quality?.grade}</text>
+      </svg>
+      <div className="ringBreakdown">
+        {breakdown.map((b) => (
+          <div key={b.label} className="ringBreakdownRow">
+            <div className="ringBreakdownLabel">
+              <span className="ringBreakdownDot" style={{ background: b.color }} />
+              <span>{b.label}</span>
+            </div>
+            <div className="ringBreakdownBar">
+              <div style={{ width: `${Math.round(b.pct)}%`, background: b.color }} />
+            </div>
+            <span className="ringBreakdownPct">{Math.round(b.pct)}%</span>
+          </div>
+        ))}
+        {(quality?.issues || []).slice(0, 2).map((issue: string, i: number) => (
+          <div key={i} className="ringIssue">! {issue}</div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Improvement 3: Colour-coded impact badge
+function ImpactBadge({ level }: { level: string }) {
+  const styles: Record<string, { bg: string; color: string; icon: string }> = {
+    High:   { bg: "#ECFDF5", color: "#059669", icon: "↑" },
+    Medium: { bg: "#FFFBEB", color: "#B45309", icon: "→" },
+    Low:    { bg: "#F1F5F9", color: "#64748B", icon: "↓" },
+  };
+  const s = styles[level] || styles.Low;
+  return (
+    <span style={{
+      background: s.bg, color: s.color,
+      fontSize: 11, fontWeight: 600,
+      padding: "3px 9px", borderRadius: 20,
+      display: "inline-flex", alignItems: "center", gap: 4,
+    }}>
+      {s.icon} {level}
+    </span>
+  );
+}
+
+// Improvement 6: Timeline card for roadmap
+function TimelineCard({ phase, color, borderColor, text }: any) {
+  return (
+    <div className="timelineItem">
+      <div className="timelineDot" style={{ color, borderColor }}>
+        <span style={{ fontSize: 10, fontWeight: 700, lineHeight: 1 }}>{phase.split(" ")[0]}</span>
+      </div>
+      <div className="timelineBody">
+        <div className="timelinePhase" style={{ color }}>{phase}</div>
+        <p className="timelineText">{text || "Plan not available yet."}</p>
+      </div>
     </div>
   );
 }
@@ -602,7 +825,9 @@ function FormField({ label, placeholder, value, onChange, type = "text" }: any) 
   return (
     <div>
       <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#4A5568", marginBottom: 5 }}>{label}</label>
-      <input type={type} value={value} onChange={e => onChange(e.target.value)} placeholder={placeholder}
+      <input
+        type={type} value={value} placeholder={placeholder}
+        onChange={e => onChange(e.target.value)}
         style={{ width: "100%", padding: "9px 12px", border: "1.5px solid #E2E8F0", borderRadius: 8, fontSize: 13, outline: "none", boxSizing: "border-box" as const }}
         onFocus={e => e.target.style.borderColor = "#4F46E5"}
         onBlur={e => e.target.style.borderColor = "#E2E8F0"}
@@ -637,8 +862,6 @@ const styles = `
   .navLogout:hover { border-color: #CBD5E0; }
   .sidebarToggle { background: none; border: none; font-size: 18px; cursor: pointer; color: #4A5568; padding: 4px 6px; border-radius: 6px; }
   .sidebarToggle:hover { background: #F7FAFC; }
-  .chatToggle { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: #fff; border: none; border-radius: 8px; padding: 7px 13px; font-size: 13px; font-weight: 600; cursor: pointer; }
-  .chatToggle:hover { opacity: 0.9; }
 
   /* LAYOUT */
   .layout { display: flex; flex: 1; overflow: hidden; }
@@ -653,25 +876,45 @@ const styles = `
   .connectorBtn { width: 100%; display: flex; align-items: center; gap: 8px; background: #F7FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 8px 12px; font-size: 13px; color: #4A5568; cursor: pointer; margin-bottom: 6px; text-align: left; font-weight: 500; transition: background 0.15s; }
   .connectorBtn:hover { background: #EEF2FF; border-color: #C7D2FE; color: #4F46E5; }
   .connectorIcon { font-size: 14px; }
-  .sidebarFileBox { display: flex; align-items: center; background: #F7FAFC; border: 1.5px dashed #CBD5E0; border-radius: 8px; padding: 8px 10px; font-size: 12px; color: #718096; cursor: pointer; margin-bottom: 8px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* DRAG-AND-DROP ZONE (improvement 4) */
+  .dropZone { display: flex; flex-direction: column; align-items: center; gap: 5px; background: #F7FAFC; border: 1.5px dashed #CBD5E0; border-radius: 10px; padding: 14px 10px; font-size: 12px; color: #718096; cursor: pointer; margin-bottom: 8px; text-align: center; transition: background 0.15s, border-color 0.15s; }
+  .dropZone:hover { background: #EEF2FF; border-color: #A5B4FC; }
+  .dropZone.dragOver { background: #EEF2FF; border-color: #4F46E5; border-style: solid; }
+  .dropZone.hasFile { border-color: #059669; border-style: solid; background: #F0FDF4; }
+  .dropZoneIcon { font-size: 20px; line-height: 1; }
+  .dropZoneText { font-size: 12px; font-weight: 500; color: #4A5568; word-break: break-all; }
+  .dropZoneSub { font-size: 10.5px; color: #A0AEC0; }
+
   .sidebarUploadBtn { width: 100%; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: #fff; border: none; border-radius: 8px; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; }
   .sidebarUploadBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .uploadingRow { display: flex; align-items: center; justify-content: center; gap: 8px; }
+  .spinnerDots { display: flex; gap: 3px; align-items: center; }
+  .spinnerDots span { width: 5px; height: 5px; border-radius: 50%; background: #fff; animation: blink 1.2s infinite; }
+  .spinnerDots span:nth-child(2) { animation-delay: 0.2s; }
+  .spinnerDots span:nth-child(3) { animation-delay: 0.4s; }
+
   .sidebarError { font-size: 11px; color: #E53E3E; margin-top: 6px; }
   .sidebarEmpty { font-size: 12px; color: #A0AEC0; padding: 8px 0; }
   .runList { overflow-y: auto; flex: 1; padding: 4px 0; }
+
+  /* RUN HISTORY with score bars (improvement 5) */
   .runItem { width: 100%; background: none; border: none; text-align: left; padding: 10px 12px; cursor: pointer; border-radius: 8px; margin-bottom: 2px; transition: background 0.15s; }
   .runItem:hover { background: #F7FAFC; }
   .runItem.active { background: #EEF2FF; }
-  .runItemName { font-size: 12px; font-weight: 600; color: #2D3748; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 4px; }
-  .runItemMeta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #A0AEC0; }
-  .runGrade { font-weight: 700; font-size: 11px; padding: 1px 6px; border-radius: 4px; }
+  .runItemTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; gap: 6px; }
+  .runItemName { font-size: 12px; font-weight: 600; color: #2D3748; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .runScoreBarTrack { height: 4px; background: #EDF2F7; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
+  .runScoreBarFill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+  .runItemMeta { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: #A0AEC0; }
+  .runGrade { font-weight: 700; font-size: 11px; padding: 1px 6px; border-radius: 4px; flex-shrink: 0; }
   .gradeA { background: #ECFDF5; color: #059669; }
   .gradeB { background: #EEF2FF; color: #4F46E5; }
   .gradeC { background: #FFFBEB; color: #D97706; }
   .gradeD, .gradeF { background: #FFF5F5; color: #E53E3E; }
 
   /* MAIN */
-  .main { flex: 1; overflow-y: auto; padding: 28px 28px; display: flex; flex-direction: column; gap: 20px; }
+  .main { flex: 1; overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 20px; }
 
   /* SOURCE BANNER */
   .sourceBanner { display: flex; align-items: center; justify-content: space-between; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 10px; padding: 10px 16px; font-size: 13px; color: #4A5568; }
@@ -685,13 +928,16 @@ const styles = `
   .emptyStep { display: flex; align-items: center; gap: 8px; background: #F7FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 8px 14px; font-size: 12px; color: #4A5568; font-weight: 500; }
   .stepNum { width: 20px; height: 20px; border-radius: 50%; background: #4F46E5; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
-  /* KPI */
+  /* KPI — improvement 1 */
   .kpiGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .metricCard { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 5px; }
-  .metricIcon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .metricCard { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 5px; position: relative; overflow: hidden; }
+  .metricCardTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .metricIcon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+  .metricTrend { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 20px; }
   .metricTitle { font-size: 11px; font-weight: 600; color: #718096; text-transform: uppercase; letter-spacing: 0.6px; }
   .metricValue { font-size: 24px; font-weight: 800; color: #1A202C; letter-spacing: -0.5px; line-height: 1; }
   .metricLabel { font-size: 11px; color: #A0AEC0; }
+  .metricRing { position: absolute; right: -10px; bottom: -10px; width: 60px; height: 60px; opacity: 0.07; }
 
   /* CARDS */
   .card { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #E2E8F0; }
@@ -705,11 +951,18 @@ const styles = `
   .aiSummary { font-size: 13.5px; color: #4A5568; line-height: 1.7; background: #F7FAFC; border-left: 3px solid #4F46E5; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 16px; }
   .card h3 { font-size: 12px; font-weight: 600; color: #718096; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
   .muted { font-size: 13.5px; color: #4A5568; line-height: 1.6; }
-  .readinessBar { background: #EDF2F7; border-radius: 8px; height: 10px; margin-bottom: 18px; overflow: hidden; }
-  .readinessBar > div { height: 100%; background: linear-gradient(90deg, #4F46E5, #7C3AED); border-radius: 8px; transition: width 0.8s; }
-  .cleanList { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-  .cleanList li { font-size: 12.5px; color: #E53E3E; background: #FFF5F5; border-radius: 7px; padding: 7px 11px; display: flex; align-items: center; gap: 8px; }
-  .cleanList li::before { content: '!'; width: 16px; height: 16px; border-radius: 50%; background: #FC8181; color: #fff; font-size: 10px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  /* QUALITY RING — improvement 2 */
+  .qualityRingWrap { display: flex; align-items: flex-start; gap: 18px; }
+  .ringBreakdown { flex: 1; display: flex; flex-direction: column; gap: 10px; padding-top: 4px; }
+  .ringBreakdownRow { display: flex; align-items: center; gap: 8px; }
+  .ringBreakdownLabel { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4A5568; min-width: 110px; }
+  .ringBreakdownDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .ringBreakdownBar { flex: 1; height: 5px; background: #EDF2F7; border-radius: 3px; overflow: hidden; }
+  .ringBreakdownBar > div { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .ringBreakdownPct { font-size: 11px; font-weight: 600; color: #4A5568; min-width: 32px; text-align: right; }
+  .ringIssue { font-size: 11.5px; color: #E53E3E; background: #FFF5F5; border-radius: 6px; padding: 5px 9px; }
+
   .barList { display: flex; flex-direction: column; gap: 12px; }
   .barRow { display: flex; flex-direction: column; gap: 5px; }
   .barLabel { display: flex; justify-content: space-between; font-size: 12.5px; color: #4A5568; }
@@ -721,17 +974,28 @@ const styles = `
   .cluster strong { font-size: 12.5px; color: #2D3748; display: block; margin-bottom: 2px; }
   .cluster p { font-size: 11.5px; color: #A0AEC0; }
   .clusterBadge { background: #EEF2FF; color: #4F46E5; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+
+  /* TABLE — improvement 3 */
   .tableWrap { overflow-x: auto; border-radius: 9px; border: 1px solid #E2E8F0; }
   table { width: 100%; border-collapse: collapse; }
   thead { background: #F7FAFC; }
   th { padding: 10px 13px; text-align: left; font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #E2E8F0; }
   td { padding: 10px 13px; font-size: 12.5px; color: #4A5568; border-bottom: 1px solid #F7FAFC; }
   tbody tr:last-child td { border-bottom: none; }
-  tbody tr:hover td { background: #F7FAFC; }
-  .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .roadmapCard { border-radius: 11px; padding: 18px; border: 1px solid #E2E8F0; background: #F7FAFC; }
-  .roadmapCard h3 { font-size: 12px; font-weight: 700; margin-bottom: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
-  .roadmapCard p { font-size: 12.5px; color: #4A5568; line-height: 1.6; }
+  .oppRow:hover td { background: #F7FAFC; }
+  .oppRow .askAiBtn { opacity: 0; }
+  .oppRow:hover .askAiBtn { opacity: 1; }
+  .askAiBtn { background: #EEF2FF; color: #4F46E5; border: none; border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity 0.15s, background 0.15s; }
+  .askAiBtn:hover { background: #E0E7FF; }
+
+  /* TIMELINE ROADMAP — improvement 6 */
+  .timeline { display: flex; gap: 0; position: relative; padding-top: 0; }
+  .timelineTrack { position: absolute; top: 20px; left: 22px; right: 22px; height: 2px; background: #E2E8F0; z-index: 0; }
+  .timelineItem { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; position: relative; z-index: 1; }
+  .timelineDot { width: 42px; height: 42px; border-radius: 50%; border: 2px solid; display: flex; align-items: center; justify-content: center; background: #fff; flex-shrink: 0; }
+  .timelineBody { background: #F7FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 14px; text-align: center; width: calc(100% - 16px); }
+  .timelinePhase { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 7px; }
+  .timelineText { font-size: 12.5px; color: #4A5568; line-height: 1.6; }
 
   /* BUTTONS */
   .btn { border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
@@ -767,7 +1031,12 @@ const styles = `
   .onboardingDesc { font-size: 13px; color: #718096; line-height: 1.5; }
   .onboardingNav { display: flex; gap: 10px; justify-content: flex-end; }
 
-  /* CHAT */
+  /* FLOATING CHAT BUTTON */
+  .chatFab { position: fixed; bottom: 28px; right: 28px; width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #4F46E5, #7C3AED); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 18px rgba(79,70,229,0.4); z-index: 150; transition: transform 0.15s, box-shadow 0.15s; }
+  .chatFab:hover { transform: scale(1.06); box-shadow: 0 6px 22px rgba(79,70,229,0.5); }
+  .chatFabBadge { position: absolute; top: -3px; right: -3px; width: 18px; height: 18px; background: #EF4444; border-radius: 50%; border: 2px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-weight: 700; }
+
+  /* CHAT PANEL */
   .chatOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 200; display: flex; justify-content: flex-end; }
   .chatPanel { width: 400px; max-width: 100vw; height: 100vh; background: #fff; display: flex; flex-direction: column; box-shadow: -4px 0 24px rgba(0,0,0,0.15); animation: slideIn 0.2s ease-out; }
   @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
@@ -803,8 +1072,11 @@ const styles = `
   @media (max-width: 900px) {
     .kpiGrid { grid-template-columns: repeat(2, 1fr); }
     .gridTwo { grid-template-columns: 1fr; }
-    .roadmap { grid-template-columns: 1fr; }
+    .timeline { flex-direction: column; }
+    .timelineTrack { top: 22px; left: 20px; right: auto; width: 2px; height: calc(100% - 44px); }
     .sidebar { position: absolute; z-index: 50; height: calc(100vh - 58px); }
     .chatPanel { width: 100vw; }
+    .chatFab { bottom: 20px; right: 20px; }
+    .qualityRingWrap { flex-direction: column; align-items: center; }
   }
 `;
