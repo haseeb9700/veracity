@@ -488,6 +488,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
           {/* ── MAIN CONTENT ── */}
           <main className="main">
             {!result && (
+              <>
               <div
                 className={`emptyState ${dragging ? "emptyDragging" : ""}`}
                 onDragOver={handleDragOver}
@@ -567,20 +568,166 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   {/* Feature preview strip */}
                   <div className="emptyFeatures">
                     {[
-                      { icon: "📊", title: "Quality Score", desc: "A/B/C grade + detailed breakdown" },
-                      { icon: "⚡", title: "Bottleneck Detection", desc: "Slowest teams & ticket types" },
-                      { icon: "💰", title: "Automation ROI", desc: "Cost savings estimate in $" },
-                      { icon: "💬", title: "AI Chat", desc: "Ask anything about your data" },
+                      { icon: "📊", title: "Quality Score", desc: "A/B/C grade + detailed breakdown", id: "feat-quality" },
+                      { icon: "⚡", title: "Bottleneck Detection", desc: "Slowest teams & ticket types", id: "feat-bottleneck" },
+                      { icon: "💰", title: "Automation ROI", desc: "Cost savings estimate in $", id: "feat-roi" },
+                      { icon: "💬", title: "AI Chat", desc: "Ask anything about your data", id: "feat-chat" },
                     ].map((f) => (
-                      <div key={f.title} className="emptyFeatureCard">
+                      <div
+                        key={f.title}
+                        className="emptyFeatureCard"
+                        onClick={() => document.getElementById(f.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                      >
                         <div className="emptyFeatureCardIcon">{f.icon}</div>
                         <div className="emptyFeatureCardTitle">{f.title}</div>
                         <div className="emptyFeatureCardDesc">{f.desc}</div>
+                        <div className="emptyFeatureCardArrow">↓ Learn more</div>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
+
+              {/* ── FEATURE DETAIL SECTIONS ── */}
+
+              {/* Quality Score */}
+              <div id="feat-quality" className="featSection">
+                <div className="featSectionInner">
+                  <div className="featSectionContent">
+                    <div className="featBadge" style={{ background: "#EEF2FF", color: "#4F46E5" }}>📊 Quality Score</div>
+                    <h3 className="featTitle">Know exactly how clean your data is</h3>
+                    <p className="featDesc">Every upload is instantly graded A through F. Veracity checks for missing values, duplicate rows, schema mismatches, and inconsistent formats — so you always know what you're working with before it causes problems downstream.</p>
+                    <ul className="featBenefits">
+                      <li><span className="featCheck">✓</span> Detects missing fields and empty columns</li>
+                      <li><span className="featCheck">✓</span> Flags duplicate rows and fuzzy matches</li>
+                      <li><span className="featCheck">✓</span> Validates schema against expected ticket structure</li>
+                      <li><span className="featCheck">✓</span> Alerts you if quality drops vs your last upload</li>
+                    </ul>
+                  </div>
+                  <div className="featSectionVisual">
+                    <svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="110" cy="110" r="90" fill="#EEF2FF" />
+                      <circle cx="110" cy="110" r="72" fill="none" stroke="#E0E7FF" strokeWidth="18"/>
+                      <circle cx="110" cy="110" r="72" fill="none" stroke="#4F46E5" strokeWidth="18" strokeDasharray="360" strokeDashoffset="65" strokeLinecap="round" transform="rotate(-90 110 110)"/>
+                      <text x="110" y="100" textAnchor="middle" fontSize="38" fontWeight="800" fill="#4F46E5">A</text>
+                      <text x="110" y="126" textAnchor="middle" fontSize="13" fill="#718096">Quality Grade</text>
+                      <circle cx="38" cy="60" r="22" fill="#DCFCE7"/>
+                      <text x="38" y="66" textAnchor="middle" fontSize="11" fontWeight="700" fill="#059669">98%</text>
+                      <text x="38" y="98" textAnchor="middle" fontSize="9" fill="#718096">Complete</text>
+                      <circle cx="182" cy="60" r="22" fill="#FEF3C7"/>
+                      <text x="182" y="66" textAnchor="middle" fontSize="11" fontWeight="700" fill="#D97706">2</text>
+                      <text x="182" y="98" textAnchor="middle" fontSize="9" fill="#718096">Dupes</text>
+                      <circle cx="38" cy="166" r="22" fill="#E0E7FF"/>
+                      <text x="38" y="172" textAnchor="middle" fontSize="11" fontWeight="700" fill="#4F46E5">✓</text>
+                      <text x="38" y="202" textAnchor="middle" fontSize="9" fill="#718096">Schema OK</text>
+                      <circle cx="182" cy="166" r="22" fill="#DCFCE7"/>
+                      <text x="182" y="172" textAnchor="middle" fontSize="11" fontWeight="700" fill="#059669">85</text>
+                      <text x="182" y="202" textAnchor="middle" fontSize="9" fill="#718096">Score</text>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottleneck Detection */}
+              <div id="feat-bottleneck" className="featSection">
+                <div className="featSectionInner featSectionReverse">
+                  <div className="featSectionContent">
+                    <div className="featBadge" style={{ background: "#FFFBEB", color: "#D97706" }}>⚡ Bottleneck Detection</div>
+                    <h3 className="featTitle">Find exactly where your process breaks down</h3>
+                    <p className="featDesc">Veracity analyses resolution times, escalation patterns, and ticket volumes by team and category. Instead of guessing where your support process slows down, you get a ranked list of the exact bottlenecks costing you time and money.</p>
+                    <ul className="featBenefits">
+                      <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Ranks slowest departments and ticket types</li>
+                      <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Identifies escalation and handoff delays</li>
+                      <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Surfaces high-volume, low-complexity tickets</li>
+                      <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Highlights SLA breaches and repeat contacts</li>
+                    </ul>
+                  </div>
+                  <div className="featSectionVisual">
+                    <div className="featBarChart">
+                      {[
+                        { label: "Billing", pct: 85, color: "#EF4444" },
+                        { label: "Returns", pct: 70, color: "#F59E0B" },
+                        { label: "Technical", pct: 55, color: "#F59E0B" },
+                        { label: "Shipping", pct: 38, color: "#10B981" },
+                        { label: "General", pct: 22, color: "#10B981" },
+                      ].map((b) => (
+                        <div key={b.label} className="featBar">
+                          <span className="featBarLabel">{b.label}</span>
+                          <div className="featBarTrack">
+                            <div className="featBarFill" style={{ width: `${b.pct}%`, background: b.color }} />
+                          </div>
+                          <span className="featBarVal">{b.pct}h</span>
+                        </div>
+                      ))}
+                      <div className="featBarSubtitle">Avg. resolution time by department</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Automation ROI */}
+              <div id="feat-roi" className="featSection">
+                <div className="featSectionInner">
+                  <div className="featSectionContent">
+                    <div className="featBadge" style={{ background: "#F0FDF4", color: "#059669" }}>💰 Automation ROI</div>
+                    <h3 className="featTitle">Make the business case in seconds</h3>
+                    <p className="featDesc">Veracity identifies your most repetitive ticket types and estimates exactly how much you'd save by automating them — in dollars, per year. Stop arguing about ROI and start with a number backed by your own data.</p>
+                    <ul className="featBenefits">
+                      <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Finds top automation candidates by volume</li>
+                      <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Estimates annual cost savings in dollars</li>
+                      <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Ranks opportunities by effort vs impact</li>
+                      <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Generates a prioritised action list</li>
+                    </ul>
+                  </div>
+                  <div className="featSectionVisual">
+                    <div className="featRoiCard">
+                      <div className="featRoiLabel">Estimated Annual Savings</div>
+                      <div className="featRoiAmount">$48,200</div>
+                      <div className="featRoiItems">
+                        {[
+                          { name: "Password resets", saving: "$12,400" },
+                          { name: "Order status", saving: "$9,800" },
+                          { name: "Refund requests", saving: "$8,600" },
+                        ].map((r) => (
+                          <div key={r.name} className="featRoiItem">
+                            <span>{r.name}</span>
+                            <span className="featRoiItemVal">{r.saving}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="featRoiFooter">Based on your ticket data</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* AI Chat */}
+              <div id="feat-chat" className="featSection">
+                <div className="featSectionInner featSectionReverse">
+                  <div className="featSectionContent">
+                    <div className="featBadge" style={{ background: "#EFF6FF", color: "#3B82F6" }}>💬 AI Chat</div>
+                    <h3 className="featTitle">Ask anything. Get answers instantly.</h3>
+                    <p className="featDesc">A GPT-powered assistant that knows your data inside and out. Ask in plain English — it answers from your actual uploaded tickets. No SQL, no dashboards, no waiting for a data analyst.</p>
+                    <ul className="featBenefits">
+                      <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Natural language questions, specific answers</li>
+                      <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Cites which run and file each answer came from</li>
+                      <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Can compute live stats directly from your CSV</li>
+                      <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Asks follow-up questions to refine results</li>
+                    </ul>
+                  </div>
+                  <div className="featSectionVisual">
+                    <div className="featChatMock">
+                      <div className="featChatMsg featChatUser">What's our average ticket resolution time?</div>
+                      <div className="featChatMsg featChatAi">Based on your last upload, the average resolution time is <strong>18.4 hours</strong>. The Billing team is the slowest at 42h, while Shipping resolves in under 6h.</div>
+                      <div className="featChatMsg featChatUser">Which ticket type should we automate first?</div>
+                      <div className="featChatMsg featChatAi">Password resets — 847 tickets last month, 95% resolved with the same 3-step response. Automating this alone saves ~<strong>$12,400/year</strong>.</div>
+                      <div className="featChatTyping"><span/><span/><span/></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              </>
             )}
 
             {result && (
@@ -1162,11 +1309,55 @@ const styles = `
 
   /* Feature preview */
   .emptyFeatures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
-  .emptyFeatureCard { background: #fff; border: 1.5px solid #EDF2F7; border-radius: 12px; padding: 16px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.18s; }
-  .emptyFeatureCard:hover { border-color: #C7D2FE; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(79,70,229,0.08); }
+  .emptyFeatureCard { background: #fff; border: 1.5px solid #EDF2F7; border-radius: 12px; padding: 16px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.18s; cursor: pointer; }
+  .emptyFeatureCard:hover { border-color: #C7D2FE; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(79,70,229,0.1); }
   .emptyFeatureCardIcon { font-size: 22px; }
   .emptyFeatureCardTitle { font-size: 12px; font-weight: 700; color: #2D3748; }
   .emptyFeatureCardDesc { font-size: 11px; color: #A0AEC0; line-height: 1.4; }
+  .emptyFeatureCardArrow { font-size: 10.5px; color: #4F46E5; font-weight: 600; margin-top: 2px; opacity: 0; transition: opacity 0.15s; }
+  .emptyFeatureCard:hover .emptyFeatureCardArrow { opacity: 1; }
+
+  /* ── FEATURE DETAIL SECTIONS ── */
+  .featSection { background: #fff; border-radius: 20px; border: 1.5px solid #EDF2F7; padding: 48px 52px; animation: emptyFadeUp 0.5s ease both; }
+  .featSectionInner { display: flex; align-items: center; gap: 56px; }
+  .featSectionReverse { flex-direction: row-reverse; }
+  .featSectionContent { flex: 1; min-width: 0; }
+  .featSectionVisual { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .featBadge { display: inline-block; font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
+  .featTitle { font-size: 22px; font-weight: 800; color: #1A202C; margin: 0 0 12px; line-height: 1.3; }
+  .featDesc { font-size: 14px; color: #718096; line-height: 1.75; margin: 0 0 20px; }
+  .featBenefits { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 11px; }
+  .featBenefits li { font-size: 13.5px; color: #4A5568; font-weight: 500; display: flex; align-items: flex-start; gap: 10px; }
+  .featCheck { color: #4F46E5; font-weight: 700; flex-shrink: 0; }
+
+  /* Bar chart visual */
+  .featBarChart { display: flex; flex-direction: column; gap: 10px; width: 260px; background: #F7FAFC; border-radius: 14px; padding: 20px; }
+  .featBar { display: flex; align-items: center; gap: 8px; }
+  .featBarLabel { font-size: 11.5px; color: #4A5568; font-weight: 600; width: 60px; flex-shrink: 0; text-align: right; }
+  .featBarTrack { flex: 1; height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden; }
+  .featBarFill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+  .featBarVal { font-size: 11px; color: #A0AEC0; width: 28px; }
+  .featBarSubtitle { font-size: 10.5px; color: #A0AEC0; text-align: center; margin-top: 4px; }
+
+  /* ROI card visual */
+  .featRoiCard { background: #F0FDF4; border: 1.5px solid #BBF7D0; border-radius: 16px; padding: 24px; width: 260px; }
+  .featRoiLabel { font-size: 11px; color: #059669; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .featRoiAmount { font-size: 38px; font-weight: 900; color: #065F46; margin-bottom: 18px; }
+  .featRoiItems { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .featRoiItem { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: #374151; background: #fff; border-radius: 8px; padding: 8px 10px; }
+  .featRoiItemVal { font-weight: 700; color: #059669; }
+  .featRoiFooter { font-size: 10.5px; color: #6EE7B7; text-align: center; }
+
+  /* Chat mock visual */
+  .featChatMock { display: flex; flex-direction: column; gap: 10px; width: 280px; background: #F7FAFC; border-radius: 14px; padding: 16px; }
+  .featChatMsg { font-size: 12.5px; line-height: 1.5; padding: 10px 13px; border-radius: 12px; max-width: 90%; }
+  .featChatUser { background: #4F46E5; color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .featChatAi { background: #fff; color: #374151; border: 1px solid #E2E8F0; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .featChatTyping { display: flex; gap: 4px; padding: 8px 12px; background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; border-bottom-left-radius: 4px; align-self: flex-start; width: fit-content; }
+  .featChatTyping span { width: 6px; height: 6px; background: #A0AEC0; border-radius: 50%; animation: typingDot 1.2s infinite; }
+  .featChatTyping span:nth-child(2) { animation-delay: 0.2s; }
+  .featChatTyping span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingDot { 0%,80%,100% { transform: scale(0.7); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
   .stepNum { width: 20px; height: 20px; border-radius: 50%; background: #4F46E5; color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
 
   /* KPI — improvement 1 */
