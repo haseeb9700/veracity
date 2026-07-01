@@ -254,3 +254,19 @@ def get_run(run_id: int, current_user: User = Depends(get_current_user), db=Depe
         "schema_validation": run.schema_validation,
         "ai_advisor_report": run.ai_advisor_report,
     }
+
+
+# ── Delete run (protected, user-scoped) ───────────────────────────────────────
+@app.delete("/runs/{run_id}")
+def delete_run(run_id: int, current_user: User = Depends(get_current_user), db=Depends(get_db)):
+    run = db.query(AnalysisRun).filter(
+        AnalysisRun.id == run_id,
+        AnalysisRun.user_id == current_user.id,
+    ).first()
+
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+
+    db.delete(run)
+    db.commit()
+    return {"deleted": True, "run_id": run_id}

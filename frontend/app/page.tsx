@@ -51,6 +51,9 @@ export default function Home() {
   const [qualityAlert, setQualityAlert] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Delete confirmation
+  const [deleteTarget, setDeleteTarget] = useState<RunSummary | null>(null);
+
   // Modals
   const [showConnector, setShowConnector] = useState<"jira" | "zendesk" | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -97,6 +100,19 @@ export default function Home() {
       const res = await fetch(`${API}/runs`, { headers: { Authorization: `Bearer ${token}` } });
       if (res.ok) setRuns(await res.json());
     } catch {}
+  }
+
+  async function deleteRun(run_id: number) {
+    if (!user) return;
+    try {
+      await fetch(`${API}/runs/${run_id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${user.access_token}` },
+      });
+      setRuns(prev => prev.filter(r => r.run_id !== run_id));
+      if (result?.run_id === run_id) setResult(null);
+    } catch {}
+    setDeleteTarget(null);
   }
 
   async function loadRun(run_id: number) {
@@ -430,30 +446,40 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div className="runList">
                 {runs.length === 0 && <p className="sidebarEmpty">No analyses yet</p>}
                 {runs.map((r) => (
-                  <button
+                  <div
                     key={r.run_id}
                     className={`runItem ${result?.run_id === r.run_id ? "active" : ""}`}
-                    onClick={() => loadRun(r.run_id)}
                   >
-                    <div className="runItemTop">
-                      <div className="runItemName">{r.filename}</div>
-                      <span className={`runGrade grade${r.grade}`}>{r.grade}</span>
+                    <div className="runItemClickable" onClick={() => loadRun(r.run_id)}>
+                      <div className="runItemTop">
+                        <div className="runItemName">{r.filename}</div>
+                        <span className={`runGrade grade${r.grade}`}>{r.grade}</span>
+                      </div>
+                      <div className="runScoreBarTrack">
+                        <div
+                          className="runScoreBarFill"
+                          style={{
+                            width: `${r.quality_score}%`,
+                            background: r.quality_score >= 80 ? "#059669" : r.quality_score >= 60 ? "#4F46E5" : "#D97706",
+                          }}
+                        />
+                      </div>
+                      <div className="runItemMeta">
+                        <span>{r.quality_score}/100</span>
+                        <span>{r.rows?.toLocaleString()} rows</span>
+                        <span>{new Date(r.created_at).toLocaleDateString()}</span>
+                      </div>
                     </div>
-                    <div className="runScoreBarTrack">
-                      <div
-                        className="runScoreBarFill"
-                        style={{
-                          width: `${r.quality_score}%`,
-                          background: r.quality_score >= 80 ? "#059669" : r.quality_score >= 60 ? "#4F46E5" : "#D97706",
-                        }}
-                      />
-                    </div>
-                    <div className="runItemMeta">
-                      <span>{r.quality_score}/100</span>
-                      <span>{r.rows?.toLocaleString()} rows</span>
-                      <span>{new Date(r.created_at).toLocaleDateString()}</span>
-                    </div>
-                  </button>
+                    <button
+                      className="runDeleteBtn"
+                      title="Delete this run"
+                      onClick={(e) => { e.stopPropagation(); setDeleteTarget(r); }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/>
+                      </svg>
+                    </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -655,6 +681,22 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
             )}
           </main>
         </div>
+
+        {/* ── DELETE CONFIRMATION MODAL ── */}
+        {deleteTarget && (
+          <div className="deleteOverlay" onClick={() => setDeleteTarget(null)}>
+            <div className="deleteModal" onClick={e => e.stopPropagation()}>
+              <div className="deleteModalIcon">🗑️</div>
+              <h3 className="deleteModalTitle">Delete this file?</h3>
+              <p className="deleteModalFile">"{deleteTarget.filename}"</p>
+              <p className="deleteModalSub">This will permanently remove the analysis and all its data.</p>
+              <div className="deleteModalActions">
+                <button className="deleteBtnNo" onClick={() => setDeleteTarget(null)}>No, keep it</button>
+                <button className="deleteBtnYes" onClick={() => deleteRun(deleteTarget.run_id)}>Yes, delete</button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* ── FLOATING CHAT BUTTON + GREETING BUBBLE ── */}
         {!chatOpen && (
@@ -942,11 +984,15 @@ const styles = `
   .runList { overflow-y: auto; flex: 1; padding: 4px 0; }
 
   /* RUN HISTORY with score bars (improvement 5) */
-  .runItem { width: 100%; background: none; border: none; text-align: left; padding: 10px 12px; cursor: pointer; border-radius: 8px; margin-bottom: 2px; transition: background 0.15s; }
+  .runItem { width: 100%; background: none; border: none; text-align: left; border-radius: 8px; margin-bottom: 2px; transition: background 0.15s; display: flex; align-items: stretch; position: relative; }
   .runItem:hover { background: #F7FAFC; }
   .runItem.active { background: #EEF2FF; }
+  .runItemClickable { flex: 1; padding: 10px 12px; cursor: pointer; min-width: 0; }
   .runItemTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; gap: 6px; }
   .runItemName { font-size: 12px; font-weight: 600; color: #2D3748; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+  .runDeleteBtn { flex-shrink: 0; background: none; border: none; cursor: pointer; color: #CBD5E0; padding: 0 10px; border-radius: 0 8px 8px 0; transition: color 0.15s, background 0.15s; display: flex; align-items: center; opacity: 0; }
+  .runItem:hover .runDeleteBtn { opacity: 1; }
+  .runDeleteBtn:hover { color: #E53E3E; background: #FFF5F5; }
   .runScoreBarTrack { height: 4px; background: #EDF2F7; border-radius: 3px; overflow: hidden; margin-bottom: 5px; }
   .runScoreBarFill { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
   .runItemMeta { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: #A0AEC0; }
@@ -975,6 +1021,21 @@ const styles = `
   .alertAskBtn:hover { opacity: 0.88; }
   .alertClose { background: none; border: none; cursor: pointer; color: #B45309; font-size: 16px; padding: 2px; flex-shrink: 0; border-radius: 5px; }
   .alertClose:hover { background: #FEF3C7; }
+
+  /* DELETE CONFIRMATION MODAL */
+  .deleteOverlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 999; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.15s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .deleteModal { background: #fff; border-radius: 16px; padding: 32px 28px 24px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: modalPop 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes modalPop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+  .deleteModalIcon { font-size: 36px; margin-bottom: 12px; }
+  .deleteModalTitle { font-size: 18px; font-weight: 700; color: #1A202C; margin: 0 0 10px; }
+  .deleteModalFile { font-size: 13px; font-weight: 600; color: #4F46E5; background: #EEF2FF; border-radius: 8px; padding: 7px 14px; margin: 0 0 10px; word-break: break-all; }
+  .deleteModalSub { font-size: 13px; color: #718096; margin: 0 0 24px; }
+  .deleteModalActions { display: flex; gap: 10px; }
+  .deleteBtnNo { flex: 1; background: #fff; border: 1.5px solid #CBD5E0; color: #4A5568; font-size: 14px; font-weight: 600; padding: 11px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+  .deleteBtnNo:hover { background: #F7FAFC; }
+  .deleteBtnYes { flex: 1; background: #E53E3E; border: none; color: #fff; font-size: 14px; font-weight: 600; padding: 11px; border-radius: 10px; cursor: pointer; transition: background 0.15s; }
+  .deleteBtnYes:hover { background: #C53030; }
 
   /* EMPTY STATE */
   .emptyState { background: #fff; border-radius: 16px; border: 1.5px dashed #CBD5E0; padding: 60px 32px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
