@@ -357,16 +357,12 @@ def seed_knowledge_base():
         print(f"[RAG] seed_knowledge_base failed: {e}")
 
 
-# ── Main chat function (Advanced RAG) ─────────────────────────────────────────
+# ── Main chat function (LangGraph Agent) ──────────────────────────────────────
 def chat(query: str, run_id: Optional[int] = None, n_results: int = 6) -> dict:
     """
-    Advanced RAG pipeline:
-      1. Rewrite query for better retrieval
-      2. Embed rewritten query
-      3. Vector search (ChromaDB) + BM25 keyword search
-      4. Merge with Reciprocal Rank Fusion
-      5. Re-rank top chunks with GPT
-      6. Generate grounded answer from top chunks
+    LangGraph RAG Agent:
+      Graph: rewrite → retrieve → grade_docs → generate → grade_answer
+      With retry loop via transform_query if answer is not useful.
 
     Returns: {"answer": str, "sources": list[str], "rewritten_query": str}
     """
@@ -378,93 +374,7 @@ def chat(query: str, run_id: Optional[int] = None, n_results: int = 6) -> dict:
         }
 
     try:
-        # ── 1. Query rewriting ────────────────────────────────────────────
-        rewritten = _rewrite_query(query)
-        print(f"[RAG] Original: '{query}' → Rewritten: '{rewritten}'")
-
-        # ── 2. Embed rewritten query ──────────────────────────────────────
-        q_embedding = _embed([rewritten])[0]
-
-        # ── 3. Collect candidate chunks ───────────────────────────────────
-        all_chunks: dict[str, dict] = {}  # id → chunk
-
-        def _add_chunks(col, where=None, n=n_results):
-            results = _query_collection(col, q_embedding, n, where)
-            for c in results:
-                all_chunks[c["id"]] = c
-
-        # Run-specific first
-        if run_id is not None:
-            _add_chunks(_runs_col(), where={"run_id": run_id})
-            _add_chunks(_csv_col(), where={"run_id": run_id})
-
-        # Cross-run search
-        _add_chunks(_runs_col(), n=n_results)
-
-        # Knowledge base
-        _add_chunks(_kb_col(), n=3)
-
-        if not all_chunks:
-            return {
-                "answer": "No data indexed yet. Upload a CSV or connect Jira/Zendesk first.",
-                "sources": [],
-                "rewritten_query": rewritten,
-            }
-
-        chunk_list = list(all_chunks.values())
-        docs_text = [c["text"] for c in chunk_list]
-
-        # ── 4. BM25 keyword search + RRF ─────────────────────────────────
-        # Vector ranking order (already sorted by similarity from ChromaDB)
-        vector_ids = [c["id"] for c in chunk_list]
-
-        # BM25 ranking
-        bm25_ranked = _bm25_search(rewritten, docs_text, top_k=len(docs_text))
-        bm25_ids = [chunk_list[idx]["id"] for idx, _ in bm25_ranked]
-
-        # Merge with RRF
-        merged_ids = _rrf(vector_ids, bm25_ids)
-        merged_chunks = [all_chunks[cid] for cid in merged_ids if cid in all_chunks]
-
-        # Take top candidates for re-ranking
-        top_candidates = merged_chunks[:8]
-
-        # ── 5. Re-rank with GPT ───────────────────────────────────────────
-        reranked = _rerank(rewritten, top_candidates)
-
-        # Use top 4 chunks for answer generation
-        final_chunks = reranked[:4]
-
-        # ── 6. Generate grounded answer ───────────────────────────────────
-        context = "\n\n---\n\n".join(c["text"] for c in final_chunks)
-
-        answer = _chat([
-            {"role": "system", "content": (
-                "You are Veracity AI, an expert operations intelligence assistant. "
-                "Answer questions about ticket data, bottlenecks, automation opportunities, "
-                "and data quality based ONLY on the provided context. "
-                "Be specific, concise, and business-focused. "
-                "If the context doesn't have enough information, say so clearly. "
-                "Never invent numbers or facts not present in the context."
-            )},
-            {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {query}\n\nAnswer:"},
-        ], max_tokens=600)
-
-        # Build source labels
-        sources = []
-        for c in final_chunks:
-            meta = c.get("meta", {})
-            if meta.get("source") == "knowledge_base":
-                sources.append("Veracity Knowledge Base")
-            else:
-                sources.append(f"Run #{meta.get('run_id')} – {meta.get('filename', '')}")
-        unique_sources = list(dict.fromkeys(sources))
-
-        return {
-            "answer": answer,
-            "sources": unique_sources,
-            "rewritten_query": rewritten,
-        }
-
+        from app.rag_agent import run_rag_agent
+        return run_rag_agent(query, run_id=run_id, n_results=n_results)
     except Exception as e:
         return {"answer": f"Chat error: {str(e)}", "sources": [], "rewritten_query": query}
