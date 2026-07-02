@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredUser, clearUser, AuthUser } from "./lib/auth";
+import Aurora from "./components/Aurora";
+import BorderGlow from "./components/BorderGlow";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
@@ -505,10 +507,13 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
-                {/* Animated background orbs */}
-                <div className="emptyOrb emptyOrb1" />
-                <div className="emptyOrb emptyOrb2" />
-                <div className="emptyOrb emptyOrb3" />
+                {/* Aurora animated background */}
+                <Aurora
+                  colorStops={["#4F46E5", "#7C3AED", "#C4B5FD"]}
+                  amplitude={1.2}
+                  blend={0.6}
+                  speed={0.8}
+                />
 
                 <div className="emptyContent">
                   {/* Hero heading */}
@@ -517,49 +522,61 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                     <p className="emptySubheading">Get quality scores, bottleneck maps, automation ROI,<br/>and a live AI assistant — in under 30 seconds.</p>
                   </div>
 
-                  {/* Drop zone */}
-                  <label className={`emptyDropZone ${dragging ? "emptyDropActive" : ""} ${file ? "emptyDropHasFile" : ""}`}>
-                    <input
-                      type="file" accept=".csv" style={{ display: "none" }}
-                      onChange={(e) => { setFile(e.target.files?.[0] || null); setError(""); }}
-                    />
-                    <div className="emptyDropIconWrap">
-                      {file ? (
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="20 6 9 17 4 12"/>
-                        </svg>
-                      ) : dragging ? (
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 2L12 16M12 2L8 6M12 2L16 6"/>
-                          <rect x="3" y="18" width="18" height="4" rx="2"/>
-                        </svg>
-                      ) : (
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                          <polyline points="17 8 12 3 7 8"/>
-                          <line x1="12" y1="3" x2="12" y2="15"/>
-                        </svg>
+                  {/* Drop zone with Border Glow */}
+                  <BorderGlow
+                    backgroundColor="#ffffff"
+                    colors={["#818cf8", "#a78bfa", "#c4b5fd"]}
+                    glowColor="245 60 75"
+                    borderRadius={16}
+                    glowRadius={36}
+                    glowIntensity={1.2}
+                    edgeSensitivity={20}
+                    animated
+                    style={{ width: "100%" }}
+                  >
+                    <label className={`emptyDropZone ${dragging ? "emptyDropActive" : ""} ${file ? "emptyDropHasFile" : ""}`}>
+                      <input
+                        type="file" accept=".csv" style={{ display: "none" }}
+                        onChange={(e) => { setFile(e.target.files?.[0] || null); setError(""); }}
+                      />
+                      <div className="emptyDropIconWrap">
+                        {file ? (
+                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                        ) : dragging ? (
+                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 2L12 16M12 2L8 6M12 2L16 6"/>
+                            <rect x="3" y="18" width="18" height="4" rx="2"/>
+                          </svg>
+                        ) : (
+                          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                          </svg>
+                        )}
+                      </div>
+                      <div className="emptyDropTitle">
+                        {file ? file.name : dragging ? "Drop it!" : "Drag & drop your CSV"}
+                      </div>
+                      <div className="emptyDropSub">
+                        {file ? `${(file.size / 1024).toFixed(1)} KB — ready to analyse` : "or click to browse files"}
+                      </div>
+                      {file && (
+                        <button
+                          className="emptyAnalyseBtn"
+                          onClick={(e) => { e.preventDefault(); handleUpload(); }}
+                          disabled={loading}
+                        >
+                          {loading
+                            ? <><span className="emptyBtnSpinner" />Analysing…</>
+                            : "Analyse now →"
+                          }
+                        </button>
                       )}
-                    </div>
-                    <div className="emptyDropTitle">
-                      {file ? file.name : dragging ? "Drop it!" : "Drag & drop your CSV"}
-                    </div>
-                    <div className="emptyDropSub">
-                      {file ? `${(file.size / 1024).toFixed(1)} KB — ready to analyse` : "or click to browse files"}
-                    </div>
-                    {file && (
-                      <button
-                        className="emptyAnalyseBtn"
-                        onClick={(e) => { e.preventDefault(); handleUpload(); }}
-                        disabled={loading}
-                      >
-                        {loading
-                          ? <><span className="emptyBtnSpinner" />Analysing…</>
-                          : "Analyse now →"
-                        }
-                      </button>
-                    )}
-                  </label>
+                    </label>
+                  </BorderGlow>
 
                   {/* Connector row */}
                   <div className="emptyConnRow">
@@ -1272,15 +1289,10 @@ const styles = `
 
   /* EMPTY STATE */
   /* ── EMPTY STATE — rich redesign ── */
-  .emptyState { position: relative; overflow: hidden; flex: 1; border-radius: 20px; background: linear-gradient(145deg, #FAFBFF 0%, #F0F2FF 50%, #faf5ff 100%); border: 1.5px solid #EEF2FF; display: flex; align-items: center; justify-content: center; min-height: 500px; }
+  .emptyState { position: relative; overflow: hidden; flex: 1; border-radius: 20px; background: #F7FAFC; border: 1.5px solid #EEF2FF; display: flex; align-items: center; justify-content: center; min-height: 500px; }
   .emptyState.emptyDragging { border-color: #4F46E5; border-style: dashed; background: linear-gradient(145deg, #EEF2FF, #F5F3FF); }
 
-  /* Floating orbs */
-  .emptyOrb { position: absolute; border-radius: 50%; filter: blur(60px); pointer-events: none; animation: orbFloat 8s ease-in-out infinite; }
-  .emptyOrb1 { width: 320px; height: 320px; background: rgba(75,63,158,0.10); top: -80px; right: -60px; animation-delay: 0s; }
-  .emptyOrb2 { width: 240px; height: 240px; background: rgba(124,58,237,0.08); bottom: -40px; left: -40px; animation-delay: -3s; }
-  .emptyOrb3 { width: 180px; height: 180px; background: rgba(59,130,246,0.07); bottom: 40px; right: 120px; animation-delay: -5s; }
-  @keyframes orbFloat { 0%,100% { transform: translateY(0px) scale(1); } 50% { transform: translateY(-20px) scale(1.04); } }
+  /* Aurora canvas fills emptyState absolutely - no orbs needed */
 
   /* Content wrapper */
   .emptyContent { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 48px 32px; width: 100%; max-width: 680px; animation: emptyFadeUp 0.5s ease both; }
@@ -1293,14 +1305,14 @@ const styles = `
   .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; }
 
   /* Drop zone */
-  .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 440px; background: #fff; border: 2px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
-  .emptyDropZone:hover { border-color: #4F46E5; background: #FAFBFF; box-shadow: 0 0 0 4px rgba(75,63,158,0.06); }
-  .emptyDropZone.emptyDropActive { border-color: #4F46E5; border-style: solid; background: #EEF2FF; box-shadow: 0 0 0 6px rgba(75,63,158,0.10); transform: scale(1.01); }
+  .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 440px; background: #fff; border: 1.5px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+  .emptyDropZone:hover { border-color: #818cf8; background: #FAFBFF; }
+  .emptyDropZone.emptyDropActive { border-color: #4F46E5; border-style: solid; background: #EEF2FF; transform: scale(1.01); }
   .emptyDropZone.emptyDropHasFile { border-color: #059669; border-style: solid; background: #F0FDF4; }
   .emptyDropIconWrap { width: 56px; height: 56px; border-radius: 14px; background: #EEF2FF; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
   .emptyDropZone.emptyDropHasFile .emptyDropIconWrap { background: #DCFCE7; }
   .emptyDropZone.emptyDropActive .emptyDropIconWrap { background: #E0E7FF; }
-  .emptyDropTitle { font-size: 15px; font-weight: 700; color: #F7FAFC; }
+  .emptyDropTitle { font-size: 15px; font-weight: 700; color: #1A202C; }
   .emptyDropSub { font-size: 12.5px; color: #A0AEC0; }
   .emptyAnalyseBtn { margin-top: 6px; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: #fff; border: none; border-radius: 10px; padding: 11px 28px; font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity 0.15s, transform 0.15s; display: flex; align-items: center; gap: 8px; }
   .emptyAnalyseBtn:hover { opacity: 0.9; transform: scale(1.02); }
