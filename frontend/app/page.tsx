@@ -577,17 +577,16 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   {/* Feature preview strip */}
                   <div className="emptyFeatures">
                     {[
-                      { icon: "📊", title: "Quality Score", desc: "A/B/C grade + detailed breakdown", id: "feat-quality" },
-                      { icon: "⚡", title: "Bottleneck Detection", desc: "Slowest teams & ticket types", id: "feat-bottleneck" },
-                      { icon: "💰", title: "Automation ROI", desc: "Cost savings estimate in $", id: "feat-roi" },
-                      { icon: "💬", title: "AI Chat", desc: "Ask anything about your data", id: "feat-chat" },
+                      { title: "Quality Score", desc: "A/B/C grade + detailed breakdown", id: "feat-quality" },
+                      { title: "Bottleneck Detection", desc: "Slowest teams & ticket types", id: "feat-bottleneck" },
+                      { title: "Automation ROI", desc: "Cost savings estimate in $", id: "feat-roi" },
+                      { title: "AI Chat", desc: "Ask anything about your data", id: "feat-chat" },
                     ].map((f) => (
                       <div
                         key={f.title}
                         className="emptyFeatureCard"
                         onClick={() => document.getElementById(f.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
                       >
-                        <div className="emptyFeatureCardIcon">{f.icon}</div>
                         <div className="emptyFeatureCardTitle">{f.title}</div>
                         <div className="emptyFeatureCardDesc">{f.desc}</div>
                         <div className="emptyFeatureCardArrow">↓ Learn more</div>
@@ -603,7 +602,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div id="feat-quality" className="featSection">
                 <div className="featSectionInner">
                   <div className="featSectionContent">
-                    <div className="featBadge" style={{ background: "#EEF2FF", color: "#4F46E5" }}>📊 Quality Score</div>
+                    <div className="featBadge" style={{ background: "#EEF2FF", color: "#4F46E5" }}>Quality Score</div>
                     <h3 className="featTitle">Know exactly how clean your data is</h3>
                     <p className="featDesc">Every upload is instantly graded A through F. Veracity checks for missing values, duplicate rows, schema mismatches, and inconsistent formats — so you always know what you're working with before it causes problems downstream.</p>
                     <ul className="featBenefits">
@@ -641,7 +640,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div id="feat-bottleneck" className="featSection">
                 <div className="featSectionInner featSectionReverse">
                   <div className="featSectionContent">
-                    <div className="featBadge" style={{ background: "#FFFBEB", color: "#D97706" }}>⚡ Bottleneck Detection</div>
+                    <div className="featBadge" style={{ background: "#FFFBEB", color: "#D97706" }}>Bottleneck Detection</div>
                     <h3 className="featTitle">Find exactly where your process breaks down</h3>
                     <p className="featDesc">Veracity analyses resolution times, escalation patterns, and ticket volumes by team and category. Instead of guessing where your support process slows down, you get a ranked list of the exact bottlenecks costing you time and money.</p>
                     <ul className="featBenefits">
@@ -678,7 +677,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div id="feat-roi" className="featSection">
                 <div className="featSectionInner">
                   <div className="featSectionContent">
-                    <div className="featBadge" style={{ background: "#F0FDF4", color: "#059669" }}>💰 Automation ROI</div>
+                    <div className="featBadge" style={{ background: "#F0FDF4", color: "#059669" }}>Automation ROI</div>
                     <h3 className="featTitle">Make the business case in seconds</h3>
                     <p className="featDesc">Veracity identifies your most repetitive ticket types and estimates exactly how much you'd save by automating them — in dollars, per year. Stop arguing about ROI and start with a number backed by your own data.</p>
                     <ul className="featBenefits">
@@ -714,7 +713,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div id="feat-chat" className="featSection">
                 <div className="featSectionInner featSectionReverse">
                   <div className="featSectionContent">
-                    <div className="featBadge" style={{ background: "#EFF6FF", color: "#3B82F6" }}>💬 AI Chat</div>
+                    <div className="featBadge" style={{ background: "#EFF6FF", color: "#3B82F6" }}>AI Chat</div>
                     <h3 className="featTitle">Ask anything. Get answers instantly.</h3>
                     <p className="featDesc">A GPT-powered assistant that knows your data inside and out. Ask in plain English — it answers from your actual uploaded tickets. No SQL, no dashboards, no waiting for a data analyst.</p>
                     <ul className="featBenefits">
@@ -1320,8 +1319,8 @@ const styles = `
   .emptyFeatures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; }
   .emptyFeatureCard { background: #fff; border: 1.5px solid #EDF2F7; border-radius: 12px; padding: 16px 14px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; transition: all 0.18s; cursor: pointer; }
   .emptyFeatureCard:hover { border-color: #C7D2FE; transform: translateY(-4px); box-shadow: 0 8px 24px rgba(75,63,158,0.1); }
-  .emptyFeatureCardIcon { font-size: 22px; }
-  .emptyFeatureCardTitle { font-size: 12px; font-weight: 700; color: #F7FAFC; }
+  
+  .emptyFeatureCardTitle { font-size: 13px; font-weight: 700; color: #1A202C; }
   .emptyFeatureCardDesc { font-size: 11px; color: #A0AEC0; line-height: 1.4; }
   .emptyFeatureCardArrow { font-size: 10.5px; color: #4F46E5; font-weight: 600; margin-top: 2px; opacity: 0; transition: opacity 0.15s; }
   .emptyFeatureCard:hover .emptyFeatureCardArrow { opacity: 1; }
