@@ -16,28 +16,36 @@ export default function TextLoop({
 }: TextLoopProps) {
   const [index, setIndex] = useState(0);
   const [phase, setPhase] = useState<"visible" | "exit" | "enter">("visible");
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const cycle = () => {
-      // fade out
+    // Use local vars — NOT timerRef — so cleanup can clear all three
+    // without any of them racing against an index-triggered re-run
+    let cycleTimer: ReturnType<typeof setInterval>;
+    let swapTimer: ReturnType<typeof setTimeout>;
+    let restoreTimer: ReturnType<typeof setTimeout>;
+
+    cycleTimer = setInterval(() => {
+      // 1. fade out
       setPhase("exit");
-      timerRef.current = setTimeout(() => {
-        // swap text
+
+      // 2. swap word + set to enter position
+      swapTimer = setTimeout(() => {
         setIndex((i) => (i + 1) % items.length);
         setPhase("enter");
-        timerRef.current = setTimeout(() => {
-          setPhase("visible");
-        }, 50);
-      }, 350);
-    };
 
-    timerRef.current = setTimeout(cycle, interval);
+        // 3. one frame later → fade in
+        restoreTimer = setTimeout(() => {
+          setPhase("visible");
+        }, 60);
+      }, 380);
+    }, interval);
+
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+      clearInterval(cycleTimer);
+      clearTimeout(swapTimer);
+      clearTimeout(restoreTimer);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, interval]);
+  }, [interval, items.length]); // index intentionally NOT in deps
 
   return (
     <span
