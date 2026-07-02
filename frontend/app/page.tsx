@@ -6,6 +6,9 @@ import { getStoredUser, clearUser, AuthUser } from "./lib/auth";
 import Aurora from "./components/Aurora";
 import BorderGlow from "./components/BorderGlow";
 import ScrollReveal from "./components/ScrollReveal";
+import CountUp from "./components/CountUp";
+import TextLoop from "./components/TextLoop";
+import TextScramble from "./components/TextScramble";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
@@ -529,8 +532,19 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 <div className="emptyContent">
                   {/* Hero heading */}
                   <div className="emptyHero">
-                    <h2 className="emptyHeading">Your support data has a<br/><span className="emptyHeadingAccent">90-day action plan</span> inside it.</h2>
-                    <p className="emptySubheading">Upload your ticket CSV and get quality scores, bottleneck maps, automation ROI, and a live AI advisor — in under 30 seconds.</p>
+                    <h2 className="emptyHeading">
+                      <TextScramble text="Your support data has a" speed={18} delay={200} />
+                      <br/><span className="emptyHeadingAccent">90-day action plan</span> inside it.
+                    </h2>
+                    <p className="emptySubheading">
+                      Drop your{" "}
+                      <TextLoop
+                        items={["Zendesk CSV", "Freshdesk export", "Jira tickets", "helpdesk data", "support CSV"]}
+                        interval={2200}
+                        className="emptyLoopWord"
+                      />{" "}
+                      and get quality scores, bottleneck maps, automation ROI, and a live AI advisor — in under 30 seconds.
+                    </p>
                   </div>
 
                   {/* Drop zone with Border Glow */}
@@ -796,7 +810,9 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 <div className="kpiGrid">
                   <MetricCard
                     icon="✓" color="#4F46E5"
-                    title="Quality Score" value={`${qualityScore}`}
+                    title="Quality Score"
+                    countUp={{ to: qualityScore }}
+                    value={`${qualityScore}`}
                     label={`Grade ${result.quality?.grade}`}
                     trend={scoreDelta !== null
                       ? { label: scoreDelta >= 0 ? `+${scoreDelta} pts` : `${scoreDelta} pts`, positive: scoreDelta >= 0 }
@@ -804,19 +820,25 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   />
                   <MetricCard
                     icon="$" color="#059669"
-                    title="Est. Savings" value={`$${Number(savings).toLocaleString()}`}
+                    title="Est. Savings"
+                    countUp={{ to: Number(savings), prefix: "$", separator: true }}
+                    value={`$${Number(savings).toLocaleString()}`}
                     label="Automation value"
                     trend={{ label: "annualised", positive: true }}
                   />
                   <MetricCard
                     icon="⊞" color="#0284C7"
-                    title="Rows Analyzed" value={rows.toLocaleString()}
+                    title="Rows Analyzed"
+                    countUp={{ to: rows, separator: true }}
+                    value={rows.toLocaleString()}
                     label={`${result.profile?.columns} columns`}
                     trend={null}
                   />
                   <MetricCard
                     icon="!" color="#D97706"
-                    title="Data Issues" value={`${duplicates} dupes`}
+                    title="Data Issues"
+                    countUp={{ to: duplicates, suffix: " dupes" }}
+                    value={`${duplicates} dupes`}
                     label={`${missingPercent}% missing`}
                     trend={duplicates > 0
                       ? { label: "needs fix", positive: false }
@@ -1056,7 +1078,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 // Improvement 1: KPI card with trend badge + ring watermark
-function MetricCard({ icon, color, title, value, label, trend }: any) {
+function MetricCard({ icon, color, title, value, label, trend, countUp }: any) {
   return (
     <div className="metricCard" style={{ borderTop: `3px solid ${color}` }}>
       <div className="metricCardTop">
@@ -1071,7 +1093,20 @@ function MetricCard({ icon, color, title, value, label, trend }: any) {
         )}
       </div>
       <p className="metricTitle">{title}</p>
-      <p className="metricValue">{value}</p>
+      <p className="metricValue">
+        {countUp ? (
+          <>
+            {countUp.prefix || ""}
+            <CountUp
+              to={countUp.to}
+              duration={1400}
+              decimals={countUp.decimals || 0}
+              onViewport={true}
+            />
+            {countUp.suffix || ""}
+          </>
+        ) : value}
+      </p>
       <span className="metricLabel">{label}</span>
       {/* Subtle ring watermark in bottom-right */}
       <svg className="metricRing" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
@@ -1321,6 +1356,7 @@ const styles = `
   .emptyBadge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF); border: 1px solid #C7D2FE; color: #4F46E5; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.3px; }
   .emptyHeading { font-size: 28px; font-weight: 800; color: #0D0B1A; line-height: 1.22; margin: 0; letter-spacing: -0.6px; }
   .emptyHeadingAccent { background: linear-gradient(135deg, #4F46E5, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .emptyLoopWord { color: #4F46E5; font-weight: 700; font-style: italic; }
   .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; max-width: 420px; }
 
   /* Drop zone */
