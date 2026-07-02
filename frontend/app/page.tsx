@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { getStoredUser, clearUser, AuthUser } from "./lib/auth";
 import Aurora from "./components/Aurora";
@@ -96,6 +96,16 @@ export default function Home() {
     const t = setTimeout(() => setQualityAlert(null), 10000);
     return () => clearTimeout(t);
   }, [qualityAlert]);
+
+  // Scroll-reveal via IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } }),
+      { threshold: 0.12 }
+    );
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  });
 
   async function fetchRuns(token: string) {
     try {
@@ -518,8 +528,8 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 <div className="emptyContent">
                   {/* Hero heading */}
                   <div className="emptyHero">
-                    <h2 className="emptyHeading">Turn messy support data<br/>into a 90-day action plan</h2>
-                    <p className="emptySubheading">Get quality scores, bottleneck maps, automation ROI,<br/>and a live AI assistant — in under 30 seconds.</p>
+                    <h2 className="emptyHeading">Your support data has a<br/><span className="emptyHeadingAccent">90-day action plan</span> inside it.</h2>
+                    <p className="emptySubheading">Upload your ticket CSV and get quality scores, bottleneck maps, automation ROI, and a live AI advisor — in under 30 seconds.</p>
                   </div>
 
                   {/* Drop zone with Border Glow */}
@@ -616,7 +626,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               {/* ── FEATURE DETAIL SECTIONS ── */}
 
               {/* Quality Score */}
-              <div id="feat-quality" className="featSection">
+              <div id="feat-quality" className="featSection reveal">
                 <div className="featSectionInner">
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#EEF2FF", color: "#4F46E5" }}>Quality Score</div>
@@ -654,7 +664,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               </div>
 
               {/* Bottleneck Detection */}
-              <div id="feat-bottleneck" className="featSection">
+              <div id="feat-bottleneck" className="featSection reveal reveal-delay-1">
                 <div className="featSectionInner featSectionReverse">
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#FFFBEB", color: "#D97706" }}>Bottleneck Detection</div>
@@ -691,7 +701,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               </div>
 
               {/* Automation ROI */}
-              <div id="feat-roi" className="featSection">
+              <div id="feat-roi" className="featSection reveal reveal-delay-2">
                 <div className="featSectionInner">
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#F0FDF4", color: "#059669" }}>Automation ROI</div>
@@ -727,7 +737,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               </div>
 
               {/* AI Chat */}
-              <div id="feat-chat" className="featSection">
+              <div id="feat-chat" className="featSection reveal reveal-delay-3">
                 <div className="featSectionInner featSectionReverse">
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#EFF6FF", color: "#3B82F6" }}>AI Chat</div>
@@ -1182,15 +1192,22 @@ const ONBOARDING_STEPS = [
 // ── Styles ────────────────────────────────────────────────────────────────────
 const styles = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: #F7FAFC; color: #1A202C; min-height: 100vh; }
+  body { font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif; background: #F7FAFC; color: #1A202C; min-height: 100vh; }
   .app { min-height: 100vh; display: flex; flex-direction: column; }
 
   /* NAV */
-  .topNav { background: #fff; border-bottom: 1px solid #E2E8F0; padding: 0 20px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.06); flex-shrink: 0; }
+  .topNav { background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid #E2E8F0; padding: 0 20px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 0 #E2E8F0; flex-shrink: 0; }
   .navLeft { display: flex; align-items: center; gap: 12px; }
-  .navBrand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: #1A202C; }
-  .navLogo { width: 30px; height: 30px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .navBrand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 15.5px; color: #0D0B1A; letter-spacing: -0.3px; }
+  .navLogo { width: 28px; height: 28px; background: linear-gradient(135deg, #4F46E5, #7C3AED); border-radius: 7px; display: flex; align-items: center; justify-content: center; }
   .navBadge { background: #EEF2FF; color: #4F46E5; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+
+  /* Scroll-reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
   .navRight { display: flex; align-items: center; gap: 10px; }
   .navUser { font-size: 13px; color: #4A5568; font-weight: 500; }
   .navLogout { background: none; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 5px 11px; font-size: 12px; color: #718096; cursor: pointer; }
@@ -1301,8 +1318,9 @@ const styles = `
   /* Hero text */
   .emptyHero { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .emptyBadge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF); border: 1px solid #C7D2FE; color: #4F46E5; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.3px; }
-  .emptyHeading { font-size: 26px; font-weight: 800; color: #1A202C; line-height: 1.25; margin: 0; }
-  .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; }
+  .emptyHeading { font-size: 28px; font-weight: 800; color: #0D0B1A; line-height: 1.22; margin: 0; letter-spacing: -0.6px; }
+  .emptyHeadingAccent { background: linear-gradient(135deg, #4F46E5, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; max-width: 420px; }
 
   /* Drop zone */
   .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 440px; background: #fff; border: 1.5px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
@@ -1338,17 +1356,17 @@ const styles = `
   .emptyFeatureCard:hover .emptyFeatureCardArrow { opacity: 1; }
 
   /* ── FEATURE DETAIL SECTIONS ── */
-  .featSection { background: #fff; border-radius: 20px; border: 1.5px solid #EDF2F7; padding: 48px 52px; animation: emptyFadeUp 0.5s ease both; }
-  .featSectionInner { display: flex; align-items: center; gap: 56px; }
+  .featSection { background: #fff; border-radius: 20px; border: 1px solid #EDF2F7; padding: 52px 56px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .featSectionInner { display: flex; align-items: center; gap: 60px; }
   .featSectionReverse { flex-direction: row-reverse; }
   .featSectionContent { flex: 1; min-width: 0; }
   .featSectionVisual { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
-  .featBadge { display: inline-block; font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 14px; }
-  .featTitle { font-size: 22px; font-weight: 800; color: #1A202C; margin: 0 0 12px; line-height: 1.3; }
-  .featDesc { font-size: 14px; color: #718096; line-height: 1.75; margin: 0 0 20px; }
-  .featBenefits { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 11px; }
-  .featBenefits li { font-size: 13.5px; color: #4A5568; font-weight: 500; display: flex; align-items: flex-start; gap: 10px; }
-  .featCheck { color: #4F46E5; font-weight: 700; flex-shrink: 0; }
+  .featBadge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.2px; }
+  .featTitle { font-size: 24px; font-weight: 800; color: #0D0B1A; margin: 0 0 14px; line-height: 1.25; letter-spacing: -0.5px; }
+  .featDesc { font-size: 14.5px; color: #64748b; line-height: 1.75; margin: 0 0 22px; }
+  .featBenefits { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .featBenefits li { font-size: 13.5px; color: #4A5568; font-weight: 500; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+  .featCheck { color: #4F46E5; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
   /* Bar chart visual */
   .featBarChart { display: flex; flex-direction: column; gap: 10px; width: 260px; background: #F7FAFC; border-radius: 14px; padding: 20px; }
@@ -1382,20 +1400,22 @@ const styles = `
 
   /* KPI — improvement 1 */
   .kpiGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  .metricCard { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #E2E8F0; display: flex; flex-direction: column; gap: 5px; position: relative; overflow: hidden; }
+  .metricCard { background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.04); border: none; display: flex; flex-direction: column; gap: 5px; position: relative; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+  .metricCard:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04); transform: translateY(-1px); }
   .metricCardTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
   .metricIcon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
   .metricTrend { font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 20px; }
-  .metricTitle { font-size: 11px; font-weight: 600; color: #718096; text-transform: uppercase; letter-spacing: 0.6px; }
-  .metricValue { font-size: 24px; font-weight: 800; color: #1A202C; letter-spacing: -0.5px; line-height: 1; }
+  .metricTitle { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.7px; }
+  .metricValue { font-size: 26px; font-weight: 800; color: #0D0B1A; letter-spacing: -0.8px; line-height: 1; }
   .metricLabel { font-size: 11px; color: #A0AEC0; }
   .metricRing { position: absolute; right: -10px; bottom: -10px; width: 60px; height: 60px; opacity: 0.07; }
 
   /* CARDS */
-  .card { background: #fff; border-radius: 14px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.07); border: 1px solid #E2E8F0; }
+  .card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 1px 2px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.04); border: none; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.04); }
   .gridTwo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .sectionHeader { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-  .sectionHeader h2, .card > h2 { font-size: 15px; font-weight: 700; color: #1A202C; margin-bottom: 0; }
+  .sectionHeader h2, .card > h2 { font-size: 14px; font-weight: 700; color: #0D0B1A; margin-bottom: 0; letter-spacing: -0.2px; }
   .card > h2 { margin-bottom: 16px; }
   .pill { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; background: #EEF2FF; color: #4F46E5; }
   .pill.success { background: #ECFDF5; color: #059669; }
