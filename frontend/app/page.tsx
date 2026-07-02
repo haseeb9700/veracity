@@ -542,7 +542,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                     glowIntensity={1.2}
                     edgeSensitivity={20}
                     animated
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", maxWidth: 460 }}
                   >
                     <label className={`emptyDropZone ${dragging ? "emptyDropActive" : ""} ${file ? "emptyDropHasFile" : ""}`}>
                       <input
@@ -1323,7 +1323,7 @@ const styles = `
   .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; max-width: 420px; }
 
   /* Drop zone */
-  .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; max-width: 440px; background: #fff; border: 1.5px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
+  .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; background: #fff; border: 1.5px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
   .emptyDropZone:hover { border-color: #818cf8; background: #FAFBFF; }
   .emptyDropZone.emptyDropActive { border-color: #4F46E5; border-style: solid; background: #EEF2FF; transform: scale(1.01); }
   .emptyDropZone.emptyDropHasFile { border-color: #059669; border-style: solid; background: #F0FDF4; }
