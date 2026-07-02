@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { getStoredUser, clearUser, AuthUser } from "./lib/auth";
 import Aurora from "./components/Aurora";
 import BorderGlow from "./components/BorderGlow";
+import ScrollReveal from "./components/ScrollReveal";
 
 const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
 
@@ -631,7 +632,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#EEF2FF", color: "#4F46E5" }}>Quality Score</div>
                     <h3 className="featTitle">Know exactly how clean your data is</h3>
-                    <p className="featDesc">Every upload is instantly graded A through F. Veracity checks for missing values, duplicate rows, schema mismatches, and inconsistent formats — so you always know what you're working with before it causes problems downstream.</p>
+                    <ScrollReveal className="featDesc">Every upload is instantly graded A through F. Veracity checks for missing values, duplicate rows, schema mismatches, and inconsistent formats — so you always know what you're working with before it causes problems downstream.</ScrollReveal>
                     <ul className="featBenefits">
                       <li><span className="featCheck">✓</span> Detects missing fields and empty columns</li>
                       <li><span className="featCheck">✓</span> Flags duplicate rows and fuzzy matches</li>
@@ -669,7 +670,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#FFFBEB", color: "#D97706" }}>Bottleneck Detection</div>
                     <h3 className="featTitle">Find exactly where your process breaks down</h3>
-                    <p className="featDesc">Veracity analyses resolution times, escalation patterns, and ticket volumes by team and category. Instead of guessing where your support process slows down, you get a ranked list of the exact bottlenecks costing you time and money.</p>
+                    <ScrollReveal className="featDesc">Veracity analyses resolution times, escalation patterns, and ticket volumes by team and category. Instead of guessing where your support process slows down, you get a ranked list of the exact bottlenecks costing you time and money.</ScrollReveal>
                     <ul className="featBenefits">
                       <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Ranks slowest departments and ticket types</li>
                       <li><span className="featCheck" style={{ color: "#D97706" }}>✓</span> Identifies escalation and handoff delays</li>
@@ -706,7 +707,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#F0FDF4", color: "#059669" }}>Automation ROI</div>
                     <h3 className="featTitle">Make the business case in seconds</h3>
-                    <p className="featDesc">Veracity identifies your most repetitive ticket types and estimates exactly how much you'd save by automating them — in dollars, per year. Stop arguing about ROI and start with a number backed by your own data.</p>
+                    <ScrollReveal className="featDesc">Veracity identifies your most repetitive ticket types and estimates exactly how much you'd save by automating them — in dollars, per year. Stop arguing about ROI and start with a number backed by your own data.</ScrollReveal>
                     <ul className="featBenefits">
                       <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Finds top automation candidates by volume</li>
                       <li><span className="featCheck" style={{ color: "#059669" }}>✓</span> Estimates annual cost savings in dollars</li>
@@ -742,7 +743,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                   <div className="featSectionContent">
                     <div className="featBadge" style={{ background: "#EFF6FF", color: "#3B82F6" }}>AI Chat</div>
                     <h3 className="featTitle">Ask anything. Get answers instantly.</h3>
-                    <p className="featDesc">A GPT-powered assistant that knows your data inside and out. Ask in plain English — it answers from your actual uploaded tickets. No SQL, no dashboards, no waiting for a data analyst.</p>
+                    <ScrollReveal className="featDesc">A GPT-powered assistant that knows your data inside and out. Ask in plain English — it answers from your actual uploaded tickets. No SQL, no dashboards, no waiting for a data analyst.</ScrollReveal>
                     <ul className="featBenefits">
                       <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Natural language questions, specific answers</li>
                       <li><span className="featCheck" style={{ color: "#3B82F6" }}>✓</span> Cites which run and file each answer came from</li>
@@ -1363,7 +1364,7 @@ const styles = `
   .featSectionVisual { flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
   .featBadge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.2px; }
   .featTitle { font-size: 24px; font-weight: 800; color: #0D0B1A; margin: 0 0 14px; line-height: 1.25; letter-spacing: -0.5px; }
-  .featDesc { font-size: 14.5px; color: #64748b; line-height: 1.75; margin: 0 0 22px; }
+  .featDesc { font-size: 14.5px; color: #64748b; line-height: 1.75; margin: 0 0 22px; display: block; }
   .featBenefits { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
   .featBenefits li { font-size: 13.5px; color: #4A5568; font-weight: 500; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
   .featCheck { color: #4F46E5; font-weight: 700; flex-shrink: 0; margin-top: 1px; }

@@ -1,0 +1,19 @@
+.scroll-reveal-p {
+  margin: 0;
+  line-height: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+.sr-word {
+  display: inline;
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter;
+}
+
+.sr-word--visible {
+  opacity: 1 !important;
+  filter: blur(0px) !important;
+}
