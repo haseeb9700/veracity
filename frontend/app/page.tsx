@@ -392,7 +392,6 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 </svg>
               </div>
               Veracity
-              <span className="navBadge">AI Process Intelligence</span>
             </div>
           </div>
           <div className="navRight">
@@ -514,7 +513,6 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
                 <div className="emptyContent">
                   {/* Hero heading */}
                   <div className="emptyHero">
-                    <div className="emptyBadge">✦ AI Process Intelligence</div>
                     <h2 className="emptyHeading">Turn messy support data<br/>into a 90-day action plan</h2>
                     <p className="emptySubheading">Get quality scores, bottleneck maps, automation ROI,<br/>and a live AI assistant — in under 30 seconds.</p>
                   </div>
