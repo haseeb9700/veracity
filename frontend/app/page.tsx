@@ -1356,8 +1356,8 @@ const styles = `
   .emptyBadge { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF); border: 1px solid #C7D2FE; color: #4F46E5; font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.3px; }
   .emptyHeading { font-size: 28px; font-weight: 800; color: #0D0B1A; line-height: 1.22; margin: 0; letter-spacing: -0.6px; }
   .emptyHeadingAccent { background: linear-gradient(135deg, #4F46E5, #7C3AED); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .emptyLoopWord { color: #4F46E5; font-weight: 700; font-style: italic; }
-  .emptySubheading { font-size: 14px; color: #718096; line-height: 1.65; margin: 0; max-width: 420px; }
+  .emptyLoopWord { color: #1a1560; font-weight: 700; font-style: italic; border-bottom: 2px solid #4F46E5; padding-bottom: 1px; }
+  .emptySubheading { font-size: 14px; color: #3d3d5c; line-height: 1.65; margin: 0; max-width: 420px; }
 
   /* Drop zone */
   .emptyDropZone { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; background: #fff; border: 1.5px dashed #C7D2FE; border-radius: 16px; padding: 36px 28px; cursor: pointer; transition: all 0.2s ease; text-align: center; }
