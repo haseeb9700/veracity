@@ -59,6 +59,7 @@ export default function Home() {
 
   // Delete confirmation
   const [deleteTarget, setDeleteTarget] = useState<RunSummary | null>(null);
+  const [showDownloadConfirm, setShowDownloadConfirm] = useState(false);
 
   // Modals
   const [showConnector, setShowConnector] = useState<"jira" | "zendesk" | null>(null);
@@ -412,7 +413,7 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
           </div>
           <div className="navRight">
             {result && (
-              <button className="btn btnOutline" onClick={exportPDF} style={{ fontSize: 12 }}>
+              <button className="btn btnOutline" onClick={() => setShowDownloadConfirm(true)} style={{ fontSize: 12 }}>
                 ↓ Export Report
               </button>
             )}
@@ -976,6 +977,24 @@ ${Object.entries(result.bottlenecks?.bottlenecks?.slowest_departments || {}).map
               <div className="deleteModalActions">
                 <button className="deleteBtnNo" onClick={() => setDeleteTarget(null)}>No, keep it</button>
                 <button className="deleteBtnYes" onClick={() => deleteRun(deleteTarget.run_id)}>Yes, delete</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── DOWNLOAD CONFIRMATION MODAL ── */}
+        {showDownloadConfirm && (
+          <div className="deleteOverlay" onClick={() => setShowDownloadConfirm(false)}>
+            <div className="deleteModal" onClick={e => e.stopPropagation()}>
+              <div className="deleteModalIcon">📄</div>
+              <h3 className="deleteModalTitle">Download report?</h3>
+              <p className="deleteModalFile">"{result?.filename}"</p>
+              <p className="deleteModalSub">This will save a full analysis report to your device, including quality scores, bottlenecks, automation opportunities, and your 90-day roadmap.</p>
+              <div className="deleteModalActions">
+                <button className="deleteBtnNo" onClick={() => setShowDownloadConfirm(false)}>Cancel</button>
+                <button className="deleteBtnYes" style={{ background: "#4F46E5" }} onClick={() => { setShowDownloadConfirm(false); exportPDF(); }}>
+                  ↓ Download
+                </button>
               </div>
             </div>
           </div>
